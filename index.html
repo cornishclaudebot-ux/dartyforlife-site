@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DARTYFORLIFE — Desert Drinkers · Phoenix</title>
+<meta name="description" content="DartyForLife — Phoenix's biggest desert nights. Headlining majors, free desert raves, and weekly themed bar nights at The 44. Get tickets before they're gone." />
+<meta name="theme-color" content="#0b0907" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="apple-touch-icon" href="favicon.svg" />
+<link rel="canonical" href="https://dartyforlife.com/" />
+
+<!-- Open Graph / social share -->
+<meta property="og:title" content="DARTYFORLIFE — Desert Drinkers" />
+<meta property="og:description" content="Phoenix's biggest desert nights. Majors, free raves, and weekly bar nights at The 44." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://dartyforlife.com/" />
+<meta property="og:image" content="https://dartyforlife.com/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="DARTYFORLIFE — Desert Drinkers" />
+<meta name="twitter:description" content="Phoenix's biggest desert nights. Tickets on Posh." />
+<meta name="twitter:image" content="https://dartyforlife.com/og.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   DARTYFORLIFE · Desert Drinkers
+   One file. Edit your events in the EVENTS array near the
+   bottom of this file (inside <script>). Everything else
+   renders itself.
+   ============================================================ */
+
+:root{
+  --bg:        #0b0907;   /* warm near-black            */
+  --bg-2:      #110d0a;   /* slightly raised dark        */
+  --surface:   #17120d;   /* card surface                */
+  --surface-2: #1f1812;   /* raised card / hover         */
+  --line:      #2a211a;   /* hairline border             */
+  --orange:    #ff5c00;   /* brand accent                */
+  --orange-2:  #ff7e33;   /* lighter glow                */
+  --sand:      #e8b15a;   /* desert gold tertiary        */
+  --cactus:    #2f8f5b;   /* green cactus variant        */
+  --cream:     #f6efe4;   /* primary text                */
+  --muted:     #a7977f;   /* warm muted text             */
+  --muted-2:   #6f6253;   /* dim text                    */
+  --maxw: 1180px;
+  --radius: 16px;
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:92px}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--cream);
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:var(--orange);color:#120b06}
+
+/* ---- film grain + vignette overlay ---- */
+body::before{
+  content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
+  background:radial-gradient(120% 80% at 50% -10%, transparent 55%, rgba(0,0,0,.55) 100%);
+}
+
+/* ---- display type ---- */
+.display{
+  font-family:'Anton','Impact','Haettenschweiler',sans-serif;
+  font-weight:400;letter-spacing:.5px;line-height:.92;text-transform:uppercase;
+}
+.kicker{
+  font-size:13px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--orange);display:inline-flex;align-items:center;gap:.6em;
+}
+.kicker::before{content:"";width:26px;height:2px;background:var(--orange);display:inline-block}
+
+.container{max-width:var(--maxw);margin-inline:auto;padding-inline:22px}
+section{position:relative}
+
+/* =========================================================
+   NAV
+   ========================================================= */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 22px;transition:background .35s var(--ease),backdrop-filter .35s,border-color .35s;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(11,9,7,.78);backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.04em}
+.brand .mark{width:26px;height:30px;color:var(--orange);flex:none}
+.brand b{font-family:'Anton',sans-serif;font-weight:400;font-size:21px;letter-spacing:1px}
+.brand small{display:block;font-size:9px;letter-spacing:.32em;color:var(--muted);font-weight:700;margin-top:-2px}
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{font-size:14px;font-weight:600;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--cream)}
+.btn{
+  display:inline-flex;align-items:center;gap:.5em;cursor:pointer;border:none;
+  font-family:'Inter',sans-serif;font-weight:700;font-size:14px;letter-spacing:.02em;
+  padding:12px 22px;border-radius:999px;transition:transform .15s var(--ease),box-shadow .25s,background .2s;
+}
+.btn-primary{background:var(--orange);color:#160a03;box-shadow:0 6px 24px -6px rgba(255,92,0,.7)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px -8px rgba(255,92,0,.85)}
+.btn-ghost{background:transparent;color:var(--cream);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px)}
+.nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:10px;
+  width:42px;height:38px;color:var(--cream);cursor:pointer;align-items:center;justify-content:center}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero{min-height:100svh;display:flex;align-items:center;padding:120px 0 70px;overflow:hidden}
+.hero .glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+.glow-1{width:620px;height:620px;top:-180px;right:-120px;
+  background:radial-gradient(circle,rgba(255,92,0,.42),transparent 65%)}
+.glow-2{width:520px;height:520px;bottom:-220px;left:-160px;
+  background:radial-gradient(circle,rgba(232,177,90,.18),transparent 65%)}
+.hero .container{position:relative;z-index:2;width:100%}
+.hero-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:54px;align-items:center}
+.hero h1{margin:18px 0 0;font-size:clamp(58px,11vw,142px)}
+.hero h1 .line2{color:transparent;-webkit-text-stroke:2px var(--orange);
+  display:inline-block;}
+.hero .tagline{margin:22px 0 30px;max-width:30ch;color:var(--muted);font-size:clamp(16px,2vw,20px)}
+.hero .tagline b{color:var(--cream);font-weight:700}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.scroll-cue{margin-top:46px;display:inline-flex;align-items:center;gap:10px;color:var(--muted-2);
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+.scroll-cue span{width:1px;height:34px;background:linear-gradient(var(--orange),transparent);display:block;
+  animation:cue 1.8s var(--ease) infinite}
+@keyframes cue{0%{transform:scaleY(.3);opacity:.4;transform-origin:top}50%{transform:scaleY(1);opacity:1}100%{transform:scaleY(.3);opacity:.4;transform-origin:bottom}}
+
+/* next-major countdown card */
+.next-card{
+  position:relative;background:linear-gradient(160deg,var(--surface-2),var(--surface));
+  border:1px solid var(--line);border-radius:var(--radius);padding:26px;overflow:hidden;
+  box-shadow:0 30px 80px -40px rgba(0,0,0,.9);
+}
+.next-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
+  background:linear-gradient(160deg,rgba(255,92,0,.6),transparent 40%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.next-card .tag{font-size:11px;font-weight:700;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+.next-card .nm-name{font-family:'Anton',sans-serif;font-size:clamp(34px,6vw,52px);line-height:.95;margin:6px 0 4px}
+.next-card .nm-meta{color:var(--muted);font-size:14px;font-weight:600;display:flex;gap:14px;flex-wrap:wrap}
+.next-card .nm-meta b{color:var(--cream)}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:20px 0 18px}
+.cd-cell{background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:11px;padding:12px 6px;text-align:center}
+.cd-cell .num{font-family:'Anton',sans-serif;font-size:clamp(26px,5vw,38px);color:var(--cream);line-height:1}
+.cd-cell .lab{font-size:9.5px;letter-spacing:.18em;color:var(--muted-2);text-transform:uppercase;margin-top:6px}
+
+/* =========================================================
+   GENERIC SECTION HEADER
+   ========================================================= */
+.sec{padding:96px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:40px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(38px,7vw,82px);margin:12px 0 0}
+.sec-head p{color:var(--muted);max-width:46ch;margin:0}
+
+/* filter chips */
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.chip{padding:9px 18px;border-radius:999px;border:1px solid var(--line);background:transparent;
+  color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;transition:all .2s var(--ease)}
+.chip:hover{color:var(--cream);border-color:var(--muted-2)}
+.chip.active{background:var(--orange);color:#160a03;border-color:var(--orange)}
+
+/* =========================================================
+   EVENT CARDS
+   ========================================================= */
+.event-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+.ev{
+  position:relative;display:flex;flex-direction:column;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;transition:transform .3s var(--ease),border-color .3s,box-shadow .3s;
+}
+.ev:hover{transform:translateY(-6px);border-color:rgba(255,92,0,.55);
+  box-shadow:0 26px 60px -30px rgba(255,92,0,.45)}
+.ev-top{position:relative;padding:22px 22px 18px;min-height:172px;display:flex;flex-direction:column;
+  background:
+    radial-gradient(130% 120% at 100% 0,rgba(255,92,0,.16),transparent 55%),
+    linear-gradient(180deg,var(--surface-2),var(--surface));}
+.ev[data-tier="free"] .ev-top{background:
+    radial-gradient(130% 120% at 100% 0,rgba(232,177,90,.16),transparent 55%),
+    linear-gradient(180deg,var(--surface-2),var(--surface))}
+.ev[data-tier="bar"] .ev-top{background:
+    radial-gradient(130% 120% at 100% 0,rgba(47,143,91,.16),transparent 55%),
+    linear-gradient(180deg,var(--surface-2),var(--surface))}
+.ev-badges{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.pill{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 11px;border-radius:999px;white-space:nowrap}
+.pill-major{background:var(--orange);color:#160a03}
+.pill-free{background:rgba(232,177,90,.16);color:var(--sand);border:1px solid rgba(232,177,90,.4)}
+.pill-bar{background:rgba(47,143,91,.16);color:#6fd49b;border:1px solid rgba(47,143,91,.4)}
+.pill-sample{background:transparent;color:var(--muted-2);border:1px dashed var(--muted-2);letter-spacing:.1em}
+.ev .date-chip{display:inline-flex;flex-direction:column;align-items:center;line-height:1;
+  background:rgba(0,0,0,.4);border:1px solid var(--line);border-radius:10px;padding:8px 12px;text-align:center}
+.ev .date-chip .mo{font-size:10px;letter-spacing:.16em;color:var(--orange);font-weight:800;text-transform:uppercase}
+.ev .date-chip .dy{font-family:'Anton',sans-serif;font-size:26px;color:var(--cream)}
+.ev .date-chip .wd{font-size:9px;color:var(--muted-2);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+.ev h3{font-family:'Anton',sans-serif;font-weight:400;font-size:34px;line-height:.96;margin:auto 0 4px;letter-spacing:.5px}
+.ev .ev-kind{font-size:12.5px;font-weight:600;color:var(--muted);letter-spacing:.04em}
+.ev-bottom{padding:16px 22px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-top:1px solid var(--line)}
+.ev-meta{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.ev-meta .loc{display:flex;align-items:center;gap:6px}
+.ev-cta{font-size:13px;font-weight:700;color:var(--orange);cursor:pointer;background:transparent;font-family:inherit;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+  border:1px solid rgba(255,92,0,.35);padding:9px 14px;border-radius:999px;transition:all .2s}
+.ev-cta:hover{background:var(--orange);color:#160a03}
+.ev[data-tier="free"] .ev-cta{color:var(--sand);border-color:rgba(232,177,90,.35)}
+.ev[data-tier="free"] .ev-cta:hover{background:var(--sand);color:#160a03}
+.empty-note{grid-column:1/-1;color:var(--muted-2);text-align:center;padding:40px;border:1px dashed var(--line);border-radius:var(--radius)}
+
+/* =========================================================
+   BAR NIGHTS @ THE 44
+   ========================================================= */
+#bar{background:linear-gradient(180deg,transparent,rgba(47,143,91,.04),transparent)}
+.bar-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:30px;align-items:stretch}
+.bar-anchor{position:relative;background:linear-gradient(155deg,var(--surface-2),var(--surface));
+  border:1px solid var(--line);border-radius:var(--radius);padding:34px;overflow:hidden;display:flex;flex-direction:column}
+.bar-anchor .mark44{font-family:'Anton',sans-serif;font-size:clamp(90px,16vw,150px);line-height:.8;
+  color:transparent;-webkit-text-stroke:2px var(--cactus);opacity:.85;margin:0 0 6px}
+.bar-anchor h3{font-family:'Anton',sans-serif;font-weight:400;font-size:30px;margin:0 0 10px;letter-spacing:.5px}
+.bar-anchor p{color:var(--muted);margin:0 0 18px;font-size:15px}
+.bar-anchor .drop{margin-top:auto;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--cream);
+  background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+.bar-anchor .drop .dot{width:9px;height:9px;border-radius:50%;background:var(--cactus);flex:none;
+  box-shadow:0 0 0 0 rgba(47,143,91,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,143,91,.55)}70%{box-shadow:0 0 0 12px rgba(47,143,91,0)}100%{box-shadow:0 0 0 0 rgba(47,143,91,0)}}
+.bar-list{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* =========================================================
+   HIGHLIGHTS
+   ========================================================= */
+#highlights{background:radial-gradient(100% 100% at 50% 0,rgba(255,92,0,.05),transparent 60%)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:8px 0 46px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;text-align:center}
+.stat .n{font-family:'Anton',sans-serif;font-size:clamp(40px,6vw,58px);color:var(--orange);line-height:1}
+.stat .l{font-size:12.5px;color:var(--muted);letter-spacing:.05em;margin-top:8px;font-weight:600}
+.recap{display:grid;grid-template-columns:1.4fr 1fr;gap:22px;align-items:stretch}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:118px;gap:12px}
+.gtile{border-radius:13px;border:1px solid var(--line);position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--surface-2),var(--surface));display:flex;align-items:center;justify-content:center}
+.gtile.tall{grid-row:span 2}
+.gtile span{font-size:11px;color:var(--muted-2);letter-spacing:.16em;text-transform:uppercase;text-align:center;padding:8px}
+.gtile::after{content:"";position:absolute;inset:0;background:
+  radial-gradient(120% 120% at 0 0,rgba(255,92,0,.12),transparent 55%)}
+.anchor-night{background:linear-gradient(155deg,#1b0f08,var(--surface));border:1px solid rgba(255,92,0,.3);
+  border-radius:var(--radius);padding:30px;display:flex;flex-direction:column;justify-content:center}
+.anchor-night .kicker{margin-bottom:14px}
+.anchor-night h3{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(34px,5vw,46px);margin:0 0 10px;letter-spacing:.5px}
+.anchor-night p{color:var(--muted);margin:0;font-size:15px}
+
+/* =========================================================
+   CTA BAND + FOOTER
+   ========================================================= */
+.band{padding:80px 0;text-align:center;position:relative;overflow:hidden}
+.band .glow{position:absolute;width:700px;height:400px;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(255,92,0,.22),transparent 65%);filter:blur(80px);pointer-events:none}
+.band h2{font-size:clamp(40px,8vw,92px);margin:0 0 8px;position:relative}
+.band p{color:var(--muted);margin:0 0 28px;position:relative}
+.band .hero-ctas{justify-content:center;position:relative}
+
+footer{border-top:1px solid var(--line);padding:54px 0 40px;background:var(--bg-2)}
+.foot-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+.foot-brand .brand{margin-bottom:14px}
+.motto{font-family:'Anton',sans-serif;font-weight:400;font-size:18px;letter-spacing:.5px;
+  max-width:24ch;line-height:1.1;color:var(--cream)}
+.motto b{color:var(--orange)}
+.foot-col h4{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2);margin:0 0 14px;font-weight:800}
+.foot-col a{display:block;color:var(--muted);font-size:14px;margin-bottom:9px;transition:color .2s}
+.foot-col a:hover{color:var(--orange)}
+.foot-bottom{border-top:1px solid var(--line);margin-top:38px;padding-top:22px;
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:var(--muted-2);font-size:12.5px}
+
+/* =========================================================
+   REVEAL ANIMATION
+   ========================================================= */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .scroll-cue span,.bar-anchor .drop .dot{animation:none}
+  html{scroll-behavior:auto}
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:38px}
+  .bar-layout{grid-template-columns:1fr}
+  .recap{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:720px){
+  body{font-size:16px}
+  .nav-links{position:absolute;top:100%;right:14px;left:14px;flex-direction:column;align-items:stretch;
+    gap:6px;background:rgba(17,13,10,.97);backdrop-filter:blur(14px);border:1px solid var(--line);
+    border-radius:14px;padding:14px;transform:translateY(-8px) scale(.98);opacity:0;pointer-events:none;
+    transition:all .25s var(--ease)}
+  .nav-links.open{transform:none;opacity:1;pointer-events:auto}
+  .nav-links a{padding:10px 8px;font-size:15px}
+  .nav-links .btn{justify-content:center;margin-top:4px}
+  .nav-toggle{display:inline-flex}
+  .bar-list{grid-template-columns:1fr}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .sec{padding:70px 0}
+  .foot-bottom{flex-direction:column}
+}
+
+/* =========================================================
+   TICKET MODAL (Posh inline checkout)
+   ========================================================= */
+.tk{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:24px}
+.tk.open{display:flex}
+.tk-backdrop{position:absolute;inset:0;background:rgba(6,4,3,.82);backdrop-filter:blur(7px)}
+.tk-dialog{position:relative;z-index:1;width:min(440px,100%);height:min(86vh,800px);
+  display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);
+  border-radius:18px;overflow:hidden;box-shadow:0 40px 120px -30px rgba(0,0,0,.92);
+  animation:tkin .3s var(--ease)}
+@keyframes tkin{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+.tk-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,var(--surface-2),var(--surface))}
+.tk-head-l{margin-right:auto;min-width:0}
+.tk-kicker{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--orange)}
+.tk-head h3{font-family:'Anton',sans-serif;font-weight:400;font-size:23px;letter-spacing:.5px;margin:2px 0 0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk-open{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;border:1px solid var(--line);
+  padding:8px 13px;border-radius:999px;transition:all .2s}
+.tk-open:hover{color:var(--orange);border-color:var(--orange)}
+.tk-close{flex:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:transparent;
+  color:var(--cream);font-size:15px;cursor:pointer;transition:all .2s;font-family:inherit}
+.tk-close:hover{background:var(--orange);color:#160a03;border-color:var(--orange)}
+.tk-body{position:relative;flex:1;min-height:0;background:var(--surface)}
+.tk-body iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+.tk-load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;
+  color:var(--muted);font-size:13px;font-weight:600;background:var(--surface)}
+.tk-load::before{content:"";width:16px;height:16px;border-radius:50%;border:2px solid var(--line);
+  border-top-color:var(--orange);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (max-width:560px){
+  .tk{padding:0}
+  .tk-dialog{width:100%;height:100%;max-height:100%;border-radius:0;border:0}
+}
+
+/* =========================================================
+   HERO DESERT SILHOUETTE
+   ========================================================= */
+.hero-desert{position:absolute;left:0;right:0;bottom:0;height:46%;max-height:300px;z-index:1;pointer-events:none;
+  opacity:.92;mask-image:linear-gradient(to right,transparent,#000 12%,#000 88%,transparent);
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 12%,#000 88%,transparent)}
+.hero-desert svg{width:100%;height:100%;display:block}
+
+/* =========================================================
+   THE LIST (lead capture)
+   ========================================================= */
+.list-sec{padding-top:30px}
+.list-card{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:42px;align-items:center;
+  background:linear-gradient(155deg,#1c0f08,var(--surface));border:1px solid rgba(255,92,0,.28);
+  border-radius:22px;padding:46px;overflow:hidden}
+.list-card::before{content:"";position:absolute;width:440px;height:440px;right:-130px;top:-170px;
+  background:radial-gradient(circle,rgba(255,92,0,.22),transparent 65%);filter:blur(55px);pointer-events:none}
+.list-copy{position:relative}
+.list-copy h2{font-size:clamp(34px,5vw,60px);margin:12px 0 14px}
+.list-copy p{color:var(--muted);margin:0 0 20px;max-width:34ch}
+.list-copy p b{color:var(--cream)}
+.list-perks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.list-perks li{position:relative;padding-left:26px;font-size:14.5px;color:var(--cream)}
+.list-perks li::before{content:"";position:absolute;left:0;top:6px;width:13px;height:13px;border-radius:50%;
+  background:radial-gradient(circle,var(--orange),#a33b00);box-shadow:0 0 10px -1px var(--orange)}
+.list-form{position:relative;display:flex;flex-direction:column;gap:14px}
+.list-form .field{display:flex;flex-direction:column;gap:6px}
+.list-form .field span{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.list-form .field em{color:var(--muted-2);font-style:normal;font-weight:500;text-transform:none;letter-spacing:0}
+.list-form input{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;color:var(--cream);font-family:inherit;font-size:16px;transition:border-color .2s,background .2s}
+.list-form input::placeholder{color:var(--muted-2)}
+.list-form input:focus{outline:none;border-color:var(--orange);background:rgba(0,0,0,.5)}
+.list-form button[type=submit]{margin-top:4px;justify-content:center;font-size:15px;padding:15px}
+.list-fine{font-size:11.5px;color:var(--muted-2);margin:2px 0 0;line-height:1.45}
+.list-msg{margin:0;padding:15px 16px;border-radius:12px;background:rgba(47,143,91,.14);
+  border:1px solid rgba(47,143,91,.42);color:#7fe0a8;font-weight:600;font-size:14.5px}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+@media (max-width:820px){ .list-card{grid-template-columns:1fr;gap:26px;padding:30px} }
+
+/* focus-visible polish */
+a:focus-visible,button:focus-visible,input:focus-visible,.chip:focus-visible,[data-tickets]:focus-visible{
+  outline:2px solid var(--orange);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="DartyForLife home">
+    <svg class="mark" viewBox="0 0 60 70" fill="none" aria-hidden="true">
+      <!-- saguaro cactus -->
+      <g fill="currentColor">
+        <rect x="25" y="14" width="10" height="56" rx="5"/>
+        <rect x="10" y="34" width="8" height="22" rx="4"/>
+        <rect x="10" y="30" width="8" height="14" rx="4"/>
+        <rect x="14" y="30" width="12" height="8" rx="4"/>
+        <rect x="42" y="26" width="8" height="26" rx="4"/>
+        <rect x="42" y="22" width="8" height="14" rx="4"/>
+        <rect x="34" y="22" width="12" height="8" rx="4"/>
+      </g>
+    </svg>
+    <span><b>DARTYFORLIFE</b><small>DESERT DRINKERS</small></span>
+  </a>
+  <nav class="nav-links" id="navLinks">
+    <a href="#events">Events</a>
+    <a href="#bar">Bar Nights</a>
+    <a href="#highlights">Highlights</a>
+    <a class="btn btn-primary" href="https://posh.vip/g/dartyforlife" target="_blank" rel="noopener" data-tickets="org">Get Tickets</a>
+  </nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+</header>
+
+<main id="top">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="hero-desert" aria-hidden="true">
+    <svg viewBox="0 0 1440 240" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="horizon" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff5c00" stop-opacity="0"/>
+          <stop offset="1" stop-color="#ff5c00" stop-opacity="0.18"/>
+        </linearGradient>
+        <g id="sg">
+          <rect x="-7"  y="-92" width="14" height="92" rx="7"/>
+          <rect x="-27" y="-60" width="12" height="42" rx="6"/>
+          <rect x="-27" y="-60" width="24" height="12" rx="6"/>
+          <rect x="15"  y="-48" width="12" height="36" rx="6"/>
+          <rect x="3"   y="-48" width="24" height="12" rx="6"/>
+        </g>
+      </defs>
+      <rect x="0" y="60" width="1440" height="180" fill="url(#horizon)"/>
+      <g fill="#070504">
+        <rect x="0" y="206" width="1440" height="40"/>
+        <use href="#sg" transform="translate(120 210) scale(1.05)"/>
+        <use href="#sg" transform="translate(305 210) scale(0.78)"/>
+        <use href="#sg" transform="translate(520 210) scale(1.35)"/>
+        <use href="#sg" transform="translate(770 210) scale(0.9)"/>
+        <use href="#sg" transform="translate(995 210) scale(1.15)"/>
+        <use href="#sg" transform="translate(1210 210) scale(0.72)"/>
+        <use href="#sg" transform="translate(1360 210) scale(1.0)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="kicker reveal">Phoenix · Arizona</span>
+        <h1 class="display reveal">DARTY<br><span class="line2">FORLIFE</span></h1>
+        <p class="tagline reveal"><b>Arizona's biggest weekend — every weekend.</b> Headlining desert majors, free sunrise raves, and weekly themed nights at The 44.</p>
+        <div class="hero-ctas reveal">
+          <a class="btn btn-primary" href="#events">See the lineup
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="https://posh.vip/g/dartyforlife" target="_blank" rel="noopener" data-tickets="org">Get tickets</a>
+        </div>
+        <div class="scroll-cue reveal"><span></span>Scroll for the nights</div>
+      </div>
+
+      <!-- next major countdown -->
+      <aside class="next-card reveal" id="nextCard" aria-live="polite">
+        <!-- filled by JS -->
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EVENTS ===================== -->
+<section class="sec" id="events">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">The Lineup</span>
+        <h2 class="display">Upcoming<br>events</h2>
+      </div>
+      <p>Headlining majors at Stratus, free desert pop-ups, and the nights everyone talks about Monday. Tickets move on Posh — don't sleep.</p>
+    </div>
+    <div class="chips reveal" id="chips">
+      <button class="chip active" data-filter="all">All nights</button>
+      <button class="chip" data-filter="major">Headlining majors</button>
+      <button class="chip" data-filter="free">Free entry</button>
+      <button class="chip" data-filter="bar">Bar nights</button>
+    </div>
+    <div class="event-grid" id="eventGrid"><!-- rendered by JS --></div>
+  </div>
+</section>
+
+<!-- ===================== BAR NIGHTS @ THE 44 ===================== -->
+<section class="sec" id="bar">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Every week · The 44</span>
+        <h2 class="display">Bar nights</h2>
+      </div>
+      <p>The ritual. A themed night, every week, at The 44 — simple, loud, and gone before you know it.</p>
+    </div>
+    <div class="bar-layout">
+      <div class="bar-anchor reveal">
+        <div class="mark44">44</div>
+        <h3>Themed every week</h3>
+        <p>Different theme, same chaos. The 44 runs a fresh themed night weekly — costumes encouraged, no cover talk here, just show up.</p>
+        <div class="drop"><span class="dot"></span><div>This week's theme drops <b>~24h before</b> — follow <a href="https://instagram.com/dartyforlife" target="_blank" rel="noopener" style="color:var(--orange)">@dartyforlife</a> so you don't miss it.</div></div>
+      </div>
+      <div class="bar-list" id="barList"><!-- rendered by JS --></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HIGHLIGHTS ===================== -->
+<section class="sec" id="highlights">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">The Highlights</span>
+        <h2 class="display">Last season<br>in numbers</h2>
+      </div>
+      <p>Two years deep, one desert, and a whole lot of nights that turned into stories.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat reveal"><div class="n" data-count="102" data-suffix="">0</div><div class="l">Nights thrown</div></div>
+      <div class="stat reveal"><div class="n" data-count="13948" data-suffix="">0</div><div class="l">Partygoers</div></div>
+      <div class="stat reveal"><div class="n" data-count="59740" data-suffix="">0</div><div class="l">Tickets viewed</div></div>
+      <div class="stat reveal"><div class="n" data-count="9.5" data-suffix="K" data-decimals="1">0</div><div class="l">Community strong</div></div>
+    </div>
+
+    <div class="recap">
+      <div class="gallery reveal" aria-hidden="true">
+        <div class="gtile tall"><span>Drop your<br>recap photos</span></div>
+        <div class="gtile"><span>Crowd shot</span></div>
+        <div class="gtile"><span>The drop</span></div>
+        <div class="gtile"><span>Theme reveal</span></div>
+        <div class="gtile tall"><span>Sunrise<br>desert</span></div>
+        <div class="gtile"><span>Afters</span></div>
+      </div>
+      <div class="anchor-night reveal">
+        <span class="kicker">Revenue anchor</span>
+        <h3>Fear Forest</h3>
+        <p>Our October haunt is the biggest night of the year — the desert's answer to Halloween, and the one people plan their whole month around. Back this fall.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== THE LIST (lead capture) ===================== -->
+<section class="sec list-sec" id="list">
+  <div class="container">
+    <div class="list-card reveal">
+      <div class="list-copy">
+        <span class="kicker">The List</span>
+        <h2 class="display">Get in before<br>everyone else</h2>
+        <p>Drops, free-event locations, and themes hit the list <b>first</b> — before they ever touch the timeline. No spam. Just the next move.</p>
+        <ul class="list-perks">
+          <li>First crack at major-event presales</li>
+          <li>Secret free-event locations, early</li>
+          <li>This week's The 44 theme, texted to you</li>
+        </ul>
+      </div>
+      <form class="list-form" name="list" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="listForm">
+        <input type="hidden" name="form-name" value="list" />
+        <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <label class="field"><span>Email</span><input type="email" name="email" required placeholder="you@email.com" autocomplete="email" /></label>
+        <label class="field"><span>Phone <em>(optional — for text drops)</em></span><input type="tel" name="phone" placeholder="(602) 555-0123" autocomplete="tel" /></label>
+        <button class="btn btn-primary" type="submit">Get on the list
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <p class="list-msg" id="listMsg" role="status" hidden>🌵 You're on the list. See you in the desert.</p>
+        <p class="list-fine">By joining you agree to receive texts/emails from DartyForLife. Reply STOP anytime.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA BAND ===================== -->
+<section class="band">
+  <div class="glow"></div>
+  <div class="container">
+    <span class="kicker reveal" style="justify-content:center">Don't miss the next one</span>
+    <h2 class="display reveal">The desert<br>is calling</h2>
+    <p class="reveal">Tickets to the majors sell out. Free events need an RSVP. Lock yours in.</p>
+    <div class="hero-ctas reveal">
+      <a class="btn btn-primary" href="https://posh.vip/g/dartyforlife" target="_blank" rel="noopener" data-tickets="org">Get tickets on Posh</a>
+      <a class="btn btn-ghost" href="https://instagram.com/dartyforlife" target="_blank" rel="noopener">Follow @dartyforlife</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top">
+          <svg class="mark" viewBox="0 0 60 70" fill="none" aria-hidden="true"><g fill="currentColor">
+            <rect x="25" y="14" width="10" height="56" rx="5"/><rect x="10" y="34" width="8" height="22" rx="4"/>
+            <rect x="10" y="30" width="8" height="14" rx="4"/><rect x="14" y="30" width="12" height="8" rx="4"/>
+            <rect x="42" y="26" width="8" height="26" rx="4"/><rect x="42" y="22" width="8" height="14" rx="4"/>
+            <rect x="34" y="22" width="12" height="8" rx="4"/></g></svg>
+          <span><b>DARTYFORLIFE</b><small>DESERT DRINKERS</small></span>
+        </a>
+        <p class="motto">YOU WILL ALWAYS FEEL GOOD IF YOUR <b>INTENTIONS ARE GOOD</b>.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Nights</h4>
+        <a href="#events">Headlining majors</a>
+        <a href="#events">Free events</a>
+        <a href="#bar">Bar nights @ The 44</a>
+        <a href="#highlights">Highlights</a>
+      </div>
+      <div class="foot-col">
+        <h4>Get in</h4>
+        <a href="https://posh.vip/g/dartyforlife" target="_blank" rel="noopener">Tickets · Posh</a>
+        <a href="https://instagram.com/dartyforlife" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com/@dartyforlife" target="_blank" rel="noopener">TikTok</a>
+        <a href="mailto:contact@dartyforlife.com">contact@dartyforlife.com</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> DartyForLife · Desert Drinkers · Phoenix, AZ</span>
+      <span>18+ to enter · 21+ to drink · Please party responsibly. Good intentions only.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== TICKET MODAL (Posh inline checkout) ===================== -->
+<div class="tk" id="tkModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Buy tickets on Posh">
+  <div class="tk-backdrop" data-close></div>
+  <div class="tk-dialog" role="document">
+    <div class="tk-head">
+      <div class="tk-head-l">
+        <span class="tk-kicker">Posh · secure checkout</span>
+        <h3 id="tkTitle">Tickets</h3>
+      </div>
+      <a class="tk-open" id="tkOpen" href="https://posh.vip/g/dartyforlife" target="_blank" rel="noopener">Open ↗</a>
+      <button class="tk-close" data-close aria-label="Close checkout">✕</button>
+    </div>
+    <div class="tk-body" id="tkBody"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   EVENT DATA  —  EDIT HERE
+   ------------------------------------------------------------
+   tier: "major" (headlining/paid) | "free" (free entry/RSVP) | "bar" (The 44)
+   date: ISO "YYYY-MM-DD"  ·  Past dates auto-hide from "upcoming".
+   venue/city: where it is (use "Revealed soon" if still secret).
+   cta:  { label }   ·   posh: the event's Posh slug   ·   sample:true → dashed pill
+   ------------------------------------------------------------
+   POSH INTEGRATION:
+   • Set  posh: "your-slug"  = the part after posh.vip/e/  (copy it from your
+     Posh dashboard → Event → Share). Then "Get tickets" opens THAT event's
+     Posh checkout right inside this site. Leave it ""  → opens your full
+     posh.vip/g/dartyforlife storefront instead. Don't guess slugs.
+   • Or paste the exact iframe from Event → Settings → Embed into  poshEmbed: `...`
+   ============================================================ */
+const EVENTS = [
+  /* ---- HEADLINING MAJORS (from your Summer 2026 calendar) ---- */
+  { id:"mirage", name:"MIRAGE", tier:"major", date:"2026-06-20", kind:"Summer brand test",
+    venue:"Stratus Event Center", city:"Phoenix, AZ", posh:"", cta:{label:"Get tickets"} },
+  { id:"meltdown", name:"MELTDOWN", tier:"major", date:"2026-08-01", kind:"Mid-summer major",
+    venue:"Stratus Event Center", city:"Phoenix, AZ", posh:"", cta:{label:"Get tickets"} },
+  { id:"reunion", name:"REUNION", tier:"major", date:"2026-08-22", kind:"Student-arrival warmup",
+    venue:"Stratus Event Center", city:"Phoenix, AZ", posh:"", cta:{label:"Get tickets"} },
+  { id:"phoenix-rising", name:"PHOENIX RISING", tier:"major", date:"2026-09-04", kind:"Season opener",
+    venue:"Stratus Event Center", city:"Phoenix, AZ", posh:"", cta:{label:"Save the date"} },
+
+  /* ---- FREE EVENTS (top-of-funnel — also ticketed/RSVP'd on Posh) ---- */
+  { id:"dawn-patrol", name:"DAWN PATROL", tier:"free", date:"2026-07-12", kind:"Sunrise desert rave",
+    venue:"Desert location · revealed soon", city:"Sonoran Desert", posh:"", cta:{label:"Free · RSVP"} },
+  { id:"poolhouse-2", name:"POOL HOUSE Vol. 2", tier:"free", date:"2026-08-09", kind:"Free pool party",
+    venue:"Revealed 14 days out", city:"Scottsdale, AZ", posh:"", cta:{label:"Free · RSVP"} },
+
+  /* ---- BAR NIGHTS @ THE 44 ----
+     These two are SAMPLES so you can see the layout. Replace the
+     name/date/kind with your real weekly themes, or delete both to
+     show only the "follow @dartyforlife for the drop" state. */
+  { id:"bar-1", name:"THEME TBA", tier:"bar", date:"", kind:"Weekly themed night", sample:true,
+    venue:"The 44", city:"Phoenix, AZ", cta:{label:"Details on IG", href:"https://instagram.com/dartyforlife"} },
+  { id:"bar-2", name:"THEME TBA", tier:"bar", date:"", kind:"Weekly themed night", sample:true,
+    venue:"The 44", city:"Phoenix, AZ", cta:{label:"Details on IG", href:"https://instagram.com/dartyforlife"} },
+];
+
+const EVENTS_BY_ID = Object.fromEntries(EVENTS.map(e => [e.id, e]));
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+const WK = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+const pillClass = {major:"pill-major", free:"pill-free", bar:"pill-bar"};
+const pillLabel = {major:"Headlining", free:"Free entry", bar:"The 44"};
+
+function startOfToday(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
+function parseDate(s){ if(!s) return null; const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); }
+function isUpcoming(ev){ if(ev.tier==="bar") return true; const d=parseDate(ev.date); return d && d>=startOfToday(); }
+
+function eventCardFull(ev){
+  const d = parseDate(ev.date);
+  const dateChip = d ? `
+    <div class="date-chip">
+      <span class="mo">${MONTHS[d.getMonth()]}</span>
+      <span class="dy">${d.getDate()}</span>
+      <span class="wd">${WK[d.getDay()]}</span>
+    </div>` : ``;
+  const rightSlot = ev.sample
+      ? `<span class="pill pill-sample">Sample · edit</span>`
+      : dateChip;
+  return `
+  <article class="ev" data-tier="${ev.tier}">
+    <div class="ev-top">
+      <div class="ev-badges">
+        <span class="pill ${pillClass[ev.tier]}">${pillLabel[ev.tier]}</span>
+        ${rightSlot}
+      </div>
+      <h3>${ev.name}</h3>
+      <div class="ev-kind">${ev.kind||""}</div>
+    </div>
+    <div class="ev-bottom">
+      <div class="ev-meta">
+        <span class="loc">📍 ${ev.venue||""}</span>
+        <span>${ev.city||""}</span>
+      </div>
+      ${ev.tier==="bar"
+        ? `<a class="ev-cta" href="${ev.cta.href}" target="_blank" rel="noopener">${ev.cta.label}
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>`
+        : `<button class="ev-cta" data-tickets="ev" data-ev-id="${ev.id}" aria-label="Get tickets for ${ev.name}">${ev.cta.label}
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>`}
+    </div>
+  </article>`;
+}
+
+const grid = document.getElementById("eventGrid");
+const barList = document.getElementById("barList");
+
+function render(filter="all"){
+  const upcoming = EVENTS.filter(isUpcoming);
+  // main grid: majors + free (and bar if explicitly filtered)
+  let list = upcoming.filter(e => e.tier!=="bar");
+  if(filter!=="all") list = upcoming.filter(e => e.tier===filter);
+  // sort by date (undated last)
+  list.sort((a,b)=>{
+    const da=parseDate(a.date), db=parseDate(b.date);
+    if(!da) return 1; if(!db) return -1; return da-db;
+  });
+  grid.innerHTML = list.length
+    ? list.map(eventCardFull).join("")
+    : `<div class="empty-note">No nights match that filter yet — check back soon.</div>`;
+  attachReveal(grid.querySelectorAll(".ev"));
+}
+
+function renderBar(){
+  const bar = EVENTS.filter(e => e.tier==="bar");
+  barList.innerHTML = bar.length
+    ? bar.map(eventCardFull).join("")
+    : `<div class="empty-note">This week's theme drops 24h out — follow @dartyforlife.</div>`;
+  attachReveal(barList.querySelectorAll(".ev"));
+}
+
+/* chips */
+document.getElementById("chips").addEventListener("click", e=>{
+  const btn = e.target.closest(".chip"); if(!btn) return;
+  document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
+  btn.classList.add("active");
+  render(btn.dataset.filter);
+});
+
+/* ============================================================
+   NEXT-MAJOR COUNTDOWN
+   ============================================================ */
+function nextMajor(){
+  const fut = EVENTS.filter(e=>e.tier==="major" && isUpcoming(e))
+                    .sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+  return fut[0] || null;
+}
+let cdTimer=null;
+function renderNextCard(){
+  const card = document.getElementById("nextCard");
+  const ev = nextMajor();
+  if(!ev){ card.style.display="none"; return; }
+  const d = parseDate(ev.date);
+  card.innerHTML = `
+    <span class="tag">▲ Next headliner</span>
+    <div class="nm-name">${ev.name}</div>
+    <div class="nm-meta"><span><b>${WK[d.getDay()]}</b> ${MONTHS[d.getMonth()]} ${d.getDate()}</span><span>${ev.venue}</span></div>
+    <div class="countdown" id="cd">
+      ${["Days","Hours","Mins","Secs"].map(l=>`<div class="cd-cell"><div class="num" data-k="${l}">--</div><div class="lab">${l}</div></div>`).join("")}
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center" data-tickets="ev" data-ev-id="${ev.id}">${ev.cta.label}</button>`;
+  // countdown to 9pm local of the event day (the night begins)
+  const target = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 21, 0, 0).getTime();
+  const cells = card.querySelectorAll(".num");
+  const set = (k,v)=>{ cells.forEach(c=>{ if(c.dataset.k===k) c.textContent=String(v).padStart(2,"0"); }); };
+  function tick(){
+    let diff = Math.max(0, target - Date.now());
+    const day=86400000,hr=3600000,mn=60000;
+    const dd=Math.floor(diff/day); diff-=dd*day;
+    const hh=Math.floor(diff/hr);  diff-=hh*hr;
+    const mm=Math.floor(diff/mn);  diff-=mm*mn;
+    const ss=Math.floor(diff/1000);
+    set("Days",dd); set("Hours",hh); set("Mins",mm); set("Secs",ss);
+  }
+  tick(); clearInterval(cdTimer); cdTimer=setInterval(tick,1000);
+}
+
+/* ============================================================
+   SCROLL REVEAL + COUNT-UP
+   ============================================================ */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target);
+      if(en.target.dataset.count!==undefined) countUp(en.target);
+      const counters = en.target.querySelectorAll?.("[data-count]");
+      counters && counters.forEach(c=>countUp(c));
+    }
+  });
+},{threshold:.12});
+
+let revealList=[];
+function attachReveal(nodes){ nodes.forEach((n,i)=>{ n.classList.add("reveal"); n.style.transitionDelay=(i%4*60)+"ms"; io.observe(n); }); }
+document.querySelectorAll(".reveal").forEach(n=>io.observe(n));
+
+function countUp(el){
+  if(el._done) return; el._done=true;
+  const target = parseFloat(el.dataset.count);
+  const dec = parseInt(el.dataset.decimals||"0",10);
+  const suffix = el.dataset.suffix||"";
+  const dur=1400, t0=performance.now();
+  function step(t){
+    const p=Math.min(1,(t-t0)/dur);
+    const e=1-Math.pow(1-p,3); // easeOutCubic
+    const val=target*e;
+    el.textContent=(dec? val.toFixed(dec): Math.round(val).toLocaleString("en-US"))+suffix;
+    if(p<1) requestAnimationFrame(step); else
+      el.textContent=(dec? target.toFixed(dec): Math.round(target).toLocaleString("en-US"))+suffix;
+  }
+  requestAnimationFrame(step);
+}
+
+/* ============================================================
+   NAV behaviour
+   ============================================================ */
+const nav=document.getElementById("nav");
+addEventListener("scroll",()=>nav.classList.toggle("scrolled",scrollY>30),{passive:true});
+const navLinks=document.getElementById("navLinks"), navToggle=document.getElementById("navToggle");
+navToggle.addEventListener("click",()=>{
+  const open=navLinks.classList.toggle("open");
+  navToggle.setAttribute("aria-expanded",open);
+});
+navLinks.addEventListener("click",e=>{ if(e.target.tagName==="A") navLinks.classList.remove("open"); });
+
+document.getElementById("year").textContent=new Date().getFullYear();
+
+/* ============================================================
+   POSH TICKETS — inline checkout modal
+   ============================================================ */
+const POSH_ORG_URL = "https://posh.vip/g/dartyforlife";
+const poshUrl = ev => (ev && ev.posh) ? `https://posh.vip/e/${ev.posh}` : POSH_ORG_URL;
+
+const tkModal = document.getElementById("tkModal");
+const tkBody  = document.getElementById("tkBody");
+const tkTitle = document.getElementById("tkTitle");
+const tkOpen  = document.getElementById("tkOpen");
+let tkReturnTo = null;
+
+function openTickets(ev){
+  const url = poshUrl(ev);
+  tkTitle.textContent = ev ? ev.name : "All events";
+  tkOpen.href = url;
+  if(ev && ev.poshEmbed){
+    tkBody.innerHTML = ev.poshEmbed;                 // exact dashboard embed, if provided
+  } else {
+    tkBody.innerHTML = `<div class="tk-load">Loading secure checkout…</div>`;
+    const f = document.createElement("iframe");
+    f.title = "Posh checkout";
+    f.setAttribute("allow", "payment *; clipboard-write; web-share; accelerometer; encrypted-media");
+    f.addEventListener("load", () => { const l = tkBody.querySelector(".tk-load"); if(l) l.remove(); });
+    f.src = url;
+    tkBody.appendChild(f);
+  }
+  tkModal.classList.add("open");
+  tkModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  tkReturnTo = document.activeElement;
+  tkModal.querySelector(".tk-close").focus();
+}
+function closeTickets(){
+  tkModal.classList.remove("open");
+  tkModal.setAttribute("aria-hidden", "true");
+  tkBody.innerHTML = "";                             // unload iframe → stops Posh requests
+  document.body.style.overflow = "";
+  if(tkReturnTo && tkReturnTo.focus) tkReturnTo.focus();
+}
+tkModal.addEventListener("click", e => { if(e.target.hasAttribute("data-close")) closeTickets(); });
+addEventListener("keydown", e => { if(e.key === "Escape" && tkModal.classList.contains("open")) closeTickets(); });
+
+/* one handler powers every ticket trigger: nav, hero, event cards, countdown, band.
+   • Event WITH a Posh slug/embed  → inline checkout modal (Posh event page iframes cleanly).
+   • Storefront / not-yet-slugged   → open posh.vip/g/dartyforlife in a new tab
+     (the group page is client-rendered and doesn't embed reliably). */
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-tickets]");
+  if(!t) return;
+  e.preventDefault();
+  const id = t.getAttribute("data-ev-id");
+  const ev = id ? EVENTS_BY_ID[id] : null;
+  if(ev && (ev.posh || ev.poshEmbed)) openTickets(ev);          // inline
+  else window.open(POSH_ORG_URL, "_blank", "noopener");         // storefront → new tab
+});
+
+/* ============================================================
+   THE LIST — lead capture (auto-records on Netlify Forms once deployed)
+   ============================================================ */
+const listForm = document.getElementById("listForm");
+if(listForm){
+  listForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const body = new URLSearchParams(new FormData(listForm)).toString();
+    // On Netlify this POST is captured as a form submission. Local preview has no
+    // endpoint, so it 404s — we ignore that and still confirm to the user.
+    fetch("/", { method:"POST", headers:{ "Content-Type":"application/x-www-form-urlencoded" }, body }).catch(()=>{});
+    listForm.querySelectorAll(".field, button[type=submit], .list-fine").forEach(el => el.style.display = "none");
+    document.getElementById("listMsg").hidden = false;
+  });
+}
+
+/* boot */
+render("all");
+renderBar();
+renderNextCard();
+</script>
+</body>
+</html>

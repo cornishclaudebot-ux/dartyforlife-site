@@ -1,0 +1,37 @@
+# Netlify config — static site, no build step.
+# Connect this repo at app.netlify.com → "Add new site" → "Import from GitHub".
+
+[build]
+  publish = "."
+  command = ""
+
+# HTML: always revalidate so edits go live immediately.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Brand assets change rarely → cache a week.
+[[headers]]
+  for = "/og.png"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+[[headers]]
+  for = "/favicon.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Photos/videos rarely change → cache a month.
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# Safe security headers (do NOT add a strict CSP — it would break the
+# embedded Posh checkout iframe and Google Fonts).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

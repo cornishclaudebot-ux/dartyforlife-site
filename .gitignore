@@ -1,0 +1,13 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Deploy / build artifacts
+*.zip
+.netlify/
+node_modules/
+
+# Editors
+.vscode/
+.idea/
+*.swp
