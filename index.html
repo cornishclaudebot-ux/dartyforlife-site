@@ -686,6 +686,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,.chip:focus-visible,[da
 </div>
 
 <script>
+/* Hero video — serve the crisp 1280 file to larger screens, keep phones on the light file */
+(function(){
+  var hv = document.querySelector('.hero-video');
+  if(hv && window.matchMedia('(min-width:860px)').matches){
+    var s = hv.querySelector('source');
+    s.setAttribute('src', 'media/hero/hero-hq.mp4');
+    hv.load();
+    var pr = hv.play(); if(pr && pr.catch) pr.catch(function(){});
+  }
+})();
+
 /* ============================================================
    EVENT DATA  —  EDIT HERE
    ------------------------------------------------------------
