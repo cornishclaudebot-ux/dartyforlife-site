@@ -122,6 +122,8 @@ section{position:relative}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px -8px rgba(255,92,0,.85)}
 .btn-ghost{background:transparent;color:var(--cream);border:1px solid var(--line)}
 .btn-ghost:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px)}
+.btn-ghost.glow{border-color:rgba(255,92,0,.5);box-shadow:0 6px 26px -6px rgba(255,92,0,.7)}
+.btn-ghost.glow:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px);box-shadow:0 12px 36px -8px rgba(255,92,0,.9)}
 .nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:10px;
   width:42px;height:38px;color:var(--cream);cursor:pointer;align-items:center;justify-content:center}
 
@@ -578,9 +580,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,.chip:focus-visible,[da
       <div class="list-copy">
         <span class="kicker">The List</span>
         <h2 class="display">Get in before<br>everyone else</h2>
-        <p>Drops, free-event locations, and themes hit the list <b>first</b> — before they ever touch the timeline. No spam. Just the next move.</p>
+        <p>Exclusive drops, free-event locations, and themes hit the list <b>first</b>, before they ever touch the timeline. No spam. Just the next move.</p>
         <ul class="list-perks">
           <li>First crack at major-event presales</li>
+          <li>First dibs on exclusive drops</li>
           <li>Secret free-event locations, early</li>
           <li>This week's The 44 theme, texted to you</li>
         </ul>
@@ -609,7 +612,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,.chip:focus-visible,[da
     <p class="reveal">Tickets to the majors sell out. Free events need an RSVP. Lock yours in.</p>
     <div class="hero-ctas reveal">
       <a class="btn btn-primary" href="https://posh.vip/g/dartyforlife" target="_blank" rel="noopener" data-tickets="org">Get tickets on Posh</a>
-      <a class="btn btn-ghost" href="https://instagram.com/dartyforlife" target="_blank" rel="noopener">Follow @dartyforlife</a>
+      <a class="btn btn-ghost glow" href="https://instagram.com/dartyforlife" target="_blank" rel="noopener">Follow @dartyforlife</a>
     </div>
   </div>
 </section>
