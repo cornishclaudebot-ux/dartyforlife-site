@@ -131,6 +131,15 @@ section{position:relative}
    HERO
    ========================================================= */
 .hero{min-height:100svh;display:flex;align-items:center;padding:120px 0 70px;overflow:hidden}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+.hero-veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(11,9,7,.9) 0%, rgba(11,9,7,.74) 44%, rgba(11,9,7,.46) 100%),
+    linear-gradient(180deg, rgba(11,9,7,.5), rgba(11,9,7,.12) 30%, rgba(11,9,7,.88))}
+@media (prefers-reduced-motion:reduce){
+  .hero-video{display:none}
+  .hero{background:#0b0907 center/cover no-repeat url('media/hero/hero-poster.jpg')}
+}
 .hero .glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
 .glow-1{width:620px;height:620px;top:-180px;right:-120px;
   background:radial-gradient(circle,rgba(255,92,0,.42),transparent 65%)}
@@ -442,6 +451,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,.chip:focus-visible,[da
 
 <!-- ===================== HERO ===================== -->
 <section class="hero">
+  <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="media/hero/hero-poster.jpg" aria-hidden="true">
+    <source src="media/hero/hero.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-veil" aria-hidden="true"></div>
   <div class="glow glow-1"></div>
   <div class="glow glow-2"></div>
   <div class="hero-desert" aria-hidden="true">
