@@ -304,7 +304,8 @@ footer{border-top:1px solid var(--line);padding:54px 0 40px;background:var(--bg-
 /* =========================================================
    REVEAL ANIMATION
    ========================================================= */
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}
@@ -497,7 +498,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,.chip:focus-visible,[da
       </div>
 
       <!-- next major countdown -->
-      <aside class="next-card reveal" id="nextCard" aria-live="polite">
+      <aside class="next-card reveal" id="nextCard">
         <!-- filled by JS -->
       </aside>
     </div>
@@ -679,6 +680,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,.chip:focus-visible,[da
 </div>
 
 <script>
+/* Gate all reveal-hiding on this class. It's added only if this script parses and
+   runs, so if the script ever fails (old browser, blocked JS), content stays visible
+   instead of a blank page. */
+document.documentElement.classList.add('js');
 /* Hero video — serve the crisp 1280 file to larger screens, keep phones on the light file */
 (function(){
   var hv = document.querySelector('.hero-video');
@@ -723,13 +728,11 @@ const EVENTS = [
     venue:"Revealed 14 days out", city:"Scottsdale, AZ", posh:"", cta:{label:"Free · RSVP"} },
 
   /* ---- BAR NIGHTS @ THE 44 ----
-     These two are SAMPLES so you can see the layout. Replace the
-     name/date/kind with your real weekly themes, or delete both to
-     show only the "follow @dartyforlife for the drop" state. */
-  { id:"bar-1", name:"THEME TBA", tier:"bar", date:"", kind:"Weekly themed night", sample:true,
-    venue:"The 44", city:"Phoenix, AZ", cta:{label:"Details on IG", href:"https://instagram.com/dartyforlife"} },
-  { id:"bar-2", name:"THEME TBA", tier:"bar", date:"", kind:"Weekly themed night", sample:true,
-    venue:"The 44", city:"Phoenix, AZ", cta:{label:"Details on IG", href:"https://instagram.com/dartyforlife"} },
+     Add real weekly themes here as objects like the ones above, e.g.
+     { id:"bar-1", name:"YOUR THEME", tier:"bar", date:"2026-07-11", kind:"Weekly themed night",
+       venue:"The 44", city:"Glendale, AZ", cta:{label:"Details on IG", href:"https://instagram.com/dartyforlife"} }.
+     While this list has no bar entries, the section auto-shows the
+     "follow @dartyforlife for the drop" state — no placeholder cards. */
 ];
 
 const EVENTS_BY_ID = Object.fromEntries(EVENTS.map(e => [e.id, e]));
@@ -834,7 +837,8 @@ function renderNextCard(){
     <span class="tag">▲ Next headliner</span>
     <div class="nm-name">${ev.name}</div>
     <div class="nm-meta"><span><b>${WK[d.getDay()]}</b> ${MONTHS[d.getMonth()]} ${d.getDate()}</span><span>${ev.venue}</span></div>
-    <div class="countdown" id="cd">
+    <span class="sr-only">${ev.name}, ${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}, doors 9 PM at ${ev.venue}.</span>
+    <div class="countdown" id="cd" aria-hidden="true">
       ${["Days","Hours","Mins","Secs"].map(l=>`<div class="cd-cell"><div class="num" data-k="${l}">--</div><div class="lab">${l}</div></div>`).join("")}
     </div>
     <button class="btn btn-primary" style="width:100%;justify-content:center" data-tickets="ev" data-ev-id="${ev.id}">${ev.cta.label}</button>`;
@@ -861,7 +865,7 @@ const io = new IntersectionObserver((entries)=>{
   entries.forEach(en=>{
     if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target);
       if(en.target.dataset.count!==undefined) countUp(en.target);
-      const counters = en.target.querySelectorAll?.("[data-count]");
+      const counters = en.target.querySelectorAll && en.target.querySelectorAll("[data-count]");
       counters && counters.forEach(c=>countUp(c));
     }
   });
@@ -952,11 +956,21 @@ addEventListener("keydown", e => { if(e.key === "Escape" && tkModal.classList.co
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-tickets]");
   if(!t) return;
-  e.preventDefault();
   const id = t.getAttribute("data-ev-id");
   const ev = id ? EVENTS_BY_ID[id] : null;
-  if(ev && (ev.posh || ev.poshEmbed)) openTickets(ev);          // inline
-  else window.open(POSH_ORG_URL, "_blank", "noopener");         // storefront → new tab
+  if(ev && (ev.posh || ev.poshEmbed)){                          // inline checkout modal
+    e.preventDefault();
+    openTickets(ev);
+    return;
+  }
+  // No slug yet. If this trigger is a real <a>, let the browser navigate natively —
+  // window.open() is silently swallowed inside Instagram/TikTok in-app browsers,
+  // which is where most of our traffic taps. The anchor's target=_blank handles the tab.
+  if(t.tagName === "A" && t.getAttribute("href")) return;
+  // Non-anchor trigger (a <button>): open the storefront with a hard fallback.
+  e.preventDefault();
+  const w = window.open(POSH_ORG_URL, "_blank", "noopener");
+  if(!w) location.href = POSH_ORG_URL;
 });
 
 /* ============================================================
@@ -964,14 +978,28 @@ document.addEventListener("click", e => {
    ============================================================ */
 const listForm = document.getElementById("listForm");
 if(listForm){
+  const listMsg = document.getElementById("listMsg");
+  const listBtn = listForm.querySelector("button[type=submit]");
   listForm.addEventListener("submit", e => {
     e.preventDefault();
     const body = new URLSearchParams(new FormData(listForm)).toString();
-    // On Netlify this POST is captured as a form submission. Local preview has no
-    // endpoint, so it 404s — we ignore that and still confirm to the user.
-    fetch("/", { method:"POST", headers:{ "Content-Type":"application/x-www-form-urlencoded" }, body }).catch(()=>{});
-    listForm.querySelectorAll(".field, button[type=submit], .list-fine").forEach(el => el.style.display = "none");
-    document.getElementById("listMsg").hidden = false;
+    if(listBtn){ listBtn.disabled = true; listBtn.dataset.label = listBtn.textContent; listBtn.textContent = "Adding you…"; }
+    function reset(){ if(listBtn){ listBtn.disabled = false; listBtn.textContent = listBtn.dataset.label || "Join the list"; } }
+    function ok(){
+      listForm.querySelectorAll(".field, button[type=submit], .list-fine").forEach(el => el.style.display = "none");
+      listMsg.hidden = false;
+    }
+    function fail(){
+      reset();
+      listMsg.hidden = false;
+      listMsg.textContent = "Couldn't reach us just now — check your signal and tap again, or DM @dartyforlife.";
+      listMsg.style.color = "var(--sand)";
+    }
+    // Only confirm once Netlify actually accepts the submission. A failed POST
+    // (local preview, offline) must not fake success and silently drop the lead.
+    fetch("/", { method:"POST", headers:{ "Content-Type":"application/x-www-form-urlencoded" }, body })
+      .then(r => { if(r && r.ok) ok(); else fail(); })
+      .catch(fail);
   });
 }
 
@@ -980,5 +1008,19 @@ render("all");
 renderBar();
 renderNextCard();
 </script>
+
+<!-- OpenClaw chat assistant. After deploying ~/openclaw to Netlify, paste that
+     endpoint below and the bubble goes live. -->
+<script>
+  window.OPENCLAW = {
+    endpoint: "PASTE_YOUR_OPENCLAW_ENDPOINT_HERE",
+    brand:    "darty",
+    name:     "DartyForLife",
+    site:     "dartyforlife.com",
+    accent:   "#ff5c00",
+    greeting: "Yo! Ask me anything about DartyForLife events and tickets 🌵"
+  };
+</script>
+<script src="openclaw.js"></script>
 </body>
 </html>
