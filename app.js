@@ -510,7 +510,7 @@ applyInterest();
    RELIVE THE NIGHTS — lazy muted loops (mobile-safe)
    ============================================================ */
 (function(){
-  const reels=document.querySelectorAll(".reel video, .acard video, .ccard video");
+  const reels=document.querySelectorAll(".reel video, .acard video");
   if(!reels.length) return;
   if(matchMedia("(prefers-reduced-motion:reduce)").matches) return;
   const tryPlay=v=>{ const p=v.play(); if(p&&p.catch)p.catch(()=>{}); };
