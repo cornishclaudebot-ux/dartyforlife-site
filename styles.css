@@ -359,6 +359,10 @@ section{position:relative}
 .ev:hover .ev-art{transform:scale(1.04)}
 .ev .ev-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,5,9,.05) 30%,rgba(7,5,9,.62) 68%,rgba(7,5,9,.92) 100%)}
 .ev .ev-top{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+/* drafts: Coming Soon watermark, white at 50%, centered on the card */
+.ev .ev-soon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;
+  font-family:'Anton';font-weight:400;font-size:clamp(1.7rem,4.4vw,2.4rem);letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);text-align:center}
 .pill{font-size:.64rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:6px 11px;border-radius:100px;white-space:nowrap;backdrop-filter:blur(6px)}
 .pill-major{background:var(--magenta);color:#14040f}
 .pill-bar{background:var(--bars);color:#fff}

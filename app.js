@@ -200,10 +200,13 @@ function eventCard(ev){
   const cta = ev.url
     ? `<button class="ev-cta" data-tickets="ev" data-ev-url="${esc(ev.url)}" data-ev-title="${esc(ev.title)}" aria-label="Get tickets for ${esc(ev.title)}">${ev.free?"Free · RSVP":"Get Tickets"} ${IC.arrow}</button>`
     : `<button class="ev-cta" data-notify="${esc(ev.title)}" aria-label="Get notified about ${esc(ev.title)}">Get Notified ${IC.arrow}</button>`;
+  // announced but not on sale -> a soft Coming Soon watermark in the middle of the card
+  const soon = ev.url ? "" : `<div class="ev-soon" aria-hidden="true">Coming Soon</div>`;
   return `
   <article class="ev reveal${ev.flyer?"":" noart"}" data-series="${s}">
     <div class="ev-art" ${art}></div>
     <div class="ev-veil"></div>
+    ${soon}
     <div class="ev-top">
       ${pill}
       ${d?`<div class="date-chip"><span class="mo">${MONTHS[d.getMonth()]}</span><span class="dy">${d.getDate()}</span><span class="wd">${WK[d.getDay()]}</span></div>`:""}
