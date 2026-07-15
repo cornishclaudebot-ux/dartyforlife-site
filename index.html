@@ -142,10 +142,9 @@
       <div class="reel"><video muted loop playsinline preload="none" data-src="media/highlights/christmas.mp4?v=2" poster="media/highlights/christmas-poster.jpg?v=2"></video><div class="reel-veil"></div><div class="reel-name">Christmas</div></div>
     </div>
     <div class="stats reveal">
-      <div class="stat"><div class="n" data-count="102">0</div><div class="l">Nights thrown</div></div>
-      <div class="stat"><div class="n" data-count="13948">0</div><div class="l">Partygoers</div></div>
-      <div class="stat"><div class="n" data-count="59740">0</div><div class="l">Tickets viewed</div></div>
-      <div class="stat"><div class="n" data-count="9.5" data-suffix="K" data-decimals="1">0</div><div class="l">Community strong</div></div>
+      <div class="stat"><div class="n" id="statNights" data-count="104">0</div><div class="l">Nights thrown</div></div>
+      <div class="stat"><div class="n" id="statTickets" data-count="62325">0</div><div class="l">Tickets sold</div></div>
+      <div class="stat"><div class="n" id="statGoing" data-count="1846">0</div><div class="l">Going to the next one</div></div>
     </div>
   </div>
 </section>
@@ -161,11 +160,31 @@
       <p class="sec-sub">Headliners we brought to the desert over the last year. Swipe through.</p>
     </div>
     <div class="artist-row reveal">
-      <a class="acard" href="https://open.spotify.com/artist/03y4yOxhLk6MDJ1bV424uO" target="_blank" rel="noopener"><img src="media/gallery/artists/lavern.jpg" alt="Lavern on Spotify" /><div class="a-veil"></div><div class="a-info"><div class="a-name">Lavern</div><div class="a-sub">Ra's Rave · Mar 2025</div></div></a>
-      <a class="acard" href="https://open.spotify.com/artist/5pkU7zjIzHgfN1n91e51r3" target="_blank" rel="noopener"><img src="media/gallery/artists/rscl.jpg" alt="RSCL on Spotify" /><div class="a-veil"></div><div class="a-info"><div class="a-name">RSCL</div><div class="a-sub">Ra's Rave · Mar 2025</div></div></a>
-      <a class="acard" href="https://open.spotify.com/artist/1dESZUZevzhd5dzq9ZsMLI" target="_blank" rel="noopener"><img src="media/gallery/artists/bradeazy.jpg" alt="Bradeazy on Spotify" /><div class="a-veil"></div><div class="a-info"><div class="a-name">Bradeazy</div><div class="a-sub">Ra's Rave · Mar 2025</div></div></a>
-      <a class="acard" href="https://open.spotify.com/artist/7B0d26MfdiqCHBRPbLiRnd" target="_blank" rel="noopener"><video muted loop playsinline preload="none" data-src="media/gallery/artists/sidequest.mp4" poster="media/gallery/artists/sidequest-poster.jpg"></video><div class="a-veil"></div><div class="a-info"><div class="a-name">SideQuest</div><div class="a-sub">Return of the Pirates · Apr 2026</div></div></a>
-      <a class="acard" href="https://instagram.com/tooturnttony" target="_blank" rel="noopener"><video muted loop playsinline preload="none" data-src="media/gallery/artists/tooturnt-tony.mp4" poster="media/gallery/artists/tooturnt-tony-poster.jpg"></video><div class="a-veil"></div><div class="a-info"><div class="a-name">TooTurnt Tony</div><div class="a-sub">Return of the Pirates · Apr 2026</div></div></a>
+      <a class="acard2" href="https://open.spotify.com/artist/03y4yOxhLk6MDJ1bV424uO" target="_blank" rel="noopener"><img src="media/gallery/artists/lavern-photo.jpg" alt="Lavern on Spotify" /><div class="a2-body"><div class="a2-name">Lavern</div><div class="a2-listeners"><span class="sdot"></span>4,335,308 monthly listeners</div><div class="a2-event">Ra's Rave · Mar 2025</div></div></a>
+      <a class="acard2" href="https://open.spotify.com/artist/5pkU7zjIzHgfN1n91e51r3" target="_blank" rel="noopener"><img src="media/gallery/artists/rscl-photo.jpg" alt="RSCL on Spotify" /><div class="a2-body"><div class="a2-name">RSCL</div><div class="a2-listeners"><span class="sdot"></span>2,372,851 monthly listeners</div><div class="a2-event">Ra's Rave · Mar 2025</div></div></a>
+      <a class="acard2" href="https://open.spotify.com/artist/1dESZUZevzhd5dzq9ZsMLI" target="_blank" rel="noopener"><img src="media/gallery/artists/bradeazy-photo.jpg" alt="Bradeazy on Spotify" /><div class="a2-body"><div class="a2-name">Bradeazy</div><div class="a2-listeners"><span class="sdot"></span>2,098,493 monthly listeners</div><div class="a2-event">Ra's Rave · Mar 2025</div></div></a>
+      <a class="acard2" href="https://open.spotify.com/artist/7B0d26MfdiqCHBRPbLiRnd" target="_blank" rel="noopener"><img src="media/gallery/artists/sidequest-photo.jpg" alt="SideQuest on Spotify" /><div class="a2-body"><div class="a2-name">SideQuest</div><div class="a2-listeners"><span class="sdot"></span>29,097 monthly listeners</div><div class="a2-event">Return of the Pirates · Apr 2026</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CREATORS (influencers, not artists) ===================== -->
+<section id="creators">
+  <div class="wrap">
+    <div class="sec-head row reveal">
+      <div>
+        <span class="eyebrow">The influencers</span>
+        <h2 class="sec-title">Creators in the <em>building</em></h2>
+      </div>
+      <p class="sec-sub">Not just DJs. The internet shows up to Darty too.</p>
+    </div>
+    <div class="creator-card reveal">
+      <div class="creator-video"><video muted loop playsinline preload="none" data-src="media/gallery/artists/tooturnt-tony.mp4" poster="media/gallery/artists/tooturnt-tony-poster.jpg"></video></div>
+      <div class="creator-body">
+        <h3>TooTurnt Tony</h3>
+        <p>He pulled up to Return of the Pirates in April and the desert has not recovered. Catch what he saw, then catch the next one.</p>
+        <a class="btn btn-primary" href="https://instagram.com/tooturnttony" target="_blank" rel="noopener">See him on Instagram</a>
+      </div>
     </div>
   </div>
 </section>
@@ -240,14 +259,14 @@
       <p class="sec-sub">We're partnered with Wild West Party Bus. Book the bus for your crew and pull up to the show together.</p>
     </div>
     <div class="bus-row reveal">
+      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-3.jpg" alt="Wild West Party Bus in the desert" /></a>
+      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-2.jpg" alt="Wild West Party Bus, horns on the hood" /></a>
+      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-8.jpg" alt="Wild West Party Bus at night" /></a>
       <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-1.jpg" alt="Inside the Wild West Party Bus" /></a>
-      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-2.jpg" alt="Wild West Party Bus" /></a>
-      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-3.jpg" alt="Wild West Party Bus" /></a>
-      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-4.jpg" alt="Wild West Party Bus" /></a>
-      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-5.jpg" alt="Wild West Party Bus" /></a>
-      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-6.jpg" alt="Wild West Party Bus" /></a>
-      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-7.jpg" alt="Wild West Party Bus" /></a>
-      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-8.jpg" alt="Wild West Party Bus" /></a>
+      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-6.jpg" alt="Inside the bus, wheel and cooler" /></a>
+      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-4.jpg" alt="The crew riding the bus" /></a>
+      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-5.jpg" alt="Partying on the Wild West Party Bus" /></a>
+      <a class="bcard" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener"><img src="media/gallery/bus/bus-7.jpg" alt="Wild West Party Bus night out" /></a>
     </div>
     <div style="margin-top:26px">
       <a class="btn btn-primary" href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener">Book the bus</a>

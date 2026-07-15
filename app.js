@@ -335,6 +335,13 @@ function applyLiveCounts(){
       if(typeof live==="number"&&live>(ev.sold||0)){ ev.sold=live; changed=true; }
     });
     if(changed) renderGrids();
+    // live lifetime totals -> stats row (always-accurate numbers, his rule)
+    if(j.totals){
+      const set=(id,v)=>{const el=document.getElementById(id);if(el&&typeof v==="number"&&v>0){el.dataset.count=v;if(el._done)el.textContent=Number(v).toLocaleString("en-US");}};
+      set("statNights",j.totals.nights);
+      set("statTickets",j.totals.tickets);
+      set("statGoing",EVENTS.filter(isUpcoming).reduce((s,e)=>s+(Number(e.sold)||0),0));
+    }
   }).catch(()=>{});
 }
 applyLiveCounts();
@@ -486,7 +493,7 @@ applyInterest();
    RELIVE THE NIGHTS — lazy muted loops (mobile-safe)
    ============================================================ */
 (function(){
-  const reels=document.querySelectorAll(".reel video, .acard video");
+  const reels=document.querySelectorAll(".reel video, .acard video, .creator-card video");
   if(!reels.length) return;
   if(matchMedia("(prefers-reduced-motion:reduce)").matches) return;
   const tryPlay=v=>{ const p=v.play(); if(p&&p.catch)p.catch(()=>{}); };
