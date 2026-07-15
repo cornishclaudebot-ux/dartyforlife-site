@@ -315,7 +315,7 @@ fetch("events.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{
   const keep=EVENTS.filter(e=>!liveKeys.has((e.url||e.title).toLowerCase())
     && !fresh.some(f=>f.title.toLowerCase()===e.title.toLowerCase()));
   EVENTS=fresh.concat(keep);
-  renderGrids(); renderNext();
+  renderGrids(); renderNext(); injectEventSchema();
 }).catch(()=>{});
 
 /* ============================================================
@@ -633,7 +633,41 @@ function beatEnv(tMs){ const phase=(tMs%BEAT_MS)/BEAT_MS; return Math.pow(1-phas
 })();
 window.DFL={CONFIG,get EVENTS(){return EVENTS;},IC,beatEnv,BEAT_MS};
 
+/* ============================================================
+   GOOGLE EVENT SCHEMA — structured data so events surface in
+   Google Search / "things to do in Phoenix". Rebuilt from the
+   live EVENTS list (real data only; skips undated entries).
+   ============================================================ */
+function injectEventSchema(){
+  const old=document.getElementById("evschema"); if(old) old.remove();
+  const VENUES={
+    "stratus event center":{address:"4344 W Indian School Rd, Phoenix, AZ 85031",city:"Phoenix"},
+    "the 44":{address:"4494 W Peoria Ave, Glendale, AZ 85302",city:"Glendale"}
+  };
+  const items=EVENTS.filter(isUpcoming).filter(e=>e.date).map(ev=>{
+    const v=VENUES[(ev.venue||"").toLowerCase()];
+    const o={
+      "@type":"Event","name":ev.title,
+      "startDate":ev.date+(ev.time?("T"+(function(t){const m=t.match(/(\d+):(\d+)\s*(AM|PM)/i);if(!m)return"21:00";let h=+m[1]%12;if(/pm/i.test(m[3]))h+=12;return String(h).padStart(2,"0")+":"+m[2];})(ev.time)+":00-07:00"):""),
+      "eventStatus":"https://schema.org/EventScheduled",
+      "eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
+      "organizer":{"@type":"Organization","name":"DartyForLife","url":"https://dartyforlife.com"},
+      "offers":{"@type":"Offer","url":ev.url?("https://posh.vip/e/"+ev.url):CONFIG.posh,"availability":"https://schema.org/InStock"}
+    };
+    if(ev.flyer) o.image=[ev.flyer];
+    if(v) o.location={"@type":"Place","name":ev.venue,"address":{"@type":"PostalAddress","streetAddress":v.address.split(",")[0],"addressLocality":v.city,"addressRegion":"AZ","addressCountry":"US"}};
+    else if(ev.venue) o.location={"@type":"Place","name":ev.venue,"address":{"@type":"PostalAddress","addressLocality":(ev.city||"Phoenix").split(",")[0],"addressRegion":"AZ","addressCountry":"US"}};
+    return o;
+  });
+  if(!items.length) return;
+  const s=document.createElement("script");
+  s.type="application/ld+json"; s.id="evschema";
+  s.textContent=JSON.stringify({"@context":"https://schema.org","@graph":items});
+  document.head.appendChild(s);
+}
+
 /* boot */
 renderGrids();
 renderNext();
+injectEventSchema();
 observeReveals();
