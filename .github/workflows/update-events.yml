@@ -1,0 +1,34 @@
+name: Update events from Posh
+
+on:
+  schedule:
+    - cron: "23 * * * *" # hourly — new events + flyers go live within the hour of launch
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-events:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Pull latest events from Posh
+        run: node scripts/update-events.mjs
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet events.json scripts/geocache.json 2>/dev/null; then
+            echo "events.json unchanged, nothing to deploy."
+          else
+            git config user.name "dartyforlife-events-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add events.json scripts/geocache.json
+            git commit -m "Auto-update events from Posh ($(date -u +%Y-%m-%d))"
+            git push
+          fi

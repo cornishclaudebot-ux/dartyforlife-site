@@ -1,0 +1,19 @@
+{
+ "updated": "2026-07-15T10:40:13.523Z",
+ "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
+ "events": [
+  {
+   "date": "2026-07-25",
+   "time": "8:00 PM",
+   "title": "GOLDEN TEACHER",
+   "url": "golden-teacher",
+   "venue": "Stratus Event Center",
+   "city": "Phoenix, AZ 85031",
+   "flyer": "https://images.posh.vip/originals/6a3c81d0955f42fa57977681",
+   "series": "major",
+   "sold": 1846,
+   "lat": 33.4961217,
+   "lng": -112.1541374
+  }
+ ]
+}
