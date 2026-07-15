@@ -57,13 +57,8 @@ let EVENTS = [
   { date:"2026-07-25", time:"8:00 PM", title:"GOLDEN TEACHER", url:"golden-teacher",
     venue:"Stratus Event Center", city:"Phoenix, AZ", series:"major",
     flyer:"https://images.posh.vip/originals/6a3c81d0955f42fa57977681" },
-  { date:"2026-08-01", time:"", title:"MELTDOWN", url:"",
-    venue:"Stratus Event Center", city:"Phoenix, AZ", series:"major" },
-  { date:"2026-08-09", time:"", title:"POOL HOUSE Vol. 2", url:"",
-    venue:"Revealed 14 days out", city:"Scottsdale, AZ", series:"bar", free:true },
-  { date:"2026-08-22", time:"", title:"REUNION", url:"",
-    venue:"Stratus Event Center", city:"Phoenix, AZ", series:"major" },
-  /* Posh drafts (visible in the dashboard) — Get Notified until they go live */
+  /* Posh drafts (visible in the dashboard) — Get Notified until they go live.
+     Real events only, ever. Nothing goes in this list that isn't in Posh. */
   { date:"2026-09-05", time:"8:00 PM", title:"SOLAR SPUR", url:"",
     venue:"Stratus Event Center", city:"Phoenix, AZ", series:"major" },
   { date:"2026-10-29", time:"7:00 PM", title:"FEAR FOREST", url:"",
