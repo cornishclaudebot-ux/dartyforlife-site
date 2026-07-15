@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="styles.css?v=3" />
+<link rel="stylesheet" href="styles.css?v=4" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"DartyForLife",
  "alternateName":"Darty For Life · Desert Drinkers","url":"https://dartyforlife.com",
@@ -163,7 +163,7 @@
       <a class="acard2" href="https://open.spotify.com/artist/03y4yOxhLk6MDJ1bV424uO" target="_blank" rel="noopener"><img src="media/gallery/artists/lavern-photo.jpg" alt="Lavern on Spotify" /><div class="a2-body"><div class="a2-name">Lavern</div><div class="a2-listeners"><span class="sdot"></span>4,335,308 monthly listeners</div><div class="a2-event">Ra's Rave · Mar 2025</div></div></a>
       <a class="acard2" href="https://open.spotify.com/artist/5pkU7zjIzHgfN1n91e51r3" target="_blank" rel="noopener"><img src="media/gallery/artists/rscl-photo.jpg" alt="RSCL on Spotify" /><div class="a2-body"><div class="a2-name">RSCL</div><div class="a2-listeners"><span class="sdot"></span>2,372,851 monthly listeners</div><div class="a2-event">Ra's Rave · Mar 2025</div></div></a>
       <a class="acard2" href="https://open.spotify.com/artist/1dESZUZevzhd5dzq9ZsMLI" target="_blank" rel="noopener"><img src="media/gallery/artists/bradeazy-photo.jpg" alt="Bradeazy on Spotify" /><div class="a2-body"><div class="a2-name">Bradeazy</div><div class="a2-listeners"><span class="sdot"></span>2,098,493 monthly listeners</div><div class="a2-event">Ra's Rave · Mar 2025</div></div></a>
-      <a class="acard2" href="https://open.spotify.com/artist/7B0d26MfdiqCHBRPbLiRnd" target="_blank" rel="noopener"><img src="media/gallery/artists/sidequest-photo.jpg" alt="SideQuest on Spotify" /><div class="a2-body"><div class="a2-name">SideQuest</div><div class="a2-listeners"><span class="sdot"></span>29,097 monthly listeners</div><div class="a2-event">Return of the Pirates · Apr 2026</div></div></a>
+      <a class="acard2" href="https://open.spotify.com/artist/3ke2GnEqLKvhIYrtaRY24x" target="_blank" rel="noopener"><img src="media/gallery/artists/sidequest-photo.jpg?v=2" alt="SIDEQUEST on Spotify" /><div class="a2-body"><div class="a2-name">SIDEQUEST</div><div class="a2-listeners"><span class="sdot"></span>159,204 monthly listeners</div><div class="a2-event">Return of the Pirates · Apr 2026</div></div></a>
     </div>
   </div>
 </section>
@@ -178,13 +178,31 @@
       </div>
       <p class="sec-sub">Not just DJs. The internet shows up to Darty too.</p>
     </div>
-    <div class="creator-card reveal">
-      <div class="creator-video"><video muted loop playsinline preload="none" data-src="media/gallery/artists/tooturnt-tony.mp4" poster="media/gallery/artists/tooturnt-tony-poster.jpg"></video></div>
-      <div class="creator-body">
-        <h3>TooTurnt Tony</h3>
-        <p>He pulled up to Return of the Pirates in April and the desert has not recovered. Catch what he saw, then catch the next one.</p>
-        <a class="btn btn-primary" href="https://instagram.com/tooturnttony" target="_blank" rel="noopener">See him on Instagram</a>
-      </div>
+    <div class="creator-row reveal">
+      <a class="ccard" href="https://instagram.com/tooturnttony" target="_blank" rel="noopener" aria-label="TooTurnt Tony on Instagram">
+        <div class="cc-media"><video muted loop playsinline preload="none" data-src="media/gallery/creators/tooturnt-tony.mp4" poster="media/gallery/creators/tooturnt-tony-poster.jpg"></video></div>
+        <div class="cc-body">
+          <div class="cc-name">TooTurnt Tony</div>
+          <div class="cc-followers"><span class="igdot"></span>4M on Instagram</div>
+          <p>Pulled up to Return of the Pirates in April. The desert has not recovered.</p>
+        </div>
+      </a>
+      <a class="ccard" href="https://instagram.com/calesaurage" target="_blank" rel="noopener" aria-label="Cale Saurage on Instagram">
+        <div class="cc-media"><img src="media/gallery/creators/cale-saurage.jpg" alt="Cale Saurage" /></div>
+        <div class="cc-body">
+          <div class="cc-name">Cale Saurage</div>
+          <div class="cc-followers"><span class="igdot"></span>932K on Instagram</div>
+          <p>One half of SIDEQUEST. Came out and ran the night with us.</p>
+        </div>
+      </a>
+      <a class="ccard" href="https://instagram.com/hootiehurley" target="_blank" rel="noopener" aria-label="Hootie Hurley on Instagram">
+        <div class="cc-media"><img src="media/gallery/creators/hootie-hurley.jpg" alt="Hootie Hurley" /></div>
+        <div class="cc-body">
+          <div class="cc-name">Hootie Hurley</div>
+          <div class="cc-followers"><span class="igdot"></span>333K on Instagram</div>
+          <p>The other half of SIDEQUEST. Same night, same chaos.</p>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -274,6 +292,69 @@
   </div>
 </section>
 
+<!-- ===================== EQUIPMENT RENTALS ===================== -->
+<section id="rentals">
+  <div class="wrap">
+    <div class="sec-head row reveal">
+      <div>
+        <span class="eyebrow">Rentals</span>
+        <h2 class="sec-title">Rent the <em>gear</em></h2>
+      </div>
+      <p class="sec-sub">The same equipment that powers Darty, available for your event. Order through us. Pick it up or we deliver.</p>
+    </div>
+    <div class="gear-grid reveal">
+      <div class="gear">
+        <div class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14c2-1 4-1 6 0s4 1 6 0M3 10l4-5m3 6 2-7m4 8 4-4"/><circle cx="3" cy="10" r="1"/><circle cx="10" cy="11" r="1"/><circle cx="16" cy="12" r="1"/></svg></div>
+        <h3>Foam cannons</h3>
+        <p>The cannons behind our foam parties. Turn any backyard or venue into a foam pit.</p>
+      </div>
+      <div class="gear">
+        <div class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="3" width="10" height="18" rx="2"/><circle cx="12" cy="15" r="3.4"/><circle cx="12" cy="7.5" r="1.6"/></svg></div>
+        <h3>QSC speakers + subs</h3>
+        <p>Huge QSC tops and subwoofers. Concert-loud, dance-floor clean.</p>
+      </div>
+      <div class="gear">
+        <div class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 5 13h5l-1 9 8-11h-5z"/></svg></div>
+        <h3>Generators</h3>
+        <p>Power anywhere. Desert lots, backyards, venues with nothing to plug into.</p>
+      </div>
+      <div class="gear">
+        <div class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="10" rx="2"/><circle cx="8" cy="12" r="2.6"/><circle cx="16" cy="12" r="2.6"/><path d="M8 9.4V12m8-2.6V12"/></svg></div>
+        <h3>CDJs + DJ boards</h3>
+        <p>The decks our headliners play on. Book-ready for any DJ you bring in.</p>
+      </div>
+      <div class="gear">
+        <div class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20V8m18 12V8M3 8h18M3 20h18M6 8l6 6M12 8l6 6M6 14l6-6m0 6 6-6M3 14h18"/></svg></div>
+        <h3>30x40 ft Global Truss</h3>
+        <p>A full 30 by 40 foot Global Truss stage system. Festival bones for your build.</p>
+      </div>
+      <form class="gear-form" name="rentals" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="rentForm">
+        <input type="hidden" name="form-name" value="rentals" />
+        <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <h3>Request gear</h3>
+        <label class="field"><span>Name</span><input type="text" name="name" required placeholder="Your name" autocomplete="name" /></label>
+        <label class="field"><span>Email</span><input type="email" name="email" required placeholder="you@email.com" autocomplete="email" /></label>
+        <label class="field"><span>Phone</span><input type="tel" name="phone" required placeholder="(602) 555-0123" autocomplete="tel" /></label>
+        <label class="field"><span>Event date</span><input type="date" name="event_date" required /></label>
+        <fieldset class="gf-set"><legend>What do you need?</legend>
+          <label class="check"><input type="checkbox" name="equipment" value="Foam cannons" /><span>Foam cannons</span></label>
+          <label class="check"><input type="checkbox" name="equipment" value="QSC speakers + subs" /><span>QSC speakers + subs</span></label>
+          <label class="check"><input type="checkbox" name="equipment" value="Generators" /><span>Generators</span></label>
+          <label class="check"><input type="checkbox" name="equipment" value="CDJs + DJ boards" /><span>CDJs + DJ boards</span></label>
+          <label class="check"><input type="checkbox" name="equipment" value="30x40 Global Truss" /><span>30x40 Global Truss</span></label>
+        </fieldset>
+        <fieldset class="gf-set"><legend>Pickup or delivery?</legend>
+          <label class="check"><input type="radio" name="fulfillment" value="Pickup" required /><span>Pickup</span></label>
+          <label class="check"><input type="radio" name="fulfillment" value="Delivery" /><span>Delivery</span></label>
+        </fieldset>
+        <button class="btn btn-primary" type="submit">Send rental request
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <p class="list-msg" id="rentMsg" role="status" hidden>Request received. We'll get back to you with a quote.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== CTA BAND ===================== -->
 <section class="band">
   <div class="band-glow" aria-hidden="true"></div>
@@ -290,7 +371,7 @@
 </main>
 
 <div id="footer-mount"></div>
-<script src="app.js?v=3"></script>
+<script src="app.js?v=4"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>

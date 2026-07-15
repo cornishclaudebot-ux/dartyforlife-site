@@ -153,6 +153,7 @@ function buildFooter(){
       <div class="foot-col">
         <h5>Get In</h5>
         <a data-tickets="org" href="${CONFIG.posh}" target="_blank" rel="noopener">Tickets · Posh</a>
+        <a href="${home}#rentals">Rent our gear</a>
         <a href="${CONFIG.ig}" target="_blank" rel="noopener">Instagram</a>
         <a href="${CONFIG.tt}" target="_blank" rel="noopener">TikTok</a>
         <a href="mailto:${CONFIG.email}">${CONFIG.email}</a>
@@ -235,7 +236,8 @@ function renderGrids(){
     if(limit) list=list.slice(0,limit);
     // no mockups, ever: an empty calendar gets an honest note + a Get Notified path
     const label=want==="bar"?"Darty Bars":want==="tempe"?"DartyForLife Tempe":"DartyForLife";
-    const btnClass=document.body.classList.contains("theme-bars")?"btn btn-bars":"btn btn-primary";
+    const btnClass=document.body.classList.contains("theme-bars")?"btn btn-bars"
+      :document.body.classList.contains("theme-tempe")?"btn btn-asu":"btn btn-primary";
     grid.innerHTML=list.length?list.map(eventCard).join("")
       :`<div class="empty-note"><p style="margin:0 0 16px">Nothing on the calendar yet.</p>
          <button class="${btnClass}" data-notify="${label}">Get Notified when it drops</button></div>`;
@@ -263,7 +265,7 @@ function renderNext(){
     return;
   }
   const d=parseDate(ev.date);
-  if(line) line.innerHTML=`<a class="nl-tag" href="#next"><span class="k">Next headliner</span> · <b>${esc(ev.title)}</b> · ${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</a>`;
+  if(line) line.innerHTML=`<a class="nl-tag" href="#next"><span class="k">Next headliner</span><span class="sep">·</span><b>${esc(ev.title)}</b><span class="sep">·</span><span class="nl-date">${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</span></a>`;
   if(card){
     const going=""; // his call: the countdown card doesn't need the head count (it lives on the event cards)
     card.innerHTML=`
@@ -473,6 +475,21 @@ if(listForm){
     document.getElementById("listMsg").hidden=false;
   });
 }
+/* rentals — same Netlify pattern as The List */
+const rentForm=document.getElementById("rentForm");
+if(rentForm){
+  rentForm.addEventListener("submit",e=>{
+    e.preventDefault();
+    if(!rentForm.querySelector('input[name="equipment"]:checked')){
+      alert("Pick at least one piece of gear."); return;
+    }
+    const body=new URLSearchParams(new FormData(rentForm)).toString();
+    fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body}).catch(()=>{});
+    rentForm.querySelectorAll(".field, .gf-set, button[type=submit]").forEach(el=>el.style.display="none");
+    document.getElementById("rentMsg").hidden=false;
+  });
+}
+
 function applyInterest(){
   const t=sessionStorage.getItem("dfl-interest");
   const f=document.getElementById("interestField"), n=document.getElementById("listInterest");
@@ -493,7 +510,7 @@ applyInterest();
    RELIVE THE NIGHTS — lazy muted loops (mobile-safe)
    ============================================================ */
 (function(){
-  const reels=document.querySelectorAll(".reel video, .acard video, .creator-card video");
+  const reels=document.querySelectorAll(".reel video, .acard video, .ccard video");
   if(!reels.length) return;
   if(matchMedia("(prefers-reduced-motion:reduce)").matches) return;
   const tryPlay=v=>{ const p=v.play(); if(p&&p.catch)p.catch(()=>{}); };
