@@ -554,8 +554,15 @@ section{position:relative}
 .g-soon span{font-size:.62rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase}
 .gear h3{font-family:'Anton';font-weight:400;font-size:1.2rem;letter-spacing:.5px;text-transform:uppercase;margin:0 0 8px}
 .gear p{margin:0;font-size:.84rem;color:var(--muted);line-height:1.55}
-.gear-form{grid-column:2/4;grid-row:2/4;background:linear-gradient(160deg,var(--surface-2),var(--surface));
+.gear-form{grid-column:1/-1;background:linear-gradient(160deg,var(--surface-2),var(--surface));
   border:1px solid var(--line);border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:13px}
+.g-qty{position:absolute;top:10px;left:10px;z-index:2;background:rgba(12,99,237,.94);color:#fff;
+  font-size:.58rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:999px;
+  box-shadow:0 6px 18px -6px rgba(12,99,237,.8)}
+.g-note{display:inline-block;margin-top:9px;font-size:.6rem;font-weight:800;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted-2)}
+.g-note::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gt-cyan);
+  vertical-align:middle;margin-right:7px}
 .gear-form h3{font-family:'Anton';font-weight:400;font-size:1.5rem;letter-spacing:.5px;text-transform:uppercase;margin:0}
 .gf-set{border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px;margin:0;
   display:flex;flex-wrap:wrap;gap:8px}
