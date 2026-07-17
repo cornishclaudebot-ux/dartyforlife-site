@@ -155,7 +155,7 @@ function buildFooter(){
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© <span id="year"></span> DartyForLife · Desert Drinkers · Phoenix, AZ</span>
+      <span>© <span id="year"></span> DartyForLife · Desert Drinkers · Phoenix, AZ · All rights reserved. Site design, content, and code are proprietary; copying or scraping is prohibited.</span>
       <span>Ages 18 &amp; over to enter · 21 &amp; over to drink · Please party responsibly.</span>
     </div>
   </footer>`;
@@ -464,6 +464,163 @@ document.addEventListener("click",e=>{
    hosting moved to GitHub Pages). "Get Notified" buttons tag the
    signup with the event so the drop automation knows who to text.
    ============================================================ */
+/* ============================================================
+   LIGHT ANTI-SCRAPE — pairs with robots.txt + noai meta.
+   Blocks casual save/drag/right-click on our media without
+   touching text selection or accessibility.
+   ============================================================ */
+document.addEventListener("contextmenu",e=>{ if(e.target.closest("img,video")) e.preventDefault(); });
+document.addEventListener("dragstart",e=>{ if(e.target.closest("img")) e.preventDefault(); });
+console.log("%cDARTYFORLIFE","font-size:28px;font-weight:900;color:#ff2bd6",
+  "\nThis site's design, content, and code are proprietary. Don't clone it. Want to build with us instead? contact@dartyforlife.com");
+
+/* ============================================================
+   GEAR CATALOG — every piece listed separately, real specs,
+   real sourced review data, honest "unverified" gaps left out.
+   Facts sourced from manufacturer + retailer pages (Jul 2026).
+   ============================================================ */
+const GEAR=[
+ { id:"foam1", name:"Foam Cannon 1", model:"Foam Daddy HD Pro Stacker", qty:1, img:"media/gallery/gear/foam-cannon-1.jpg", note:"Foam solution sold separately",
+   tag:"Dense, stackable foam up to 30 feet out.",
+   desc:"FoamDaddy's flagship professional cannon, the machine behind commercial foam parties. It throws dense, stackable foam up to 30 feet and blankets roughly a 30 by 30 foot party zone.",
+   works:"A submersible pump feeds water mixed with foam concentrate up the hose; a high-output blower forces air through a solution-soaked mesh at the barrel, jetting out a continuous stream of stacking foam.",
+   use:["Mix the concentrate with water in a big reservoir per the dilution chart (2 gal of concentrate makes roughly 800 gallons of foam).","Drop the pump in, connect the 10-ft hose, and mount the cannon on its tripod.","Aim slightly upward over the pit and run it from the wireless remote. One batch runs about 4 hours.","Rinse the pump, hose, and mesh with clean water after the event."],
+   specs:[["Throw distance","Up to 30 ft"],["Coverage","~30 x 30 ft zone"],["Power","110V · ~9A with pump"],["Weight","42 lb"],["Includes","Wireless remote, pump, 10-ft hose, tripod"],["Runtime","~4 hrs per solution batch"]],
+   rev:{line:"550+ five-star reviews reported by Foam Daddy",src:"foamdaddy.com"} },
+ { id:"foam2", name:"Foam Cannon 2", model:"Foam Daddy HD Pro Stacker", qty:1, img:"media/gallery/gear/foam-cannon-2.jpg", note:"Foam solution sold separately",
+   tag:"Second cannon. Double the foam, twice the zone.",
+   desc:"Our second HD Pro Stacker. Run it solo, or book both cannons and cross-fire two foam zones at once for full-lot coverage.",
+   works:"Same pro setup: submersible pump feeds solution up the hose, and the blower pushes air through the foam mesh for a continuous stacking jet.",
+   use:["Book alongside Foam Cannon 1 to cover two zones or one massive pit.","Mix concentrate, drop the pump, connect the hose, mount on the tripod.","Fire from the wireless remote; reposition on the locking swivel as the pit builds.","Rinse everything with clean water after."],
+   specs:[["Throw distance","Up to 30 ft"],["Coverage","~30 x 30 ft zone"],["Power","110V · ~9A with pump"],["Weight","42 lb"],["Includes","Wireless remote, pump, 10-ft hose, tripod"],["Runtime","~4 hrs per solution batch"]],
+   rev:{line:"550+ five-star reviews reported by Foam Daddy",src:"foamdaddy.com"} },
+ { id:"kspk", name:"QSC K-Series Speaker", model:"QSC K-Series powered top", qty:4, img:"media/gallery/gear/qsc-speaker.jpg",
+   tag:"The industry-benchmark powered PA top.",
+   desc:"The powered speaker line you hear at pro events everywhere. A woofer and compression driver pushed by a built-in Class-D amplifier with onboard DSP, so one box on a pole delivers full club-level sound.",
+   works:"Built-in Class-D amplification (the current K.2 line runs 2,000W peak) with internal DSP handling crossover, protection, and room presets automatically.",
+   use:["Set it on a pole or tripod, or use the tilt-back angle as a floor monitor.","Run XLR from your mixer or DJ gear into the input.","Pick a DSP preset for the job: dance music, mic, monitor.","Set gain so the limit light only flicks on the loudest peaks. Pair with our KS subs for full-range dance floors."],
+   specs:[["Amplifier","Class-D, up to 2,000W peak (K.2 line)"],["Design","Two-way: woofer + 1.4\" compression driver"],["DSP","Factory presets + savable scenes"],["Rigging","Pole mount + tilt-back angles"],["I/O","XLR combo in, XLR thru"]],
+   rev:{stars:"4.5/5",count:"163 reviews",src:"Sweetwater (K12.2, flagship of the line)",line:"Reviewers report clear, powerful sound and years of reliability across bars, halls, and outdoor events."} },
+ { id:"ksub", name:"QSC Subwoofer", model:"QSC KS-Series powered sub", qty:4, img:"media/gallery/gear/qsc-sub.jpg",
+   tag:"Chest-punch low end on wheels.",
+   desc:"QSC's matching powered subwoofers for the K-Series tops. Rolling birch cabinets with serious Class-D power that fill in everything the tops don't reach. Rent one for warmth or four for a real dance floor.",
+   works:"A Class-D module (up to 3,600W peak in the KS118) drives a long-excursion woofer, with onboard DSP handling the crossover and a DEEP mode for extended lows.",
+   use:["Roll it into place on its casters and connect power.","Run your mixer into the sub, then the sub's high-passed outputs up to the tops.","Thread a pole into the M20 socket to fly a K-Series top directly above.","Engage DEEP mode for extended lows when you have the headroom."],
+   specs:[["Amplifier","Class-D, up to 3,600W peak (KS118)"],["Low end","Down to 35 Hz · 136 dB max SPL (KS118)"],["Build","Birch cabinet, steel grille, casters"],["Rigging","M20 pole socket for a top"],["DSP","Crossover presets + savable scenes"]],
+   rev:{stars:"5/5",count:"48 reviews",src:"Sweetwater (KS118)",line:"Reviewers describe tight, controlled, high-headroom bass that transformed their rigs."} },
+ { id:"cdj", name:"Pioneer CDJ-3000", model:"Pioneer DJ CDJ-3000", qty:1, img:"media/gallery/gear/cdjs.jpg",
+   tag:"The club-standard deck. Every festival booth has it.",
+   desc:"The global club-standard professional player and the deck our own headliners play on. A 9-inch HD touchscreen, low-latency jog wheel, and 8 hot cues, playing straight off USB or SD prepared in rekordbox.",
+   works:"Tracks analyzed in rekordbox load from USB or SD (or over a Pro DJ Link network for up to 6 players), played through a 96 kHz / 32-bit float DAC.",
+   use:["Export your library to USB with rekordbox so cues, loops, and grids travel with the drive.","Plug in, browse on the touchscreen, and load.","Link players over LAN for source sharing and beat sync.","Run the outputs into your mixer and only eject when the screen says it's safe."],
+   specs:[["Display","9\" HD touchscreen"],["Audio","96 kHz / 32-bit float DAC"],["Sources","USB-A, SD, USB-B, gigabit Pro DJ Link"],["Performance","8 hot cue keys, beat jump, key sync"],["Weight","12.1 lb"]],
+   rev:{stars:"4.5/5",count:"9 reviews",src:"Sweetwater",line:"Owners call it a clear step up in build, screen, and jog feel from every CDJ before it."} },
+ { id:"xdj", name:"Pioneer XDJ-XZ", model:"Pioneer DJ XDJ-XZ", qty:1, img:"media/gallery/gear/xdj-xz.jpg",
+   tag:"A full club booth in one console. No laptop needed.",
+   desc:"Pioneer's flagship all-in-one: two club-style decks and a 4-channel DJM-style mixer in a single console. Full-size jogs with displays, a 7-inch touchscreen, and 16 performance pads. Standalone playback runs two channels; channels 3 and 4 take external players.",
+   works:"Plays rekordbox-exported USB drives standalone, or hooks to a laptop for rekordbox and Serato DJ Pro; Pro DJ Link adds CDJs on channels 3 and 4.",
+   use:["Load a rekordbox USB into a top port and pick tracks from the 7\" touchscreen.","Mix on the club-layout mixer: 3-band EQs, 6 Color FX, 14 Beat FX.","Trigger hot cues from the 16 pads.","XLR master out to the PA, plus two mic inputs with their own EQ."],
+   specs:[["Mixer","4-channel club layout (2 standalone)"],["Display","7\" touchscreen + on-jog displays"],["FX","6 Sound Color FX + 14 Beat FX, 16 pads"],["Software","rekordbox standalone · Serato DJ Pro"],["I/O","3 USB, XLR master, 2 mic inputs"],["Weight","28.7 lb"]],
+   rev:{stars:"4.7/5",count:"106 ratings",src:"Amazon",line:"DJs praise it as a reliable, club-authentic workhorse; the two-channel standalone limit is the only common gripe."} },
+ { id:"bubble", name:"Bubble Machine", model:"Triple-wheel LED bubble machine", qty:1, img:"media/gallery/gear/bubble-machine.jpg", note:"Bubble solution sold separately",
+   tag:"Fills the floor with bubbles and lights them up.",
+   desc:"A professional triple-wheel bubble machine ringed with LEDs. Three wands spin through solution while a fan streams bubbles across the floor, and the LED ring lights them as they fly.",
+   works:"Three motorized bubble wheels rotate through the solution reservoir while a fan blows continuous streams of bubbles out the front.",
+   use:["Fill the reservoir with bubble solution.","Aim it across the dance floor or entry, power on, and it runs continuously.","Indoors, put a mat under it: floors get slick.","Drain and wipe it down after the night."],
+   specs:[["Output","Three rotating bubble wheels, continuous"],["Lighting","Built-in LED ring"],["Power","120V"]] },
+ { id:"haze", name:"Haze Machine", model:"ADJ Entourage", qty:1, img:"media/gallery/gear/haze-machine.jpg", note:"Haze fluid sold separately (water-based)",
+   tag:"The mist that makes every light beam visible.",
+   desc:"A touring-grade faze machine built permanently into its own flight case, so it rolls in show-ready. It fills the room with a fine, even mist that hangs in the air and turns every light into a visible beam. Thicker than a hazer, thinner than a fogger.",
+   works:"A pump feeds water-based fluid onto a 1,400W heater block where it vaporizes; a fan disperses it as a fine continuous mist. Warm-up is 45 seconds.",
+   use:["Open the case, connect the 5.6L fluid tank, and fill with water-based fluid.","Power up and give it its 45-second warm-up.","Set timer, continuous, or manual output on the LED panel, or run it from DMX.","Dial output from a subtle beam-enhancer to heavy atmosphere."],
+   specs:[["Output","15,000 CFM"],["Heater","1,400W (~1,500W total draw)"],["Warm-up","45 seconds"],["Tank","External 5.6L"],["Control","LED panel + 3-pin and 5-pin DMX"],["Build","47 lb, integrated flight case"]],
+   rev:{stars:"4.5/5",count:"15 ratings",src:"Amazon",line:"Buyers praise the continuous fine mist and the tour-ready flight-case build."} },
+ { id:"fog", name:"Fog Machine", model:"CHAUVET DJ Hurricane 1800 Flex", qty:1, img:"media/gallery/gear/fog-machine.jpg", note:"Fog fluid sold separately (water-based)",
+   tag:"25,000 CFM of fog, aimed anywhere from flat to straight up.",
+   desc:"A high-output water-based fog machine whose nozzle pivots through 180 degrees: vertical bursts, angled stage cover, or floor-hugging fog. Built for clubs, big parties, and haunted-house-scale effects.",
+   works:"An electric pump pushes water-based fog fluid onto a heat-exchanger block where it flash-vaporizes into dense fog. Always Ready tech keeps the heater in range so fog is available on demand instead of cycling offline to reheat.",
+   use:["Fill the 1-gallon tank with water-based fog fluid only.","Power on and allow the ~5-minute heat-up.","Aim the nozzle anywhere in its 180-degree range and lock it.","Trigger from the included wired timer remote or DMX; it auto-shuts the pump when fluid runs low."],
+   specs:[["Output","25,000 CFM"],["Tank","1 gal · 30 mL/min consumption"],["Power","1,190W @ 120V"],["Nozzle","180° adjustable angle"],["Control","1-ch DMX + wired timer remote"],["Weight","19.6 lb"]],
+   rev:{stars:"5/5",count:"4 reviews",src:"Sweetwater",line:"Reviewers say it fills large venues, even outdoor streets, fast, while sipping fluid."} },
+ { id:"gen", name:"Generator", model:"", qty:1, img:"",
+   tag:"Power anywhere. Desert lots, backyards, raw venues.",
+   desc:"Clean power for events with nothing to plug into: desert lots, backyards, parking lots, raw venues. Pairs with our speakers, decks, and effects so the whole rig runs off-grid.",
+   works:"Gas-powered generator with standard outlets; we'll size the run plan to your gear list when we quote.",
+   use:["Tell us what you're powering and we'll confirm it all fits the generator's capacity.","Place it outdoors, away from doors and windows, never inside.","Start it before connecting loads, connect gear one piece at a time.","Refuel only while it's off and cool."],
+   specs:[["Power","Ask us for the spec sheet for your quote"]] },
+ { id:"truss", name:"30x40 ft Global Truss System", model:"Global Truss F34 box truss", qty:1, img:"media/gallery/gear/truss.jpg",
+   tag:"Festival bones. The industry-standard box truss.",
+   desc:"A full 30-by-40-foot ground-support structure in Global Truss F34, the TUV-approved box truss behind professional stage rigs worldwide. Four-point square section means it spans, towers, and takes load from any side.",
+   works:"Precision aluminum segments join with conical couplers, pins, and R-clips into rigid beams; corner towers on base plates carry the horizontal spans, all rated by published load-span tables.",
+   use:["Design the footprint and check every span against the F34 load tables.","Assemble segments on the ground: seat couplers, drive pins, clip them.","Raise the grid up the corner towers per your rigging plan.","Hang fixtures with rated clamps and steel safety cables, and inspect pins at every build."],
+   specs:[["System","Global Truss F34, 290mm square section"],["Material","EN-AW 6082 T6 aluminum"],["Certification","TUV-approved system"],["Connections","Conical couplers, pins, R-clips"],["Rating","Published load-span tables, spans to 18m"]],
+   rev:{line:"The TUV-approved industry standard for stage structures",src:"globaltruss.com"} }
+];
+
+function gearCard(g){
+  const media = g.img
+    ? `<div class="g-media"><span class="g-qty">${g.qty} available</span><img src="${g.img}" alt="${esc(g.model||g.name)}" /></div>`
+    : `<div class="g-media g-soon"><span class="g-qty">${g.qty} available</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 5 13h5l-1 9 8-11h-5z"/></svg><span>Photo coming soon</span></div>`;
+  return `<button class="gear gear-btn" data-gear="${g.id}" aria-label="Details and specs for ${esc(g.name)}">
+    ${media}
+    <h3>${esc(g.name)}</h3>
+    ${g.model?`<div class="g-model">${esc(g.model)}</div>`:""}
+    <p>${esc(g.tag)}</p>
+    ${g.note?`<span class="g-note">${esc(g.note)}</span>`:""}
+    <span class="g-more">Specs + details</span>
+  </button>`;
+}
+function renderGear(){
+  const grid=document.getElementById("gearGrid"); if(!grid) return;
+  grid.innerHTML=GEAR.map(gearCard).join("");
+  const checks=document.getElementById("gearChecks");
+  if(checks) checks.insertAdjacentHTML("beforeend",
+    GEAR.map(g=>`<label class="check"><input type="checkbox" name="equipment" value="${esc(g.name)}" /><span>${esc(g.name)}</span></label>`).join(""));
+}
+function buildGearModal(){
+  if(document.getElementById("gmModal")) return;
+  const d=document.createElement("div");
+  d.innerHTML=`<div class="gm" id="gmModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="gm-backdrop" data-gm-close></div>
+    <div class="gm-dialog"><button class="gm-close" data-gm-close aria-label="Close">✕</button><div class="gm-body" id="gmBody"></div></div>
+  </div>`;
+  document.body.appendChild(d.firstElementChild);
+}
+function openGear(id){
+  const g=GEAR.find(x=>x.id===id); if(!g) return;
+  const m=document.getElementById("gmModal"),b=document.getElementById("gmBody");
+  b.innerHTML=`
+    ${g.img?`<div class="gm-photo"><img src="${g.img}" alt="${esc(g.model||g.name)}" /></div>`:""}
+    <div class="gm-head"><h3>${esc(g.name)}</h3>${g.model?`<div class="g-model">${esc(g.model)}</div>`:""}<span class="g-qty gm-qty">${g.qty} available</span></div>
+    <p class="gm-desc">${esc(g.desc)}</p>
+    <h4>How it works</h4><p>${esc(g.works)}</p>
+    <h4>How to use it</h4><ol>${g.use.map(u=>`<li>${esc(u)}</li>`).join("")}</ol>
+    <h4>Specs</h4><dl class="gm-specs">${g.specs.map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+    ${g.rev?`<div class="gm-rev">${g.rev.stars?`<span class="gm-stars">${esc(g.rev.stars)}</span><span class="gm-count">${esc(g.rev.count)} · ${esc(g.rev.src)}</span><p>${esc(g.rev.line)}</p>`:`<p>${esc(g.rev.line)} <span class="gm-count">· ${esc(g.rev.src)}</span></p>`}</div>`:""}
+    ${g.note?`<span class="g-note">${esc(g.note)}</span>`:""}
+    <button class="btn btn-primary gm-request" data-gm-request="${esc(g.name)}">Request this item</button>`;
+  m.classList.add("open");m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+}
+function closeGear(){
+  const m=document.getElementById("gmModal"); if(!m) return;
+  m.classList.remove("open");m.setAttribute("aria-hidden","true");document.body.style.overflow="";
+}
+renderGear();buildGearModal();
+document.addEventListener("click",e=>{
+  const card=e.target.closest("[data-gear]"); if(card){ openGear(card.getAttribute("data-gear")); return; }
+  if(e.target.closest("[data-gm-close]")){ closeGear(); return; }
+  const req=e.target.closest("[data-gm-request]");
+  if(req){
+    const val=req.getAttribute("data-gm-request");
+    const box=document.querySelector(`#gearChecks input[value="${CSS.escape(val)}"]`);
+    if(box) box.checked=true;
+    closeGear();
+    const f=document.getElementById("rentForm");
+    if(f) f.scrollIntoView({behavior:"smooth",block:"center"});
+  }
+});
+addEventListener("keydown",e=>{ if(e.key==="Escape") closeGear(); });
+
 const LEADS_URL="https://social-command-center-lemon.vercel.app/api/public/leads";
 function sendLead(kind,form){
   const fd=new FormData(form), data={kind};

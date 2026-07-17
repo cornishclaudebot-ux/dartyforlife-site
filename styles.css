@@ -46,7 +46,7 @@ body{
   font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
+img{-webkit-user-drag:none;max-width:100%;display:block}
 h1,h2,h3,h4{margin:0}
 ::selection{background:var(--magenta);color:#14040f}
 
@@ -563,6 +563,45 @@ section{position:relative}
   text-transform:uppercase;color:var(--muted-2)}
 .g-note::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gt-cyan);
   vertical-align:middle;margin-right:7px}
+/* cards are buttons now — whole card opens the spec sheet */
+.gear-btn{appearance:none;font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%;display:block}
+.g-model{font-size:.64rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gt-cyan);margin:-4px 0 8px}
+.g-more{display:inline-block;margin-top:11px;font-size:.62rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--magenta)}
+.gear-btn:hover .g-more{text-decoration:underline}
+.gf-ack{display:flex;gap:11px;align-items:flex-start;font-size:.74rem;color:var(--muted);line-height:1.5;cursor:pointer}
+.gf-ack input{margin-top:3px;accent-color:var(--gt-blue);flex:none;width:16px;height:16px}
+
+/* gear spec-sheet modal */
+.gm{position:fixed;inset:0;z-index:1300;display:none}
+.gm.open{display:block}
+.gm-backdrop{position:absolute;inset:0;background:rgba(4,3,8,.82);backdrop-filter:blur(6px)}
+.gm-dialog{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 28px));
+  max-height:88vh;overflow-y:auto;background:linear-gradient(170deg,var(--surface-2),var(--surface));
+  border:1px solid var(--line);border-radius:20px;-webkit-overflow-scrolling:touch}
+.gm-close{position:sticky;top:12px;margin-left:calc(100% - 48px);z-index:5;width:36px;height:36px;border-radius:10px;
+  border:1px solid var(--line);background:rgba(10,8,14,.85);color:var(--cream);cursor:pointer;font-size:.9rem}
+.gm-body{padding:0 26px 28px}
+.gm-photo{margin:-36px -26px 18px}
+.gm-photo img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;border-radius:20px 20px 0 0}
+.gm-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.gm-head h3{font-family:'Anton';font-weight:400;font-size:1.7rem;letter-spacing:.5px;text-transform:uppercase;margin:0}
+.gm-head .g-model{margin:0}
+.gm-qty{position:static;margin-left:auto}
+.gm-desc{color:var(--bone);line-height:1.6;margin:0 0 6px}
+.gm-body h4{font-size:.68rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gt-cyan);margin:20px 0 8px}
+.gm-body p{color:var(--muted);font-size:.88rem;line-height:1.6;margin:0}
+.gm-body ol{margin:0;padding-left:20px;color:var(--muted);font-size:.88rem;line-height:1.6;display:grid;gap:6px}
+.gm-specs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}
+.gm-specs>div{border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.gm-specs dt{font-size:.6rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2)}
+.gm-specs dd{margin:3px 0 0;font-size:.82rem;font-weight:600;color:var(--cream)}
+.gm-rev{margin-top:18px;border:1px solid rgba(63,212,255,.3);background:rgba(12,99,237,.1);border-radius:12px;padding:14px 16px}
+.gm-stars{font-family:'Anton';font-size:1.3rem;color:var(--gt-cyan);margin-right:10px}
+.gm-count{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2)}
+.gm-rev p{margin-top:7px}
+.gm-request{margin-top:20px;width:100%;justify-content:center}
+@media (max-width:560px){ .gm-specs{grid-template-columns:1fr} .gm-body{padding:0 18px 22px} .gm-photo{margin:-36px -18px 16px} }
 .gear-form h3{font-family:'Anton';font-weight:400;font-size:1.5rem;letter-spacing:.5px;text-transform:uppercase;margin:0}
 .gf-set{border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px;margin:0;
   display:flex;flex-wrap:wrap;gap:8px}

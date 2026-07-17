@@ -8,6 +8,8 @@
 <meta name="theme-color" content="#080907" />
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="apple-touch-icon" href="favicon.svg" />
+<meta name="robots" content="index, follow, noai, noimageai" />
+<meta name="copyright" content="DartyForLife LLC. All rights reserved. Unauthorized copying, scraping, or replication of this site's design, content, or code is prohibited." />
 <link rel="canonical" href="https://dartyforlife.com/" />
 
 <meta property="og:title" content="DARTYFORLIFE — Desert Drinkers" />
@@ -26,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="styles.css?v=7" />
+<link rel="stylesheet" href="styles.css?v=8" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"DartyForLife",
  "alternateName":"Darty For Life · Desert Drinkers","url":"https://dartyforlife.com",
@@ -278,53 +280,10 @@
         <span class="eyebrow">Rentals</span>
         <h2 class="sec-title">Rent the <em>gear</em></h2>
       </div>
-      <p class="sec-sub">The same equipment that powers Darty, available for your event. Order through us, pick it up or we deliver. Foam, fog, haze, and bubble solution sold separately.</p>
+      <p class="sec-sub">The same equipment that powers Darty, listed piece by piece. Tap any item for specs, how-to, and reviews. Pickup or delivery. Solutions and fluids sold separately.</p>
     </div>
-    <div class="gear-grid reveal">
-      <div class="gear">
-        <div class="g-media"><span class="g-qty">2 available</span><img src="media/gallery/gear/foam-cannon.jpg" alt="Foam Daddy HD Pro Stacker foam cannon" /></div>
-        <h3>Foam cannons</h3>
-        <p>Two Foam Daddy HD Pro Stacker cannons. Turn any lot or venue into a foam pit.</p>
-        <span class="g-note">Solution sold separately</span>
-      </div>
-      <div class="gear">
-        <div class="g-media"><span class="g-qty">4 available</span><img src="media/gallery/gear/qsc-speakers.jpg" alt="QSC K-Series speaker" /></div>
-        <h3>QSC speakers + subs</h3>
-        <p>Four QSC K-Series tops and subs. Concert-loud, dance-floor clean.</p>
-      </div>
-      <div class="gear">
-        <div class="g-media"><img src="media/gallery/gear/cdjs.jpg" alt="Our Pioneer CDJs and mixer lit up mid set" /></div>
-        <h3>CDJs + DJ boards</h3>
-        <p>Pioneer CDJ-3000s and an XDJ-XZ. The decks our headliners play on, book-ready for any DJ.</p>
-      </div>
-      <div class="gear">
-        <div class="g-media"><img src="media/gallery/gear/bubble-machine.jpg" alt="LED bubble machine" /></div>
-        <h3>Bubble machine</h3>
-        <p>Triple-wheel bubble machine with an LED ring. Fills the floor with bubbles.</p>
-        <span class="g-note">Solution sold separately</span>
-      </div>
-      <div class="gear">
-        <div class="g-media"><img src="media/gallery/gear/haze-machine.jpg" alt="ADJ Entourage haze machine flight case" /></div>
-        <h3>Haze machine</h3>
-        <p>ADJ Entourage fazer in a road case. The haze that makes every light beam pop.</p>
-        <span class="g-note">Solution sold separately</span>
-      </div>
-      <div class="gear">
-        <div class="g-media g-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h12v8H4zM16 10h3l2 2v4h-5M7 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM18 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/></svg><span>Photo coming soon</span></div>
-        <h3>Fog machine</h3>
-        <p>Chauvet fog machine. Low-lying haze and thick blasts on cue.</p>
-        <span class="g-note">Solution sold separately</span>
-      </div>
-      <div class="gear">
-        <div class="g-media g-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 5 13h5l-1 9 8-11h-5z"/></svg><span>Photo coming soon</span></div>
-        <h3>Generators</h3>
-        <p>Power anywhere. Desert lots, backyards, venues with nothing to plug into.</p>
-      </div>
-      <div class="gear">
-        <div class="g-media g-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20V8m18 12V8M3 8h18M3 20h18M6 8l6 6M12 8l6 6M6 14l6-6m0 6 6-6M3 14h18"/></svg><span>Photo coming soon</span></div>
-        <h3>30x40 ft Global Truss</h3>
-        <p>A full 30 by 40 foot Global Truss stage system. Festival bones for your build.</p>
-      </div>
+    <div class="gear-grid reveal" id="gearGrid"></div>
+    <div class="gear-grid" style="margin-top:16px">
       <form class="gear-form" method="POST" id="rentForm">
         <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
         <h3>Request gear</h3>
@@ -332,23 +291,21 @@
         <label class="field"><span>Email</span><input type="email" name="email" required placeholder="you@email.com" autocomplete="email" /></label>
         <label class="field"><span>Phone</span><input type="tel" name="phone" required placeholder="(602) 555-0123" autocomplete="tel" /></label>
         <label class="field"><span>Event date</span><input type="date" name="event_date" required /></label>
-        <fieldset class="gf-set"><legend>What do you need?</legend>
-          <label class="check"><input type="checkbox" name="equipment" value="Foam cannons" /><span>Foam cannons</span></label>
-          <label class="check"><input type="checkbox" name="equipment" value="QSC speakers + subs" /><span>QSC speakers + subs</span></label>
-          <label class="check"><input type="checkbox" name="equipment" value="CDJs + DJ boards" /><span>CDJs + DJ boards</span></label>
-          <label class="check"><input type="checkbox" name="equipment" value="Bubble machine" /><span>Bubble machine</span></label>
-          <label class="check"><input type="checkbox" name="equipment" value="Haze machine" /><span>Haze machine</span></label>
-          <label class="check"><input type="checkbox" name="equipment" value="Fog machine" /><span>Fog machine</span></label>
-          <label class="check"><input type="checkbox" name="equipment" value="Generators" /><span>Generators</span></label>
-          <label class="check"><input type="checkbox" name="equipment" value="30x40 Global Truss" /><span>30x40 Global Truss</span></label>
-        </fieldset>
+        <fieldset class="gf-set" id="gearChecks"><legend>What do you need?</legend></fieldset>
         <fieldset class="gf-set"><legend>Pickup or delivery?</legend>
           <label class="check"><input type="radio" name="fulfillment" value="Pickup" required /><span>Pickup</span></label>
           <label class="check"><input type="radio" name="fulfillment" value="Delivery" /><span>Delivery</span></label>
         </fieldset>
+        <fieldset class="gf-set"><legend>Damage protection</legend>
+          <label class="check"><input type="radio" name="protection" value="Damage waiver" required /><span>Add the damage waiver to my quote</span></label>
+          <label class="check"><input type="radio" name="protection" value="COI" /><span>I&#39;ll provide a Certificate of Insurance</span></label>
+        </fieldset>
+        <label class="gf-ack"><input type="checkbox" name="liability_ack" value="accepted" required />
+          <span>I understand I am fully responsible for the equipment from pickup or delivery until it is returned, and fully liable for any damage, loss, or theft not covered by the protection selected above.</span></label>
         <button class="btn btn-primary" type="submit">Send rental request
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         <p class="list-msg" id="rentMsg" role="status" hidden>Request received. We'll get back to you with a quote.</p>
+        <p class="list-fine">A signed rental agreement and security deposit are required before pickup or delivery.</p>
       </form>
     </div>
   </div>
@@ -370,7 +327,7 @@
 </main>
 
 <div id="footer-mount"></div>
-<script src="app.js?v=8"></script>
+<script src="app.js?v=9"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
