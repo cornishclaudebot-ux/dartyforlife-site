@@ -459,21 +459,29 @@ document.addEventListener("click",e=>{
 });
 
 /* ============================================================
-   THE LIST — lead capture (Netlify Forms once deployed)
-   "Get Notified" buttons tag the signup with the event so the
-   drop-alert automation knows who to text about what.
+   THE LIST + RENTALS — lead capture straight into our own DB
+   (SCC /api/public/leads on Vercel; replaced Netlify Forms when
+   hosting moved to GitHub Pages). "Get Notified" buttons tag the
+   signup with the event so the drop automation knows who to text.
    ============================================================ */
+const LEADS_URL="https://social-command-center-lemon.vercel.app/api/public/leads";
+function sendLead(kind,form){
+  const fd=new FormData(form), data={kind};
+  for(const k of new Set(fd.keys())){
+    const all=fd.getAll(k);
+    data[k]=all.length>1?all:all[0];
+  }
+  return fetch(LEADS_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+}
 const listForm=document.getElementById("listForm");
 if(listForm){
   listForm.addEventListener("submit",e=>{
     e.preventDefault();
-    const body=new URLSearchParams(new FormData(listForm)).toString();
-    fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body}).catch(()=>{});
+    sendLead("list",listForm).catch(()=>{});
     listForm.querySelectorAll(".field, button[type=submit], .list-fine").forEach(el=>el.style.display="none");
     document.getElementById("listMsg").hidden=false;
   });
 }
-/* rentals — same Netlify pattern as The List */
 const rentForm=document.getElementById("rentForm");
 if(rentForm){
   rentForm.addEventListener("submit",e=>{
@@ -481,8 +489,10 @@ if(rentForm){
     if(!rentForm.querySelector('input[name="equipment"]:checked')){
       alert("Pick at least one piece of gear."); return;
     }
-    const body=new URLSearchParams(new FormData(rentForm)).toString();
-    fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body}).catch(()=>{});
+    // always send equipment as an array, even when only one box is ticked
+    const fd=new FormData(rentForm), data={kind:"rental",equipment:fd.getAll("equipment")};
+    for(const k of new Set(fd.keys())){ if(k!=="equipment"){ const all=fd.getAll(k); data[k]=all.length>1?all:all[0]; } }
+    fetch(LEADS_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).catch(()=>{});
     rentForm.querySelectorAll(".field, .gf-set, button[type=submit]").forEach(el=>el.style.display="none");
     document.getElementById("rentMsg").hidden=false;
   });

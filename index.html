@@ -201,8 +201,7 @@
           <li>This week's Darty Bars theme, texted to you</li>
         </ul>
       </div>
-      <form class="list-form" name="list" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="listForm">
-        <input type="hidden" name="form-name" value="list" />
+      <form class="list-form" method="POST" id="listForm">
         <input type="hidden" name="interested_event" id="interestField" />
         <p class="list-interest" id="listInterest" hidden></p>
         <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
@@ -326,8 +325,7 @@
         <h3>30x40 ft Global Truss</h3>
         <p>A full 30 by 40 foot Global Truss stage system. Festival bones for your build.</p>
       </div>
-      <form class="gear-form" name="rentals" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="rentForm">
-        <input type="hidden" name="form-name" value="rentals" />
+      <form class="gear-form" method="POST" id="rentForm">
         <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
         <h3>Request gear</h3>
         <label class="field"><span>Name</span><input type="text" name="name" required placeholder="Your name" autocomplete="name" /></label>
@@ -372,7 +370,7 @@
 </main>
 
 <div id="footer-mount"></div>
-<script src="app.js?v=7"></script>
+<script src="app.js?v=8"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
