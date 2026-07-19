@@ -23,12 +23,12 @@ jobs:
 
       - name: Commit and push if changed
         run: |
-          if git diff --quiet events.json scripts/geocache.json 2>/dev/null; then
+          if git diff --quiet events.json scripts/geocache.json counts.json 2>/dev/null; then
             echo "events.json unchanged, nothing to deploy."
           else
             git config user.name "dartyforlife-events-bot"
             git config user.email "actions@users.noreply.github.com"
-            git add events.json scripts/geocache.json
-            git commit -m "Auto-update events from Posh ($(date -u +%Y-%m-%d))"
+            git add events.json scripts/geocache.json counts.json
+            git commit -m "Auto-update events + going counts from Posh ($(date -u +%Y-%m-%d))"
             git push
           fi

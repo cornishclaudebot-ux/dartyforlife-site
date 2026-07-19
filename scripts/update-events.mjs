@@ -9,10 +9,11 @@
       venue/city/name contains "tempe" → tempe (DFL Tempe)
       everything else → bar (Darty Bars weekly)
 
-    Ticket counter: counts.json (optional, repo root) maps posh-slug → number
-    going. When present, the number is merged into that event as `sold` and
-    the site shows a live "X going" counter. Update it manually from a Posh
-    export, or wire the Posh-webhook fan-out to rewrite it automatically.
+    Ticket counter: counts.json (repo root) maps posh-slug → number going.
+    Auto-refreshed each run from our own per-sale pipeline (Posh webhook →
+    fan-out → Social Command Center → /api/public/going), merged into each
+    event as `sold`. The site also polls that endpoint directly every 60s;
+    this baked copy is the fallback so a dead endpoint never zeroes the count.
 
     Guards: exits non-zero WITHOUT touching events.json if the API is
     unreachable, the payload shape changes, or it returns zero events — a bad
@@ -36,6 +37,29 @@ if (!Array.isArray(data.events)) { console.error('Payload has no events array. A
 
 let counts = {};
 try { counts = JSON.parse(readFileSync(COUNTS, 'utf8')); } catch {}
+
+/* ---- refresh counts.json from the per-sale pipeline ----
+   Never moves a number backwards; an unreachable endpoint keeps the last
+   committed counts (same never-wipe rule as the events guard below). */
+const GOING = 'https://social-command-center-lemon.vercel.app/api/public/going';
+try {
+  const g = await fetch(GOING, { headers: { Accept: 'application/json' } });
+  const live = g.ok ? await g.json() : null;
+  if (live && Array.isArray(live.events)) {
+    const norm = (s) => String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    const byName = new Map(live.events.map((e) => [norm(e.name), Number(e.going) || 0]));
+    for (const e of data.events) {
+      if (!e || !e.url || !e.name) continue;
+      const going = byName.get(norm(e.name));
+      if (typeof going === 'number' && going > (counts[e.url] || 0)) counts[e.url] = going;
+    }
+    writeFileSync(COUNTS, JSON.stringify(counts, null, 2) + '\n');
+  } else {
+    console.warn(`going endpoint returned ${g.status}; keeping committed counts.json`);
+  }
+} catch (err) {
+  console.warn(`going endpoint unreachable (${err.message}); keeping committed counts.json`);
+}
 
 function to12h(hhmm) {
   const [h, m] = hhmm.split(':').map(Number);
