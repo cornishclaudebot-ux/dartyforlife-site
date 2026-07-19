@@ -38,20 +38,23 @@ if (!Array.isArray(data.events)) { console.error('Payload has no events array. A
 let counts = {};
 try { counts = JSON.parse(readFileSync(COUNTS, 'utf8')); } catch {}
 
-/* ---- refresh counts.json from the per-sale pipeline ----
-   Never moves a number backwards; an unreachable endpoint keeps the last
-   committed counts (same never-wipe rule as the events guard below). */
+/* ---- refresh counts.json from the going endpoint ----
+   The endpoint anchors to Posh's own totalTicketsSold, so its numbers are
+   authoritative in BOTH directions (refunds can lower a count). Matched by
+   Posh event id, name as fallback. An unreachable endpoint or a zero keeps
+   the last committed number (same never-wipe rule as the events guard). */
 const GOING = 'https://social-command-center-lemon.vercel.app/api/public/going';
 try {
   const g = await fetch(GOING, { headers: { Accept: 'application/json' } });
   const live = g.ok ? await g.json() : null;
   if (live && Array.isArray(live.events)) {
     const norm = (s) => String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    const byPid = new Map(live.events.filter((e) => e.pid).map((e) => [String(e.pid), Number(e.going) || 0]));
     const byName = new Map(live.events.map((e) => [norm(e.name), Number(e.going) || 0]));
     for (const e of data.events) {
       if (!e || !e.url || !e.name) continue;
-      const going = byName.get(norm(e.name));
-      if (typeof going === 'number' && going > (counts[e.url] || 0)) counts[e.url] = going;
+      const going = byPid.get(String(e.id || '')) ?? byName.get(norm(e.name));
+      if (typeof going === 'number' && going > 0) counts[e.url] = going;
     }
     writeFileSync(COUNTS, JSON.stringify(counts, null, 2) + '\n');
   } else {
@@ -89,6 +92,7 @@ const events = data.events
       // titles are injected via innerHTML on the site; strip anything tag-shaped
       title: e.name.replace(/[<>]/g, '').replace(/\s+/g, ' ').trim(),
       url: String(e.url),
+      pid: String(e.id || ''), // Posh event id — exact live-count matching (same-name events collide)
       venue: venue.replace(/[<>]/g, ''),
       city: addr.split(',').slice(1, 3).join(',').replace(/[<>]/g, '').trim(),
       flyer: typeof e.flyer === 'string' && e.flyer.startsWith('https://images.posh.vip/') ? e.flyer : '',

@@ -321,20 +321,24 @@ fetch("events.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{
 }).catch(()=>{});
 
 /* ============================================================
-   LIVE GOING COUNTS — per-sale, straight from our own pipeline.
-   Every Posh sale -> webhook -> fan-out -> Social Command Center DB;
-   this polls the public aggregate every 60s. Shows the max of the
-   live number and the baked one so the count never moves backwards.
+   LIVE GOING COUNTS — anchored to Posh's own number, per sale.
+   The endpoint returns Posh's public totalTicketsSold per event
+   (refunds/comps/transfers included), falling back to our
+   webhook pipeline; polled every 60s. Numbers are authoritative
+   in BOTH directions — a refund may lower a count. Zero/missing
+   means "no data" and never wipes a shown number. Events match
+   by Posh id (pid) first; name is the fallback.
    ============================================================ */
 const LIVE_GOING_URL="https://social-command-center-lemon.vercel.app/api/public/going";
 function applyLiveCounts(){
   fetch(LIVE_GOING_URL,{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
     if(!j||!Array.isArray(j.events)) return;
-    const m=new Map(j.events.map(e=>[String(e.name).trim().toLowerCase(),Number(e.going)||0]));
+    const byPid=new Map(j.events.filter(e=>e.pid).map(e=>[String(e.pid),Number(e.going)||0]));
+    const byName=new Map(j.events.map(e=>[String(e.name).trim().toLowerCase(),Number(e.going)||0]));
     let changed=false;
     EVENTS.forEach(ev=>{
-      const live=m.get(String(ev.title).trim().toLowerCase());
-      if(typeof live==="number"&&live>(ev.sold||0)){ ev.sold=live; changed=true; }
+      const live=byPid.get(String(ev.pid||""))??byName.get(String(ev.title).trim().toLowerCase());
+      if(typeof live==="number"&&live>0&&live!==(ev.sold||0)){ ev.sold=live; changed=true; }
     });
     if(changed) renderGrids();
     // live lifetime totals -> stats row (always-accurate numbers, his rule)
