@@ -565,7 +565,7 @@ const GEAR=[
    use:["Tell us what you're powering and we'll confirm it fits the wattage on your fuel of choice.","Place it outdoors on level ground, away from doors, windows, and vents. Never inside.","Push-button start, let it stabilize, then connect gear one piece at a time.","Refuel only while it's off and cool; on propane, swap tanks with the engine off."],
    specs:[["Output (gas)","7,850 starting / 6,300 running watts"],["Output (LPG / NG)","5,700W / 5,000W running"],["Engine","322cc, electric + recoil start"],["Runtime","Up to 10 hrs at 50% load, 6-gal tank"],["Outlets","120V 20A GFCI duplex, L14-30R twist-lock, TT-30R RV"],["Safety","CO Alert auto-shutdown, low-oil shutoff"],["Noise / weight","76 dB at 3/4 load · 151 lb with wheel kit"]],
    rev:{stars:"4.4/5",count:"700+ ratings",src:"Costco",line:"Owners report easy starts and enough output to run whole setups; the few gripes are noise and rare out-of-box defects Costco made right."} },
- { id:"truss", name:"30x40 ft Global Truss System", model:"Global Truss F34 box truss", qty:1, img:"",
+ { id:"truss", name:"30x40 ft Global Truss System", model:"Global Truss F34 box truss", qty:1, img:"media/gallery/gear/truss-lead.jpg", imgs:["media/gallery/gear/truss-lead.jpg","media/gallery/gear/truss-booth.jpg","media/gallery/gear/truss-corner.jpg"],
    tag:"Festival bones. The industry-standard box truss.",
    from:"Global Truss · Los Angeles, California and Karlsbad, Germany. Engineered to German TUV safety standards.",
    desc:"A full 30-by-40-foot ground-support structure in Global Truss F34, the TUV-approved box truss behind professional stage rigs worldwide. Four-point square section means it spans, towers, and takes load from any side.",
