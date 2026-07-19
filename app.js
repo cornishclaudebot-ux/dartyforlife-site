@@ -545,7 +545,7 @@ const GEAR=[
    use:["Open the case, connect the 5.6L fluid tank, and fill with water-based fluid.","Power up and give it its 45-second warm-up.","Set timer, continuous, or manual output on the LED panel, or run it from DMX.","Dial output from a subtle beam-enhancer to heavy atmosphere."],
    specs:[["Output","15,000 CFM"],["Heater","1,400W (~1,500W total draw)"],["Warm-up","45 seconds"],["Tank","External 5.6L"],["Control","LED panel + 3-pin and 5-pin DMX"],["Build","47 lb, integrated flight case"]],
    rev:{stars:"4.5/5",count:"15 ratings",src:"Amazon",line:"Buyers praise the continuous fine mist and the tour-ready flight-case build."} },
- { id:"fog", name:"Fog Machine", model:"CHAUVET DJ Hurricane 1800 Flex", qty:1, img:"media/gallery/gear/fog-machine.jpg?v=2", imgs:["media/gallery/gear/fog-machine.jpg","media/gallery/gear/fog-o4.jpg","media/gallery/gear/fog-o1.jpg","media/gallery/gear/fog-o2.jpg"], note:"Fog fluid sold separately (water-based)",
+ { id:"fog", name:"Fog Machine", model:"CHAUVET DJ Hurricane 1800 Flex", qty:1, img:"media/gallery/gear/fog-machine.jpg?v=2", imgs:["media/gallery/gear/fog-machine.jpg","media/gallery/gear/fog-o4.jpg","media/gallery/gear/fog-right.jpg","media/gallery/gear/fog-left.jpg","media/gallery/gear/fog-back.jpg","media/gallery/gear/fog-o1.jpg"], note:"Fog fluid sold separately (water-based)",
    tag:"25,000 CFM of fog, aimed anywhere from flat to straight up.",
    from:"CHAUVET DJ · Sunrise, Florida. Family-founded in 1990, now a global entertainment lighting group.",
    desc:"A high-output water-based fog machine whose nozzle pivots through 180 degrees: vertical bursts, angled stage cover, or floor-hugging fog. Built for clubs, big parties, and haunted-house-scale effects.",
