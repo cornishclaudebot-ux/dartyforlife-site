@@ -584,6 +584,10 @@ section{position:relative}
 .gm-body{padding:0 26px 28px}
 .gm-photo{margin:-36px -26px 18px}
 .gm-photo img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;border-radius:20px 20px 0 0}
+.gm-thumbs{display:flex;gap:8px;margin:-8px 0 16px;overflow-x:auto;padding-bottom:4px}
+.gm-thumbs img{width:64px;height:48px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;opacity:.65;transition:.2s;flex:none}
+.gm-thumbs img.on,.gm-thumbs img:hover{opacity:1;border-color:var(--gt-cyan)}
+.gm-from{margin:-4px 0 12px;font-size:.78rem;color:var(--muted);font-weight:600}
 .gm-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
 .gm-head h3{font-family:'Anton';font-weight:400;font-size:1.7rem;letter-spacing:.5px;text-transform:uppercase;margin:0}
 .gm-head .g-model{margin:0}
