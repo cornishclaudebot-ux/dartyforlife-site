@@ -97,6 +97,7 @@ function buildNav(){
         <a href="bars.html" class="nl-bars"${act('bars.html')}>Darty Bars</a>
         <a href="tempe.html" class="nl-tempe"${act('tempe.html')}>Tempe</a>
         <a href="${home}#relive">Highlights</a>
+        <a href="rentals.html"${act('rentals.html')}>Rentals</a>
       </div>
       <div class="nav-right">
         <div class="nav-social">
@@ -114,6 +115,7 @@ function buildNav(){
     <a href="bars.html" class="mm-bars">Darty Bars</a>
     <a href="tempe.html" class="mm-tempe">Tempe</a>
     <a href="${home}#relive">Highlights</a>
+    <a href="rentals.html">Equipment Rentals</a>
     <a class="btn btn-primary" data-tickets="org" href="${CONFIG.posh}" target="_blank" rel="noopener">Get Tickets</a>
     <div class="mm-social">
       <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
@@ -148,7 +150,7 @@ function buildFooter(){
       <div class="foot-col">
         <h5>Get In</h5>
         <a data-tickets="org" href="${CONFIG.posh}" target="_blank" rel="noopener">Tickets · Posh</a>
-        <a href="${home}#rentals">Rent our gear</a>
+        <a href="rentals.html">Rent our gear</a>
         <a href="${CONFIG.ig}" target="_blank" rel="noopener">Instagram</a>
         <a href="${CONFIG.tt}" target="_blank" rel="noopener">TikTok</a>
         <a href="mailto:${CONFIG.email}">${CONFIG.email}</a>

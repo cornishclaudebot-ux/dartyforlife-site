@@ -272,45 +272,6 @@
   </div>
 </section>
 
-<!-- ===================== EQUIPMENT RENTALS ===================== -->
-<section id="rentals">
-  <div class="wrap">
-    <div class="sec-head row reveal">
-      <div>
-        <span class="eyebrow">Rentals</span>
-        <h2 class="sec-title">Rent the <em>gear</em></h2>
-      </div>
-      <p class="sec-sub">The same equipment that powers Darty, listed piece by piece. Tap any item for specs, how-to, and reviews. Pickup or delivery. Solutions and fluids sold separately.</p>
-    </div>
-    <div class="gear-grid reveal" id="gearGrid"></div>
-    <div class="gear-grid" style="margin-top:16px">
-      <form class="gear-form" method="POST" id="rentForm">
-        <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
-        <h3>Request gear</h3>
-        <label class="field"><span>Name</span><input type="text" name="name" required placeholder="Your name" autocomplete="name" /></label>
-        <label class="field"><span>Email</span><input type="email" name="email" required placeholder="you@email.com" autocomplete="email" /></label>
-        <label class="field"><span>Phone</span><input type="tel" name="phone" required placeholder="(602) 555-0123" autocomplete="tel" /></label>
-        <label class="field"><span>Event date</span><input type="date" name="event_date" required /></label>
-        <fieldset class="gf-set" id="gearChecks"><legend>What do you need?</legend></fieldset>
-        <fieldset class="gf-set"><legend>Pickup or delivery?</legend>
-          <label class="check"><input type="radio" name="fulfillment" value="Pickup" required /><span>Pickup</span></label>
-          <label class="check"><input type="radio" name="fulfillment" value="Delivery" /><span>Delivery</span></label>
-        </fieldset>
-        <fieldset class="gf-set"><legend>Damage protection</legend>
-          <label class="check"><input type="radio" name="protection" value="Damage waiver" required /><span>Add the damage waiver to my quote</span></label>
-          <label class="check"><input type="radio" name="protection" value="COI" /><span>I&#39;ll provide a Certificate of Insurance</span></label>
-        </fieldset>
-        <label class="gf-ack"><input type="checkbox" name="liability_ack" value="accepted" required />
-          <span>I understand I am fully responsible for the equipment from pickup or delivery until it is returned, and fully liable for any damage, loss, or theft not covered by the protection selected above.</span></label>
-        <button class="btn btn-primary" type="submit">Send rental request
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-        <p class="list-msg" id="rentMsg" role="status" hidden>Request received. We'll get back to you with a quote.</p>
-        <p class="list-fine">A signed rental agreement and security deposit are required before pickup or delivery.</p>
-      </form>
-    </div>
-  </div>
-</section>
-
 <!-- ===================== CTA BAND ===================== -->
 <section class="band">
   <div class="band-glow" aria-hidden="true"></div>
