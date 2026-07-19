@@ -1,37 +1,64 @@
-# dartyforlife.com — search engines welcome, scrapers and AI trainers are not.
+# dartyforlife.com, AI SEARCH + CITATION welcome (text), media + scrapers blocked.
+# Updated 2026-07-17: opened text pages to AI assistants so they can READ and RECOMMEND us.
+# Images (/media/) stay closed. Training-only, dataset, and resale scrapers stay blocked.
 
-# AI training / dataset crawlers
+# --- AI assistants: allowed to read and cite our pages, but not our media ---
 User-agent: GPTBot
-Disallow: /
+Disallow: /media/
+Allow: /
+
 User-agent: ChatGPT-User
-Disallow: /
+Disallow: /media/
+Allow: /
+
 User-agent: OAI-SearchBot
-Disallow: /
+Disallow: /media/
+Allow: /
+
 User-agent: ClaudeBot
-Disallow: /
-User-agent: anthropic-ai
-Disallow: /
+Disallow: /media/
+Allow: /
+
 User-agent: Claude-Web
-Disallow: /
+Disallow: /media/
+Allow: /
+
+User-agent: Claude-User
+Disallow: /media/
+Allow: /
+
+User-agent: anthropic-ai
+Disallow: /media/
+Allow: /
+
+User-agent: PerplexityBot
+Disallow: /media/
+Allow: /
+
+User-agent: Perplexity-User
+Disallow: /media/
+Allow: /
+
+User-agent: Google-Extended
+Disallow: /media/
+Allow: /
+
+User-agent: Applebot-Extended
+Disallow: /media/
+Allow: /
+
+# --- Training-only / dataset / resale scrapers: still blocked ---
 User-agent: CCBot
 Disallow: /
-User-agent: Google-Extended
-Disallow: /
-User-agent: Applebot-Extended
+User-agent: Bytespider
 Disallow: /
 User-agent: meta-externalagent
 Disallow: /
 User-agent: FacebookBot
 Disallow: /
-User-agent: Bytespider
-Disallow: /
-User-agent: PerplexityBot
-Disallow: /
-User-agent: Perplexity-User
+User-agent: Amazonbot
 Disallow: /
 User-agent: cohere-ai
-Disallow: /
-User-agent: Amazonbot
 Disallow: /
 User-agent: Diffbot
 Disallow: /
@@ -44,7 +71,7 @@ Disallow: /
 User-agent: PetalBot
 Disallow: /
 
-# generic scraping frameworks
+# --- generic scraping frameworks: blocked ---
 User-agent: Scrapy
 Disallow: /
 User-agent: HTTrack
@@ -66,7 +93,7 @@ Disallow: /
 User-agent: node-fetch
 Disallow: /
 
-# SEO scrapers (they resell your site data)
+# --- SEO scrapers (they resell your site data): blocked ---
 User-agent: AhrefsBot
 Disallow: /
 User-agent: SemrushBot
@@ -78,7 +105,7 @@ Disallow: /
 User-agent: BLEXBot
 Disallow: /
 
-# real search engines stay welcome
+# --- real search engines stay welcome ---
 User-agent: Googlebot
 Allow: /
 User-agent: Bingbot
@@ -91,3 +118,5 @@ Allow: /
 User-agent: *
 Disallow: /media/
 Allow: /
+
+Sitemap: https://dartyforlife.com/sitemap.xml
