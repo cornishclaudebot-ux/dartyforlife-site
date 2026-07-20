@@ -1,0 +1,31 @@
+{
+ "updated": "2026-07-16T03:42:27.599Z",
+ "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
+ "events": [
+  {
+   "date": "2026-07-25",
+   "time": "8:00 PM",
+   "title": "GOLDEN TEACHER",
+   "url": "golden-teacher",
+   "venue": "Stratus Event Center",
+   "city": "Phoenix, AZ 85031",
+   "flyer": "https://images.posh.vip/originals/6a3c81d0955f42fa57977681",
+   "series": "major",
+   "sold": 1846,
+   "lat": 33.4961217,
+   "lng": -112.1541374
+  },
+  {
+   "date": "2026-09-05",
+   "time": "8:00 PM",
+   "title": "SOLAR SPUR",
+   "url": "solar-spur",
+   "venue": "Stratus Event Center",
+   "city": "Phoenix, AZ 85031",
+   "flyer": "https://images.posh.vip/originals/6a582ed90912f7af73de5d35",
+   "series": "major",
+   "lat": 33.4961217,
+   "lng": -112.1541374
+  }
+ ]
+}
