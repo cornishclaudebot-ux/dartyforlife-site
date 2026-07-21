@@ -526,7 +526,7 @@ const GEAR=[
    use:["Export your library to USB with rekordbox so cues, loops, and grids travel with the drive.","Plug in, browse on the touchscreen, and load.","Link players over LAN for source sharing and beat sync.","Run the outputs into your mixer and only eject when the screen says it's safe."],
    specs:[["Display","9\" HD touchscreen"],["Audio","96 kHz / 32-bit float DAC"],["Sources","USB-A, SD, USB-B, gigabit Pro DJ Link"],["Performance","8 hot cue keys, beat jump, key sync"],["Weight","12.1 lb"]],
    rev:{stars:"4.5/5",count:"9 reviews",src:"Sweetwater",line:"Owners call it a clear step up in build, screen, and jog feel from every CDJ before it."} },
- { id:"xdj", name:"Pioneer XDJ-XZ", model:"Pioneer DJ XDJ-XZ", qty:1, img:"media/gallery/gear/xdj-front-clean.jpg?v=3", imgs:["media/gallery/gear/xdj-front-clean.jpg?v=3","media/gallery/gear/xdj-o2.jpg?v=2","media/gallery/gear/xdj-o4.jpg?v=2"],
+ { id:"xdj", name:"Pioneer XDJ-XZ", model:"Pioneer DJ XDJ-XZ", qty:1, img:"media/gallery/gear/xdj-front-clean.jpg?v=4", imgs:["media/gallery/gear/xdj-front-clean.jpg?v=4","media/gallery/gear/xdj-o2.jpg?v=2","media/gallery/gear/xdj-o4.jpg?v=2"],
    tag:"A full club booth in one console. No laptop needed.",
    from:"Pioneer DJ by AlphaTheta · Yokohama, Japan. The standard on touring DJ riders worldwide.",
    desc:"Pioneer's flagship all-in-one: two club-style decks and a 4-channel DJM-style mixer in a single console. Full-size jogs with displays, a 7-inch touchscreen, and 16 performance pads. Standalone playback runs two channels; channels 3 and 4 take external players.",
