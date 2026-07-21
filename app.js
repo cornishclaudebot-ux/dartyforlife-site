@@ -452,8 +452,14 @@ document.addEventListener("click",e=>{
   const t=e.target.closest("[data-tickets]"); if(!t) return;
   e.preventDefault();
   const slug=t.getAttribute("data-ev-url")||"";
-  if(t.getAttribute("data-tickets")==="ev"&&slug) openTickets(t.getAttribute("data-ev-title")||"Tickets",slug);
-  else window.open(CONFIG.posh,"_blank","noopener");
+  // Posh checkout can't be iframed — its CloudFront/WAF blocks embedding and
+  // returns a 403, so the old inline modal showed a dead "Request blocked"
+  // page on every event. Open the real Posh page in a new tab instead:
+  // the specific event when we have a slug, the storefront otherwise.
+  const url=(t.getAttribute("data-tickets")==="ev"&&slug)
+    ? `https://posh.vip/e/${encodeURIComponent(slug)}`
+    : CONFIG.posh;
+  window.open(url,"_blank","noopener");
 });
 
 // the whole event card is one big tap target — anywhere on it acts like its CTA
@@ -847,7 +853,7 @@ function beatEnv(tMs){ const phase=(tMs%BEAT_MS)/BEAT_MS; return Math.pow(1-phas
     if(s){
       const tryPlay=()=>{ const p=v.play(); if(p&&p.catch)p.catch(()=>{}); };
       v.addEventListener("canplay",tryPlay,{once:true});   // play() can race load(); retry when decodable
-      s.setAttribute("src","media/hero/hero-hq.mp4?v=2");
+      s.setAttribute("src","media/hero/hero-hq.mp4?v=3");
       v.load(); tryPlay();
     }
   }
