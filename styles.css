@@ -545,7 +545,7 @@ section{position:relative}
   transition:transform .3s var(--ease),border-color .3s}
 .gear:hover{transform:translateY(-4px);border-color:rgba(63,212,255,.5)}
 /* real photo on top of each card; honest Coming Soon tile until one exists */
-.g-media{position:relative;aspect-ratio:3/2;border-radius:12px;overflow:hidden;margin-bottom:16px;border:1px solid var(--line);background:#101016}
+.g-media{position:relative;aspect-ratio:3/2;border-radius:12px;overflow:hidden;margin-bottom:16px;border:1px solid var(--line);background:#fff}
 .g-media img{width:100%;height:100%;object-fit:contain;display:block}
 .g-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted-2);
   background:repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 12px,transparent 12px 24px),
@@ -582,10 +582,10 @@ section{position:relative}
 .gm-close{position:sticky;top:12px;margin-left:calc(100% - 48px);z-index:5;width:36px;height:36px;border-radius:10px;
   border:1px solid var(--line);background:rgba(10,8,14,.85);color:var(--cream);cursor:pointer;font-size:.9rem}
 .gm-body{padding:0 26px 28px}
-.gm-photo{margin:-36px -26px 18px;background:#101016;border-radius:20px 20px 0 0}
+.gm-photo{margin:-36px -26px 18px;background:#fff;border-radius:20px 20px 0 0}
 .gm-photo img{width:100%;aspect-ratio:3/2;object-fit:contain;display:block;border-radius:20px 20px 0 0}
 .gm-thumbs{display:flex;gap:8px;margin:-8px 0 16px;overflow-x:auto;padding-bottom:4px}
-.gm-thumbs img{width:64px;height:48px;object-fit:contain;background:#101016;border-radius:8px;cursor:pointer;border:2px solid transparent;opacity:.65;transition:.2s;flex:none}
+.gm-thumbs img{width:64px;height:48px;object-fit:contain;background:#fff;border-radius:8px;cursor:pointer;border:2px solid transparent;opacity:.65;transition:.2s;flex:none}
 .gm-thumbs img.on,.gm-thumbs img:hover{opacity:1;border-color:var(--gt-cyan)}
 .gm-from{margin:-4px 0 12px;font-size:.78rem;color:var(--muted);font-weight:600}
 .gm-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
