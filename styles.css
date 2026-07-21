@@ -210,6 +210,9 @@ section{position:relative}
 @keyframes neonBuzz{0%,28%,30%,61%,63%,90%,100%{opacity:1}29%{opacity:.5}62%{opacity:.42}91%,93%{opacity:.72}}
 .hero-tag{font-size:clamp(1rem,2.1vw,1.28rem);color:var(--muted);max-width:600px;margin:20px auto 4px;font-weight:400}
 .hero-tag b{color:var(--cream);font-weight:700}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px}
+.hero-actions .hero-cta{font-size:1.02rem;padding:14px 30px}
+@media(max-width:520px){.hero-actions{width:100%;max-width:360px}.hero-actions .hero-cta{flex:1 1 140px}}
 .hero-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:24px 0 8px}
 .chip{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
   padding:9px 15px;border:1px solid var(--line);border-radius:100px;color:var(--bone);background:rgba(255,255,255,.03)}

@@ -257,6 +257,19 @@ function renderNext(){
   const ev=nextMajor();
   const line=document.getElementById("nextline");
   const card=document.getElementById("nextCard");
+  // Hero "Get Tickets" points straight at the on-sale headliner (1-tap to that
+  // event's Posh checkout); falls back to the storefront when nothing's slugged.
+  const heroBtn=document.getElementById("heroTickets");
+  if(heroBtn){
+    if(ev&&ev.url){
+      heroBtn.setAttribute("data-tickets","ev");
+      heroBtn.setAttribute("data-ev-url",ev.url);
+      heroBtn.setAttribute("data-ev-title",ev.title);
+    } else {
+      heroBtn.setAttribute("data-tickets","org");
+      heroBtn.removeAttribute("data-ev-url");
+    }
+  }
   if(!ev){
     if(line) line.innerHTML="";
     if(card){ card.classList.add("in");
@@ -456,9 +469,17 @@ document.addEventListener("click",e=>{
   // returns a 403, so the old inline modal showed a dead "Request blocked"
   // page on every event. Open the real Posh page in a new tab instead:
   // the specific event when we have a slug, the storefront otherwise.
-  const url=(t.getAttribute("data-tickets")==="ev"&&slug)
-    ? `https://posh.vip/e/${encodeURIComponent(slug)}`
-    : CONFIG.posh;
+  let url;
+  if(t.getAttribute("data-tickets")==="ev"&&slug){
+    url=`https://posh.vip/e/${encodeURIComponent(slug)}`;
+  } else {
+    // Storefront buttons (nav/footer/CTA band): send buyers straight to the
+    // on-sale headliner when there is one so "Get Tickets" always means the
+    // same thing, instead of dumping them on the 104-event box office to
+    // re-hunt. Fall back to the full storefront only when nothing's on sale.
+    const nm=(typeof nextMajor==="function")?nextMajor():null;
+    url=(nm&&nm.url)?`https://posh.vip/e/${encodeURIComponent(nm.url)}`:CONFIG.posh;
+  }
   window.open(url,"_blank","noopener");
 });
 
