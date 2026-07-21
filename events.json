@@ -1,5 +1,5 @@
 {
- "updated": "2026-07-21T03:50:17.695Z",
+ "updated": "2026-07-21T06:43:32.955Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -12,7 +12,7 @@
    "city": "Phoenix, AZ 85031",
    "flyer": "https://images.posh.vip/originals/6a3c81d0955f42fa57977681",
    "series": "major",
-   "sold": 2295,
+   "sold": 2315,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
@@ -25,6 +25,19 @@
    "venue": "Stratus Event Center",
    "city": "Phoenix, AZ 85031",
    "flyer": "https://images.posh.vip/originals/6a5c1c177a9806c014e791b4",
+   "series": "major",
+   "lat": 33.4961217,
+   "lng": -112.1541374
+  },
+  {
+   "date": "2026-10-29",
+   "time": "7:00 PM",
+   "title": "FEAR FOREST",
+   "url": "fear-forest",
+   "pid": "6a46a605593de4e25f2a85f1",
+   "venue": "Stratus Event Center",
+   "city": "Phoenix, AZ 85031",
+   "flyer": "https://images.posh.vip/originals/6a46a244325127a0ee52cb15",
    "series": "major",
    "lat": 33.4961217,
    "lng": -112.1541374
