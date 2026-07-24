@@ -1,8 +1,11 @@
 name: Update events from Posh
 
+# NOTE: the scheduled pull was RETIRED 2026-07-24. Posh sits behind Cloudflare,
+# which hard-403s GitHub's datacenter IPs no matter what headers we send. The
+# real puller now runs on Aiden's Mac (residential IP that Posh allows) via the
+# launchd job com.dartyforlife.events-pull, every 30 min. This workflow stays
+# only as a manual button for the day we move the pull to an unblocked host.
 on:
-  schedule:
-    - cron: "23 * * * *" # hourly — new events + flyers go live within the hour of launch
   workflow_dispatch:
 
 permissions:
