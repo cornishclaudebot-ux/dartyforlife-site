@@ -286,12 +286,14 @@ function renderNext(){
       <div class="nm-body">
         <span class="eyebrow">Next headliner</span>
         <div class="nm-name">${esc(ev.title)}</div>
+        <p class="sr-only">${esc(ev.title)}, ${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}${ev.time?`, doors ${esc(ev.time)}`:""}${ev.venue?`, at ${esc(ev.venue)}`:""}.</p>
         <div class="nm-meta">
           <span class="mrow">${IC.cal}<b>${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</b></span>
           <span class="mrow">${IC.pin}${esc(ev.venue||"")}</span>
           ${ev.time?`<span class="mrow"><b>Doors ${esc(ev.time)}</b></span>`:""}
         </div>
-        <div class="countdown">
+        <!-- ticking digits are noise for screen readers; the sr-only line above carries the facts -->
+        <div class="countdown" aria-hidden="true">
           ${["Days","Hours","Mins","Secs"].map(l=>`<div class="cd-cell"><div class="num" data-k="${l}">--</div><div class="lab">${l}</div></div>`).join("")}
         </div>
         ${going}
