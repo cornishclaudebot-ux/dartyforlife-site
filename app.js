@@ -21,6 +21,15 @@ CONFIG.mapStratus      = "https://www.google.com/maps/search/?api=1&query=" + en
 CONFIG.mapStratusApple = "https://maps.apple.com/?q=" + encodeURIComponent(CONFIG.stratus);
 CONFIG.map44           = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.the44);
 
+/* ---- Posh conversion tracking ----
+   Every ticket link that leaves this site carries ?t=website. Posh reads that
+   param and buckets the visit + any purchase under a "website" tracking link,
+   visible per event at Team & tracking → Tracking links (page visits, tickets
+   sold, conversion rate, revenue). Pure URL param: no webhook, no stored
+   credentials, no third-party integration — it just rides the ticket URL. */
+const TRK = "website";
+const withTrk = (u) => u + (u.includes("?") ? "&" : "?") + "t=" + TRK;
+
 /* ---- inline SVG icons (no emojis) ---- */
 const IC = {
   ig:'<svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 5 5 .06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.2 3.3-1.7 4.8-5 5-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-3.3-.2-4.8-1.7-5-5C2.04 15.6 2 15.2 2 12s0-3.6.07-4.9c.2-3.3 1.7-4.8 5-5C8.4 2.2 8.8 2.2 12 2.2zm0 4.8a5 5 0 100 10 5 5 0 000-10zm0 8.2a3.2 3.2 0 110-6.4 3.2 3.2 0 010 6.4zm5.2-9.4a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/></svg>',
@@ -104,7 +113,7 @@ function buildNav(){
           <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
           <a href="${CONFIG.tt}" target="_blank" rel="noopener" aria-label="TikTok">${IC.tt}</a>
         </div>
-        <a class="btn btn-primary btn-sm" data-tickets="org" href="${CONFIG.posh}" target="_blank" rel="noopener">Get Tickets</a>
+        <a class="btn btn-primary btn-sm" data-tickets="org" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Get Tickets</a>
         <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
       </div>
     </nav>
@@ -116,7 +125,7 @@ function buildNav(){
     <a href="tempe.html" class="mm-tempe">Tempe</a>
     <a href="${home}#relive">Highlights</a>
     <a href="rentals.html">Equipment Rentals</a>
-    <a class="btn btn-primary" data-tickets="org" href="${CONFIG.posh}" target="_blank" rel="noopener">Get Tickets</a>
+    <a class="btn btn-primary" data-tickets="org" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Get Tickets</a>
     <div class="mm-social">
       <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
       <a href="${CONFIG.tt}" target="_blank" rel="noopener" aria-label="TikTok">${IC.tt}</a>
@@ -149,7 +158,7 @@ function buildFooter(){
       </div>
       <div class="foot-col">
         <h5>Get In</h5>
-        <a data-tickets="org" href="${CONFIG.posh}" target="_blank" rel="noopener">Tickets · Posh</a>
+        <a data-tickets="org" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Tickets · Posh</a>
         <a href="rentals.html">Rent our gear</a>
         <a href="${CONFIG.ig}" target="_blank" rel="noopener">Instagram</a>
         <a href="${CONFIG.tt}" target="_blank" rel="noopener">TikTok</a>
@@ -176,7 +185,7 @@ function buildModal(){
           <span class="tk-kicker">Posh · secure checkout</span>
           <h3 id="tkTitle">Tickets</h3>
         </div>
-        <a class="tk-open" id="tkOpen" href="${CONFIG.posh}" target="_blank" rel="noopener">Open ↗</a>
+        <a class="tk-open" id="tkOpen" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Open ↗</a>
         <button class="tk-close" data-close aria-label="Close checkout">✕</button>
       </div>
       <div class="tk-body" id="tkBody"></div>
@@ -438,7 +447,7 @@ const tkModal=document.getElementById("tkModal"),tkBody=document.getElementById(
       tkTitle=document.getElementById("tkTitle"),tkOpen=document.getElementById("tkOpen");
 let tkReturnTo=null;
 function openTickets(title,slug){
-  const url=slug?`https://posh.vip/e/${encodeURIComponent(slug)}`:CONFIG.posh;
+  const url=withTrk(slug?`https://posh.vip/e/${encodeURIComponent(slug)}`:CONFIG.posh);
   tkTitle.textContent=title||"All events";
   tkOpen.href=url;
   tkBody.innerHTML=`<div class="tk-load">Loading secure checkout…</div>`;
@@ -480,7 +489,7 @@ document.addEventListener("click",e=>{
     const nm=(typeof nextMajor==="function")?nextMajor():null;
     url=(nm&&nm.url)?`https://posh.vip/e/${encodeURIComponent(nm.url)}`:CONFIG.posh;
   }
-  window.open(url,"_blank","noopener");
+  window.open(withTrk(url),"_blank","noopener");   // ?t=website for conversion tracking
 });
 
 // the whole event card is one big tap target — anywhere on it acts like its CTA
@@ -900,7 +909,7 @@ function injectEventSchema(){
       "eventStatus":"https://schema.org/EventScheduled",
       "eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
       "organizer":{"@type":"Organization","name":"DartyForLife","url":"https://dartyforlife.com"},
-      "offers":{"@type":"Offer","url":ev.url?("https://posh.vip/e/"+ev.url):CONFIG.posh,"availability":"https://schema.org/InStock"}
+      "offers":{"@type":"Offer","url":withTrk(ev.url?("https://posh.vip/e/"+ev.url):CONFIG.posh),"availability":"https://schema.org/InStock"}
     };
     if(ev.flyer) o.image=[ev.flyer];
     if(v) o.location={"@type":"Place","name":ev.venue,"address":{"@type":"PostalAddress","streetAddress":v.address.split(",")[0],"addressLocality":v.city,"addressRegion":"AZ","addressCountry":"US"}};
