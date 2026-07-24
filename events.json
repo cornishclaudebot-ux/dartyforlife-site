@@ -1,5 +1,5 @@
 {
- "updated": "2026-07-21T16:45:39.454Z",
+ "updated": "2026-07-24T22:11:59.426Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -12,7 +12,7 @@
    "city": "Phoenix, AZ 85031",
    "flyer": "https://images.posh.vip/originals/6a3c81d0955f42fa57977681",
    "series": "major",
-   "sold": 2336,
+   "sold": 2346,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
@@ -24,8 +24,9 @@
    "pid": "6a54539de29866603493a256",
    "venue": "Stratus Event Center",
    "city": "Phoenix, AZ 85031",
-   "flyer": "https://images.posh.vip/originals/6a5c1c177a9806c014e791b4",
+   "flyer": "https://images.posh.vip/originals/6a619425f72394ed729603c1",
    "series": "major",
+   "sold": 6,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
@@ -39,6 +40,7 @@
    "city": "Phoenix, AZ 85031",
    "flyer": "https://images.posh.vip/originals/6a46a244325127a0ee52cb15",
    "series": "major",
+   "sold": 6,
    "lat": 33.4961217,
    "lng": -112.1541374
   }
