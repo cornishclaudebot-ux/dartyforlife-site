@@ -25,10 +25,22 @@ const API = 'https://posh.vip/api/web/v2/util/group_url/dartyforlife';
 const OUT = new URL('../events.json', import.meta.url);
 const COUNTS = new URL('../counts.json', import.meta.url);
 
+// Full browser fingerprint — Posh sits behind Cloudflare, which 403s bare
+// datacenter requests (GitHub runners). A complete header set clears the
+// basic managed check on this JSON endpoint without any third-party proxy.
 const res = await fetch(API, {
   headers: {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36',
-    'Accept': 'application/json',
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Referer': 'https://posh.vip/g/dartyforlife',
+    'Origin': 'https://posh.vip',
+    'sec-ch-ua': '"Chromium";v="126", "Google Chrome";v="126", "Not-A.Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"macOS"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
   },
 });
 if (!res.ok) { console.error(`Posh API returned ${res.status}`); process.exit(1); }
