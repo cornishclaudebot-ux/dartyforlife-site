@@ -26,38 +26,36 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
-          hb=$(curl -s -m 20 "https://dartyforlife.com/heartbeat.txt" || true)
-          echo "live heartbeat: $hb"
-          python3 - "$hb" << 'PY'
-          import sys, datetime, os, json, urllib.request
+          read_hb() { curl -s -m 20 "https://dartyforlife.com/heartbeat.txt" || true; }
+          check() { python3 -c "
+          import sys, datetime
           hb = sys.argv[1].strip()
-          stale = True
           try:
-              t = datetime.datetime.fromisoformat(hb.replace("Z", "+00:00"))
+              t = datetime.datetime.fromisoformat(hb.replace('Z', '+00:00'))
               age_h = (datetime.datetime.now(datetime.timezone.utc) - t).total_seconds() / 3600
-              stale = age_h > 30
-              print(f"heartbeat age: {age_h:.1f}h -> {'STALE' if stale else 'ok'}")
+              print(f'heartbeat age: {age_h:.1f}h', file=sys.stderr)
+              sys.exit(0 if age_h <= 30 else 1)
           except Exception as e:
-              print("heartbeat unreadable:", e)
-          if not stale:
-              sys.exit(0)
-          key = os.environ.get("RESEND_API_KEY", "")
-          if not key:
-              print("no RESEND_API_KEY secret; cannot alert"); sys.exit(0)
-          body = json.dumps({
-              "from": "DartyForLife Cloud Sentinel <rentals@apexaz.ai>",
-              "to": ["dartyforlife@gmail.com"],
-              "subject": "DFL site updates are STALE (Mac updater down)",
-              "text": ("dartyforlife.com's data heartbeat is over 30 hours old.\n\n"
-                       "The Mac that pulls from Posh has probably been asleep or offline. "
-                       "Open it, plug it in, and the updater self-heals within 5 minutes.\n\n"
-                       "The site itself is still up, serving the last good data."),
-          }).encode()
-          req = urllib.request.Request("https://api.resend.com/emails", data=body,
-              headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
-          urllib.request.urlopen(req, timeout=20)
-          print("stale alert emailed")
-          PY
+              print('heartbeat unreadable:', e, file=sys.stderr)
+              sys.exit(1)" "$1"; }
+          hb=$(read_hb)
+          if ! check "$hb"; then
+            # a mid-deploy read can race a fresh push - re-check after 90s
+            echo "first read looked stale/unreadable, retrying in 90s"
+            sleep 90
+            hb=$(read_hb)
+            if check "$hb"; then echo "recovered on retry - all good"; exit 0; fi
+            echo "STALE confirmed - alerting owner"
+            resp=$(curl -s -w "\n%{http_code}" -X POST "https://api.resend.com/emails" \
+              -H "Authorization: Bearer $RESEND_API_KEY" -H "Content-Type: application/json" \
+              -d '{"from":"DartyForLife Cloud Sentinel <rentals@apexaz.ai>","to":["dartyforlife@gmail.com"],"subject":"DFL site updates are STALE (Mac updater down)","text":"dartyforlife.com data heartbeat is over 30 hours old.\n\nThe Mac that pulls from Posh has probably been asleep or offline. Open it, plug it in, and the updater self-heals within 5 minutes.\n\nThe site itself is still up, serving the last good data."}')
+            code=$(echo "$resp" | tail -1)
+            echo "resend status: $code"
+            echo "resend body: $(echo "$resp" | sed '$d' | head -c 300)"
+            [ "$code" = "200" ] || exit 1
+          else
+            echo "heartbeat healthy"
+          fi
 
       - uses: actions/setup-node@v4
         with:
