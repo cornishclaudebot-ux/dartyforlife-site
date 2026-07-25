@@ -1,37 +1,79 @@
-name: Update events from Posh
+name: Site sentinel (cloud-side)
 
-# NOTE: the scheduled pull was RETIRED 2026-07-24. Posh sits behind Cloudflare,
-# which hard-403s GitHub's datacenter IPs no matter what headers we send. The
-# real puller now runs on Aiden's Mac (residential IP that Posh allows) via the
-# launchd job com.dartyforlife.events-pull, every 30 min. This workflow stays
-# only as a manual button for the day we move the pull to an unblocked host.
+# The Mac (residential IP) is the primary Posh puller — Posh's Cloudflare
+# 403s ALL datacenter IPs (GitHub + Vercel tested 2026-07-24), so the cloud
+# cannot pull. What the cloud CAN do reliably:
+#   1. watch the live site's pipeline heartbeat and EMAIL the owner if the
+#      Mac-side updater has been dead for >30h (alerting must not live on
+#      the machine whose death it reports)
+#   2. opportunistically try the Posh pull anyway — if Posh ever unblocks
+#      datacenter IPs this workflow silently becomes a second updater
 on:
+  schedule:
+    - cron: "17 * * * *" # hourly
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  update-events:
+  sentinel:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Heartbeat check + stale alert
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          hb=$(curl -s -m 20 "https://dartyforlife.com/heartbeat.txt" || true)
+          echo "live heartbeat: $hb"
+          python3 - "$hb" << 'PY'
+          import sys, datetime, os, json, urllib.request
+          hb = sys.argv[1].strip()
+          stale = True
+          try:
+              t = datetime.datetime.fromisoformat(hb.replace("Z", "+00:00"))
+              age_h = (datetime.datetime.now(datetime.timezone.utc) - t).total_seconds() / 3600
+              stale = age_h > 30
+              print(f"heartbeat age: {age_h:.1f}h -> {'STALE' if stale else 'ok'}")
+          except Exception as e:
+              print("heartbeat unreadable:", e)
+          if not stale:
+              sys.exit(0)
+          key = os.environ.get("RESEND_API_KEY", "")
+          if not key:
+              print("no RESEND_API_KEY secret; cannot alert"); sys.exit(0)
+          body = json.dumps({
+              "from": "DartyForLife Cloud Sentinel <rentals@apexaz.ai>",
+              "to": ["dartyforlife@gmail.com"],
+              "subject": "DFL site updates are STALE (Mac updater down)",
+              "text": ("dartyforlife.com's data heartbeat is over 30 hours old.\n\n"
+                       "The Mac that pulls from Posh has probably been asleep or offline. "
+                       "Open it, plug it in, and the updater self-heals within 5 minutes.\n\n"
+                       "The site itself is still up, serving the last good data."),
+          }).encode()
+          req = urllib.request.Request("https://api.resend.com/emails", data=body,
+              headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
+          urllib.request.urlopen(req, timeout=20)
+          print("stale alert emailed")
+          PY
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Pull latest events from Posh
-        run: node scripts/update-events.mjs
-
-      - name: Commit and push if changed
+      - name: Opportunistic Posh pull (silent on the expected 403)
         run: |
-          if git diff --quiet events.json scripts/geocache.json counts.json 2>/dev/null; then
-            echo "events.json unchanged, nothing to deploy."
+          if node scripts/update-events.mjs; then
+            if ! git diff --quiet events.json scripts/geocache.json counts.json 2>/dev/null; then
+              git config user.name "dartyforlife-events-bot"
+              git config user.email "actions@users.noreply.github.com"
+              git add events.json scripts/geocache.json counts.json
+              git commit -m "Auto-update events from Posh (cloud pull)"
+              git push
+            fi
+            echo "cloud pull WORKED - Posh unblocked datacenter IPs"
           else
-            git config user.name "dartyforlife-events-bot"
-            git config user.email "actions@users.noreply.github.com"
-            git add events.json scripts/geocache.json counts.json
-            git commit -m "Auto-update events + going counts from Posh ($(date -u +%Y-%m-%d))"
-            git push
+            echo "cloud pull blocked as expected (Posh 403s datacenter IPs) - not a failure"
           fi

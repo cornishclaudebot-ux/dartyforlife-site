@@ -74,13 +74,30 @@ if ! node scripts/update-events.mjs; then
   node scripts/update-events.mjs || mark_failure "Posh pull failed twice (see log above)"
 fi
 
+# Heartbeat: proof the whole pull->push->deploy chain works, committed at
+# most once a day. Lets the watchdog + cloud sentinel tell "quiet week, no
+# event changes" apart from "pipeline dead" without commit spam.
+hb_age_ok() {
+  [ -f heartbeat.txt ] || return 1
+  python3 -c "
+import datetime,sys
+try:
+    t=datetime.datetime.fromisoformat(open('heartbeat.txt').read().strip().replace('Z','+00:00'))
+    sys.exit(0 if (datetime.datetime.now(datetime.timezone.utc)-t).total_seconds() < 20*3600 else 1)
+except Exception: sys.exit(1)"
+}
+
 if git diff --quiet events.json scripts/geocache.json counts.json 2>/dev/null; then
-  echo "[$(ts)] no change, nothing to deploy"
-  mark_success
-  exit 0
+  if hb_age_ok; then
+    echo "[$(ts)] no change, nothing to deploy"
+    mark_success
+    exit 0
+  fi
+  echo "[$(ts)] no data change, refreshing daily heartbeat"
 fi
 
-git add events.json scripts/geocache.json counts.json
+ts > heartbeat.txt
+git add events.json scripts/geocache.json counts.json heartbeat.txt
 git -c user.name="dartyforlife-events-bot" -c user.email="actions@users.noreply.github.com" \
     commit -q -m "Auto-update events + going counts from Posh ($(date -u +"%Y-%m-%d %H:%MZ"))"
 

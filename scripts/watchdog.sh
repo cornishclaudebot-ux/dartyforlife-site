@@ -23,17 +23,17 @@ add_fail() { FAILS="${FAILS}- $1"$'\n'; }
 code=$(curl -s -o /dev/null -w "%{http_code}" -m 20 "https://dartyforlife.com/")
 [ "$code" = "200" ] || add_fail "dartyforlife.com returned $code (site down or TLS/DNS broken)"
 
-# 2. data freshness on the LIVE site
-fresh=$(curl -s -m 20 "https://dartyforlife.com/events.json" | python3 -c "
-import json,sys,datetime
+# 2. pipeline heartbeat on the LIVE site (refreshed at least daily by the
+#    puller even when no events change, so quiet weeks don't false-alarm)
+fresh=$(curl -s -m 20 "https://dartyforlife.com/heartbeat.txt" | python3 -c "
+import sys,datetime
 try:
-    d=json.load(sys.stdin)
-    upd=datetime.datetime.fromisoformat(d['updated'].replace('Z','+00:00'))
-    age=(datetime.datetime.now(datetime.timezone.utc)-upd).total_seconds()/3600
-    print('OK' if age < 26 else f'STALE {age:.0f}h')
+    t=datetime.datetime.fromisoformat(sys.stdin.read().strip().replace('Z','+00:00'))
+    age=(datetime.datetime.now(datetime.timezone.utc)-t).total_seconds()/3600
+    print('OK' if age < 30 else f'STALE {age:.0f}h')
 except Exception as e:
     print('BROKEN', e)")
-[ "$fresh" = "OK" ] || add_fail "live events.json is $fresh (auto-update chain broken - check ~/dartyforlife-site/logs/events-pull.log)"
+[ "$fresh" = "OK" ] || add_fail "live heartbeat is $fresh (auto-update chain broken - check ~/dartyforlife-site/logs/events-pull.log, and whether this Mac was asleep)"
 
 # 3. going counter
 gcode=$(curl -s -o /dev/null -w "%{http_code}" -m 20 "https://social-command-center-lemon.vercel.app/api/public/going")
