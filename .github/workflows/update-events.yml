@@ -12,6 +12,11 @@ on:
   schedule:
     - cron: "17 * * * *" # hourly
   workflow_dispatch:
+    inputs:
+      test_alert:
+        description: "Force the stale-alert email path (subject marked TEST)"
+        required: false
+        default: "no"
 
 permissions:
   contents: write
@@ -38,6 +43,16 @@ jobs:
           except Exception as e:
               print('heartbeat unreadable:', e, file=sys.stderr)
               sys.exit(1)" "$1"; }
+          if [ "${{ github.event.inputs.test_alert }}" = "yes" ]; then
+            echo "TEST MODE: proving the alert path from this runner"
+            resp=$(curl -s -w "\n%{http_code}" -X POST "https://api.resend.com/emails" \
+              -H "Authorization: Bearer $RESEND_API_KEY" -H "Content-Type: application/json" \
+              -d '{"from":"DartyForLife Cloud Sentinel <rentals@apexaz.ai>","to":["dartyforlife@gmail.com"],"subject":"TEST: cloud sentinel alert path works (ignore)","text":"This is a one-time test proving the cloud sentinel can email you from GitHub if the Mac updater ever dies. No action needed."}')
+            code=$(echo "$resp" | tail -1)
+            echo "resend status: $code"; echo "resend body: $(echo "$resp" | sed '$d' | head -c 300)"
+            [ "$code" = "200" ] || exit 1
+            exit 0
+          fi
           hb=$(read_hb)
           if ! check "$hb"; then
             # a mid-deploy read can race a fresh push - re-check after 90s
