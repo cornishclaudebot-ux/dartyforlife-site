@@ -698,13 +698,31 @@ function sendLead(kind,form){
   }
   return fetch(LEADS_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
 }
+/* Honest submits: only show "you're in" when the request actually landed.
+   If the endpoint is down, keep the form on screen and give the visitor a
+   direct fallback instead of silently losing their lead. */
+function submitHonest(form,promise,okId,hideSel){
+  const btn=form.querySelector('button[type=submit]');
+  const old=btn?btn.textContent:"";
+  if(btn){btn.disabled=true;btn.textContent="Sending…";}
+  promise.then(r=>{
+    if(!r.ok) throw new Error("bad status "+r.status);
+    form.querySelectorAll(hideSel).forEach(el=>el.style.display="none");
+    const oldErr=form.querySelector(".submit-err"); if(oldErr) oldErr.remove();
+    document.getElementById(okId).hidden=false;
+  }).catch(()=>{
+    if(btn){btn.disabled=false;btn.textContent=old;}
+    let err=form.querySelector(".submit-err");
+    if(!err){ err=document.createElement("p"); err.className="list-msg submit-err";
+      err.style.color="#ff6a5e"; form.appendChild(err); }
+    err.textContent="That didn't go through. Try again in a minute, or email contact@dartyforlife.com and we'll take care of you.";
+  });
+}
 const listForm=document.getElementById("listForm");
 if(listForm){
   listForm.addEventListener("submit",e=>{
     e.preventDefault();
-    sendLead("list",listForm).catch(()=>{});
-    listForm.querySelectorAll(".field, button[type=submit], .list-fine").forEach(el=>el.style.display="none");
-    document.getElementById("listMsg").hidden=false;
+    submitHonest(listForm,sendLead("list",listForm),"listMsg",".field, button[type=submit], .list-fine");
   });
 }
 const rentForm=document.getElementById("rentForm");
@@ -717,9 +735,8 @@ if(rentForm){
     // always send equipment as an array, even when only one box is ticked
     const fd=new FormData(rentForm), data={kind:"rental",equipment:fd.getAll("equipment")};
     for(const k of new Set(fd.keys())){ if(k!=="equipment"){ const all=fd.getAll(k); data[k]=all.length>1?all:all[0]; } }
-    fetch(LEADS_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).catch(()=>{});
-    rentForm.querySelectorAll(".field, .gf-set, button[type=submit]").forEach(el=>el.style.display="none");
-    document.getElementById("rentMsg").hidden=false;
+    const p=fetch(LEADS_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+    submitHonest(rentForm,p,"rentMsg",".field, .gf-set, button[type=submit]");
   });
 }
 
