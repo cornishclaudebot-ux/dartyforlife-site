@@ -58,6 +58,25 @@ function classify(ev){
 }
 
 /* ============================================================
+   SEGMENT — visitor personalization, privacy-light by design.
+   The ONLY input is a ?v= tag we put on our own outbound links
+   (segmented emails / ads): ?v=major | ?v=bar | ?v=tempe.
+   No tracking, no PII — the tag is just a cohort name kept in
+   localStorage so the next visit remembers. Effects: their
+   series sorts first on the home grid + one cross-sell popup.
+   ============================================================ */
+const SEG_KEY="dfl-seg", XS_KEY="dfl-xs-last";
+const store={
+  get(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(_){} }
+};
+(function captureSeg(){
+  const v=new URLSearchParams(location.search).get("v");
+  if(v && SERIES[v]) store.set(SEG_KEY,v);
+})();
+function getSeg(){ const s=store.get(SEG_KEY); return s&&SERIES[s]?s:null; }
+
+/* ============================================================
    FALLBACK EVENTS — used until events.json loads (and merged
    with it). Announced events not on Posh yet keep url:"" →
    ticket buttons open the storefront. Don't guess slugs.
@@ -242,6 +261,10 @@ function renderGrids(){
     let list=EVENTS.filter(isUpcoming);
     if(want!=="all") list=list.filter(e=>classify(e)===want);
     list.sort((a,b)=>(a.date||"").localeCompare(b.date||""));
+    // returning buyers see their own series first; sort is stable, so date
+    // order holds within each group. Mixed "all" grids only — never filters.
+    const seg=getSeg();
+    if(want==="all"&&seg) list.sort((a,b)=>(classify(b)===seg)-(classify(a)===seg));
     if(limit) list=list.slice(0,limit);
     // no mockups, ever: an empty calendar gets an honest note + a Get Notified path
     const label=want==="bar"?"Darty Bars":want==="tempe"?"DartyForLife Tempe":"DartyForLife";
@@ -340,6 +363,7 @@ fetch("events.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{
     && !fresh.some(f=>f.title.toLowerCase()===e.title.toLowerCase()));
   EVENTS=fresh.concat(keep);
   renderGrids(); renderNext(); injectEventSchema();
+  maybeXsell();   // live data may add the pitched series' first on-sale event
 }).catch(()=>{});
 
 /* ============================================================
@@ -940,8 +964,79 @@ function injectEventSchema(){
   document.head.appendChild(s);
 }
 
+/* ============================================================
+   CROSS-SELL — one popup, majors crowd <-> bar nights crowd.
+   Shows only when ALL of these hold: the visitor has a segment,
+   the pitched series has a REAL upcoming event, we're not already
+   on the pitched page, the ticket modal isn't open, and it hasn't
+   shown in the last 14 days. Copy pulls straight from the pages
+   it points at — nothing invented.
+   ============================================================ */
+const XS={
+  major:{ pitch:"bar", eyebrow:"You pull up to the big ones",
+    h:'Every week is a <em>Darty</em>',
+    body:"Headliners are once a month. Darty Bars is a themed bar night every week. Come early, get in cheap or free.",
+    cta:"See bar nights", btn:"btn-bars" },
+  bar:{ pitch:"major", eyebrow:"You pull up every week",
+    h:'Once a month, <em>thousands</em> deep',
+    body:"You know the weekly bar nights. The headliners are the full-production big ones at Stratus, and they are gone when they are gone.",
+    cta:"See headliners", btn:"btn-primary" },
+  tempe:{ pitch:"major", eyebrow:"Tempe knows the vibe",
+    h:'Once a month, <em>thousands</em> deep',
+    body:"The headliners are the full-production big ones at Stratus. One night, and gone when they are gone.",
+    cta:"See headliners", btn:"btn-primary" }
+};
+function maybeXsell(){
+  if(document.getElementById("xsModal")) return;             // once per pageview
+  const seg=getSeg(); if(!seg) return;
+  const x=XS[seg]; if(!x) return;
+  if(path===SERIES[x.pitch].page) return;                    // already exploring it
+  if(!EVENTS.some(e=>isUpcoming(e)&&classify(e)===x.pitch)) return; // nothing on sale to pitch
+  const last=Number(store.get(XS_KEY)||0);
+  if(Date.now()-last < 14*24*3600*1000) return;              // frequency cap
+  const d=document.createElement("div");
+  d.innerHTML=`
+  <div class="xs" id="xsModal" data-pitch="${x.pitch}" aria-hidden="true" role="dialog" aria-modal="true" aria-label="More DartyForLife nights">
+    <div class="xs-backdrop" data-xs-close></div>
+    <div class="xs-card">
+      <button class="xs-close" data-xs-close aria-label="Close">✕</button>
+      <span class="eyebrow">${x.eyebrow}</span>
+      <h3 class="disp xs-h">${x.h}</h3>
+      <p>${x.body}</p>
+      <div class="xs-actions">
+        <a class="btn ${x.btn}" href="${SERIES[x.pitch].page}">${x.cta} ${IC.arrow}</a>
+        <button class="btn btn-ghost btn-sm" data-xs-close>Maybe later</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.appendChild(d.firstElementChild);
+  const m=document.getElementById("xsModal");
+  let xsReturn=null;
+  const close=()=>{ m.classList.remove("open"); m.setAttribute("aria-hidden","true");
+    document.body.style.overflow=""; if(xsReturn&&xsReturn.focus)xsReturn.focus();
+    setTimeout(()=>m.remove(),320); };
+  m.addEventListener("click",e=>{ if(e.target.closest("[data-xs-close]")||e.target.classList.contains("xs-backdrop")) close(); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&m.classList.contains("open")) close(); });
+  const open=()=>{ m.classList.add("open"); m.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden"; xsReturn=document.activeElement;
+    m.querySelector(".xs-close").focus(); store.set(XS_KEY,String(Date.now())); };
+  let fired=false;
+  const fire=()=>{
+    if(fired) return;
+    // never stack on top of an open checkout — wait and retry once
+    if(tkModal&&tkModal.classList.contains("open")){ setTimeout(fire,10000); return; }
+    fired=true; open();
+  };
+  // trigger: 35% scroll depth or 7s, whichever lands first
+  const onScroll=()=>{ const sc=scrollY/(document.body.scrollHeight-innerHeight||1);
+    if(sc>0.35){ removeEventListener("scroll",onScroll); fire(); } };
+  addEventListener("scroll",onScroll,{passive:true});
+  setTimeout(fire,7000);
+}
+
 /* boot */
 renderGrids();
 renderNext();
 injectEventSchema();
 observeReveals();
+maybeXsell();
