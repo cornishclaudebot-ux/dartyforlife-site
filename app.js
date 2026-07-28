@@ -1034,6 +1034,43 @@ function maybeXsell(){
   setTimeout(fire,7000);
 }
 
+/* ============================================================
+   CONCIERGE ISLAND — the OpenClaw widget (chat + fan poll),
+   embedded as a fully ISOLATED cross-origin iframe: sandboxed,
+   different origin, so nothing inside it can ever read or touch
+   this page's DOM, storage, or forms. Lazy-mounted: the iframe
+   does not exist until the launcher is tapped. The only inbound
+   channel is a postMessage close signal, origin-checked.
+   ============================================================ */
+const ISLAND_ORIGIN="https://openclaw-api.netlify.app";
+(function buildIsland(){
+  const CHAT_IC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a8 8 0 0 1-8 8H4l2.2-2.6A8 8 0 1 1 21 12z"/></svg>';
+  const btn=document.createElement("button");
+  btn.id="islandBtn"; btn.type="button";
+  btn.setAttribute("aria-label","Ask Darty: chat and fan poll");
+  btn.setAttribute("aria-expanded","false");
+  btn.innerHTML=CHAT_IC+"<span>Ask Darty</span>";
+  document.body.appendChild(btn);
+  let panel=null;
+  function close(){ if(panel){ panel.remove(); panel=null; btn.setAttribute("aria-expanded","false"); } }
+  btn.addEventListener("click",()=>{
+    if(panel) return close();
+    panel=document.createElement("div");
+    panel.id="islandPanel";
+    const f=document.createElement("iframe");
+    f.src=`${ISLAND_ORIGIN}/embed.html?brand=darty`;
+    f.title="Darty Concierge: chat and fan poll";
+    f.setAttribute("sandbox","allow-scripts allow-same-origin allow-popups");
+    f.setAttribute("referrerpolicy","strict-origin");
+    panel.appendChild(f);
+    document.body.appendChild(panel);
+    btn.setAttribute("aria-expanded","true");
+  });
+  addEventListener("message",e=>{
+    if(e.origin===ISLAND_ORIGIN && e.data && e.data.type==="dfl-island-close") close();
+  });
+})();
+
 /* boot */
 renderGrids();
 renderNext();
