@@ -1,5 +1,5 @@
 {
- "updated": "2026-07-29T22:56:55.765Z",
+ "updated": "2026-07-30T17:58:50.567Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -12,7 +12,7 @@
    "city": "Phoenix, AZ 85031",
    "flyer": "https://images.posh.vip/originals/6a619425f72394ed729603c1",
    "series": "major",
-   "sold": 38,
+   "sold": 39,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
@@ -26,7 +26,7 @@
    "city": "Phoenix, AZ 85031",
    "flyer": "https://images.posh.vip/originals/6a46a244325127a0ee52cb15",
    "series": "major",
-   "sold": 9,
+   "sold": 10,
    "lat": 33.4961217,
    "lng": -112.1541374
   }
