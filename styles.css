@@ -732,7 +732,7 @@ body.theme-bars{
 .theme-bars .grain{opacity:.07}
 .pt-bars{position:relative;min-height:96svh;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
   text-align:center;padding:170px 22px 54px;overflow:hidden;
-  background:#0b0705 url('media/brand/darty-bars-neon.jpg') center 58%/cover no-repeat}
+  background:#0b0705 url('media/brand/darty-bars-neon.jpg') center 44%/cover no-repeat}
 .pt-bars::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(11,7,5,.6) 0%,transparent 26%,transparent 62%,rgba(11,7,5,.9) 84%,#0b0705 100%)}
 .theme-bars .marquee{background:var(--bars);color:#fff}
