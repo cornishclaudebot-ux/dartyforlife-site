@@ -15,11 +15,13 @@ const CONFIG = {
   fb:      "https://facebook.com/dartyforlife",
   email:   "contact@dartyforlife.com",
   stratus: "4344 W Indian School Rd, Phoenix, AZ 85031",
-  the44:   "4494 W Peoria Ave, Glendale, AZ 85302"
+  the44:   "4494 W Peoria Ave, Glendale, AZ 85302",
+  rack:    "3636 N Scottsdale Rd, Scottsdale, AZ 85251"
 };
 CONFIG.mapStratus      = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.stratus);
 CONFIG.mapStratusApple = "https://maps.apple.com/?q=" + encodeURIComponent(CONFIG.stratus);
 CONFIG.map44           = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.the44);
+CONFIG.mapRack         = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.rack);
 
 /* ---- Posh conversion tracking ----
    Every ticket link that leaves this site carries ?t=website. Posh reads that
@@ -49,10 +51,15 @@ const SERIES = {
   bar:  { label:"Darty Bars", page:"bars.html"   },
   tempe:{ label:"Tempe",      page:"tempe.html"  }
 };
+/* The Rack is the ASU lane's home bar, so it routes to tempe even though the
+   address is Scottsdale. Matched on the VENUE field with a word boundary: a
+   loose "rack" also matches "track" in a title or a Spotify link. */
+const TEMPE_VENUE = /\brack\b/;
 function classify(ev){
   const hay = ((ev.venue||"") + " " + (ev.city||"") + " " + (ev.title||"")).toLowerCase();
   if(ev.series) return ev.series;                    // explicit wins
   if(hay.includes("stratus")) return "major";
+  if(TEMPE_VENUE.test((ev.venue||"").toLowerCase())) return "tempe";
   if(hay.includes("tempe"))   return "tempe";
   return "bar";
 }
@@ -363,6 +370,7 @@ fetch("events.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{
     && !fresh.some(f=>f.title.toLowerCase()===e.title.toLowerCase()));
   EVENTS=fresh.concat(keep);
   renderGrids(); renderNext(); injectEventSchema();
+  document.dispatchEvent(new CustomEvent("dfl:events"));  // map rebuilds its tour
   maybeXsell();   // live data may add the pitched series' first on-sale event
 }).catch(()=>{});
 
@@ -433,7 +441,8 @@ buildNav(); buildFooter(); buildModal();
 document.querySelectorAll("[data-cfg]").forEach(el=>{
   const k=el.getAttribute("data-cfg");
   const map={ig:CONFIG.ig,tt:CONFIG.tt,fb:CONFIG.fb,posh:CONFIG.posh,
-    mapStratus:CONFIG.mapStratus,mapStratusApple:CONFIG.mapStratusApple,map44:CONFIG.map44};
+    mapStratus:CONFIG.mapStratus,mapStratusApple:CONFIG.mapStratusApple,map44:CONFIG.map44,
+    mapRack:CONFIG.mapRack};
   if(k in map) el.href=map[k];
   if((k==="ig"||k==="tt"||k==="fb")&&!el.innerHTML.trim()) el.innerHTML=IC[k];
 });
@@ -805,6 +814,27 @@ applyInterest();
 })();
 
 /* ============================================================
+   HOME VENUE CARD — the whole card taps through to directions in
+   whatever maps app fits the device. Same rule as the tour map:
+   auto-pick the destination, never offer a choice of buttons.
+   ============================================================ */
+(function(){
+  const cards=document.querySelectorAll("[data-venue]");
+  if(!cards.length) return;
+  const prefersApple=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+  cards.forEach(card=>{
+    const q=encodeURIComponent(card.getAttribute("data-venue"));
+    const url=prefersApple ? `https://maps.apple.com/?q=${q}`
+                           : `https://www.google.com/maps/search/?api=1&query=${q}`;
+    const go=()=>window.open(url,"_blank","noopener");
+    card.addEventListener("click",go);
+    card.addEventListener("keydown",e=>{
+      if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); }
+    });
+  });
+})();
+
+/* ============================================================
    VISIT MAP — touring fly-over of every upcoming venue.
    Starts at the NEXT event's venue, then Leaflet flyTo (which
    zooms out and back in) to each other upcoming venue in date
@@ -815,8 +845,10 @@ applyInterest();
 (function(){
   const VENUE_COORDS=[
     { match:"stratus", c:[33.4976074,-112.1528054] },
-    { match:"the 44",  c:[33.5831282,-112.1552594] }
+    { match:"the 44",  c:[33.5831282,-112.1552594] },
+    { match:"rack",    c:[33.4903260,-111.9264701] }
   ];
+  const coordOf = m => (VENUE_COORDS.find(k=>k.match===m)||{}).c;
   function coordsFor(ev){
     if(typeof ev.lat==="number"&&typeof ev.lng==="number") return [ev.lat,ev.lng];
     const v=((ev.venue||"")+" "+(ev.city||"")).toLowerCase();
@@ -827,27 +859,34 @@ applyInterest();
     if(typeof L==="undefined") return;
     const el=document.getElementById("themap"); if(!el) return;
 
-    // tour stops: upcoming events with known coords, date order, unique venues
-    const ups=EVENTS.filter(isUpcoming).sort((a,b)=>(a.date||"").localeCompare(b.date||""));
-    const stops=[], seenV=new Set();
-    ups.forEach(ev=>{
-      const c=coordsFor(ev); if(!c) return;
-      const key=(ev.venue||"").toLowerCase(); if(!key||seenV.has(key)) return;
-      seenV.add(key);
-      stops.push({ c, venue:ev.venue, city:ev.city||"", ev });
-    });
-    // The 44 is the Darty Bars home base — keep it on the tour even before
-    // the week's bar night hits Posh
-    if(![...seenV].some(v=>v.includes("44")))
-      stops.push({ c:VENUE_COORDS[1].c, venue:"The 44", city:"Glendale, AZ 85302", ev:null, label:"Darty Bars · every week" });
-    if(!stops.length) stops.push({ c:VENUE_COORDS[0].c, venue:"Stratus Event Center", city:"Phoenix, AZ 85031", ev:null });
+    /* Tour stops: upcoming events with known coords, date order, unique venues.
+       Built lazily when the map scrolls into view, NOT at load — events.json
+       merges asynchronously, so building here at load time would tour the
+       baked fallback list and miss every live Posh night. */
+    let stops=[];
+    function buildStops(){
+      const ups=EVENTS.filter(isUpcoming).sort((a,b)=>(a.date||"").localeCompare(b.date||""));
+      const out=[], seenV=new Set();
+      ups.forEach(ev=>{
+        const c=coordsFor(ev); if(!c) return;
+        const key=(ev.venue||"").toLowerCase(); if(!key||seenV.has(key)) return;
+        seenV.add(key);
+        out.push({ c, venue:ev.venue, city:ev.city||"", ev });
+      });
+      // Each weekly series keeps its home venue on the tour even before that
+      // week's night hits Posh: The 44 for Darty Bars, The Rack for Tempe.
+      if(![...seenV].some(v=>v.includes("44")))
+        out.push({ c:coordOf("the 44"), venue:"The 44", city:"Glendale, AZ 85302", ev:null, label:"Darty Bars · every week" });
+      if(![...seenV].some(v=>v.includes("rack")))
+        out.push({ c:coordOf("rack"), venue:"Rack Scottsdale", city:"Scottsdale, AZ 85251", ev:null, label:"DartyForLife Tempe · Thursdays" });
+      if(!out.length) out.push({ c:coordOf("stratus"), venue:"Stratus Event Center", city:"Phoenix, AZ 85031", ev:null });
+      return out;
+    }
 
     const map=L.map(el,{zoomControl:false,attributionControl:false,scrollWheelZoom:false,dragging:false,
       doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false}).setView([33.52,-112.10],10);
     L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:19,subdomains:"abcd"}).addTo(map);
     const icon=L.divIcon({className:"dfl-marker",html:'<span class="bm-ping"></span><svg viewBox="0 0 24 34" width="30" height="42"><path d="M12 0C5.9 0 1 4.9 1 11c0 7.7 9.6 21.3 10 21.9.2.3.6.3.8 0C12.4 32.3 23 18.7 23 11 23 4.9 18.1 0 12 0z" fill="#ff2bd6" stroke="#14040f" stroke-width="1.4"/><circle cx="12" cy="11" r="4" fill="#14040f"/></svg>',iconSize:[30,42],iconAnchor:[15,40]});
-    stops.forEach(s=>L.marker(s.c,{icon}).addTo(map));
-
     // past host venues — dim pins that show the footprint without joining the tour
     const PAST_VENUES=[
       { name:"The Duce",                c:[33.4423306,-112.0736119] },
@@ -855,10 +894,15 @@ applyInterest();
       { name:"Dink & Dine Pickle Park", c:[33.4353888,-111.8661161] }
     ];
     const pastIcon=L.divIcon({className:"dfl-marker-past",html:'<svg viewBox="0 0 24 34" width="20" height="28"><path d="M12 0C5.9 0 1 4.9 1 11c0 7.7 9.6 21.3 10 21.9.2.3.6.3.8 0C12.4 32.3 23 18.7 23 11 23 4.9 18.1 0 12 0z" fill="rgba(255,43,214,.4)" stroke="#14040f" stroke-width="1.4"/><circle cx="12" cy="11" r="4" fill="#14040f"/></svg>',iconSize:[20,28],iconAnchor:[10,26]});
-    PAST_VENUES.forEach(v=>{
-      if(!stops.some(s=>(s.venue||"").toLowerCase().includes(v.name.toLowerCase().slice(0,8))))
-        L.marker(v.c,{icon:pastIcon,title:v.name}).addTo(map);
-    });
+    const pinLayer=L.layerGroup().addTo(map);
+    function placeMarkers(){
+      pinLayer.clearLayers();
+      stops.forEach(s=>L.marker(s.c,{icon}).addTo(pinLayer));
+      PAST_VENUES.forEach(v=>{
+        if(!stops.some(s=>(s.venue||"").toLowerCase().includes(v.name.toLowerCase().slice(0,8))))
+          L.marker(v.c,{icon:pastIcon,title:v.name}).addTo(pinLayer);
+      });
+    }
 
     const nameEl=document.querySelector(".map-card .mc-name");
     const addrEl=document.querySelector(".map-card .mc-addr");
@@ -881,11 +925,21 @@ applyInterest();
 
     let idx=-1, timer=null, started=false;
     function goTo(i){
+      if(!stops.length) return;
       idx=((i%stops.length)+stops.length)%stops.length;
       const s=stops[idx];
       setCard(s);
       // flyTo naturally zooms out and back in between distant points
       map.flyTo(s.c,15,{duration:3.4,easeLinearity:.2});
+    }
+    /* Pins render immediately from whatever we have, then rebuild when
+       events.json merges — the fetch resolves after load, so a build-once
+       map would tour the baked fallback and miss every live Posh night. */
+    function refresh(){
+      stops=buildStops();
+      placeMarkers();
+      if(started){ idx=-1; goTo(0); }
+      else if(stops.length) setCard(stops[0]);
     }
     function startTour(){
       if(started) return; started=true;
@@ -895,6 +949,8 @@ applyInterest();
         if(stops.length>1) timer=setInterval(()=>goTo(idx+1),9500);
       },140);
     }
+    refresh();                                       // pins + card from what we have now
+    document.addEventListener("dfl:events",refresh); // and again once Posh data lands
     if("IntersectionObserver" in window){
       const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){startTour();ob.disconnect();}}),{threshold:.3});
       ob.observe(document.getElementById("visit-map"));
@@ -940,7 +996,9 @@ function injectEventSchema(){
   const old=document.getElementById("evschema"); if(old) old.remove();
   const VENUES={
     "stratus event center":{address:"4344 W Indian School Rd, Phoenix, AZ 85031",city:"Phoenix"},
-    "the 44":{address:"4494 W Peoria Ave, Glendale, AZ 85302",city:"Glendale"}
+    "the 44":{address:"4494 W Peoria Ave, Glendale, AZ 85302",city:"Glendale"},
+    "the 44 live music bar":{address:"4494 W Peoria Ave, Glendale, AZ 85302",city:"Glendale"},
+    "rack scottsdale":{address:"3636 N Scottsdale Rd, Scottsdale, AZ 85251",city:"Scottsdale"}
   };
   const items=EVENTS.filter(isUpcoming).filter(e=>e.date).map(ev=>{
     const v=VENUES[(ev.venue||"").toLowerCase()];

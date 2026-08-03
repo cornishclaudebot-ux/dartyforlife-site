@@ -6,8 +6,9 @@
 
     Series classification (mirrors app.js):
       venue/name contains "stratus" → major (monthly headliners)
+      venue is The Rack → tempe (the ASU lane's home bar, Old Town Scottsdale)
       venue/city/name contains "tempe" → tempe (DFL Tempe)
-      everything else → bar (Darty Bars weekly)
+      everything else → bar (Darty Bars weekly, home base The 44)
 
     Ticket counter: counts.json (repo root) maps posh-slug → number going.
     Auto-refreshed each run from our own per-sale pipeline (Posh webhook →
@@ -80,9 +81,12 @@ function to12h(hhmm) {
   const [h, m] = hhmm.split(':').map(Number);
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
 }
+// Venue-scoped with a word boundary: a loose "rack" also matches "track".
+const TEMPE_VENUE = /\brack\b/;
 function classify(e) {
   const hay = `${e.venue || ''} ${e.city || ''} ${e.title || ''}`.toLowerCase();
   if (hay.includes('stratus')) return 'major';
+  if (TEMPE_VENUE.test((e.venue || '').toLowerCase())) return 'tempe';
   if (hay.includes('tempe')) return 'tempe';
   return 'bar';
 }
