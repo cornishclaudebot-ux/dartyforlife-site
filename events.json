@@ -1,7 +1,20 @@
 {
- "updated": "2026-08-03T17:08:36.793Z",
+ "updated": "2026-08-03T18:04:12.652Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
+  {
+   "date": "2026-08-20",
+   "time": "9:00 PM",
+   "title": "Rack OldTown",
+   "url": "rack-oldtown",
+   "pid": "6a70d5305680fe48141212f0",
+   "venue": "Rack Scottsdale",
+   "city": "Scottsdale, AZ 85251",
+   "flyer": "https://images.posh.vip/originals/6a70d5231d48dc7c6c609ef3",
+   "series": "bar",
+   "lat": 33.4911184,
+   "lng": -111.9324351
+  },
   {
    "date": "2026-09-01",
    "time": "9:00 PM",
