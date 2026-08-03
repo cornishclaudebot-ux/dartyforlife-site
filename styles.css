@@ -960,6 +960,61 @@ body.theme-tempe{
 .btn-asu:hover{transform:translateY(-2px);box-shadow:0 12px 36px -8px rgba(255,198,39,.85)}
 
 /* ============================================================
+   SCROLL PERFORMANCE — backdrop-filter is the single most expensive
+   thing on this page: every blurred element forces the compositor to
+   re-sample what is behind it on each frame. Fine for one or two fixed
+   chips, bad when repeated down a scrolling list on a phone GPU.
+
+   So on touch devices we keep the real blur ONLY where it is a
+   deliberate hero moment and there is exactly one of it (the hero tab
+   bar, the headliner chip, the floating island). Everything that
+   repeats or scrolls keeps the glass LOOK, which comes from the rim,
+   the tint and the specular, and drops the blur, which nobody can see
+   on a 40px button anyway.
+   ============================================================ */
+@media (hover:none){
+  .btn,.ev .ev-cta,.fchip,.pill,.date-chip,.map-card,.mobile-menu{
+    -webkit-backdrop-filter:none !important;backdrop-filter:none !important}
+  /* compensate: the fill carries a touch more weight without the blur */
+  .btn{background:linear-gradient(180deg,rgba(var(--tint),.42),rgba(var(--tint),.26))}
+  .ev .ev-cta{background:linear-gradient(180deg,rgba(var(--tint),.66),rgba(var(--tint),.46))}
+  /* the cursor spotlight is meaningless without a cursor and it composites
+     a 640px blended layer every frame */
+  .spotlight{display:none}
+}
+/* keep the grain from promoting a full-viewport layer above everything
+   while the page moves */
+.grain{will-change:auto;contain:strict}
+/* long lists: let the browser skip work for cards that are off-screen */
+.event-grid>.ev,.photo-grid img,.reel{content-visibility:auto}
+.event-grid>.ev{contain-intrinsic-size:auto 420px}
+
+/* ---------- legal / privacy page ---------- */
+.legal{padding:10px 26px 90px}
+.legal .wrap{max-width:820px}
+.legal h2{font-family:'Anton','Impact',sans-serif;font-weight:400;letter-spacing:.5px;text-transform:uppercase;
+  font-size:1.35rem;color:var(--cream);margin:38px 0 12px}
+.legal p{color:var(--muted);line-height:1.7;margin:0 0 14px}
+.legal p a{color:var(--gt-cyan);text-decoration:underline;text-underline-offset:3px}
+.legal code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;color:var(--cream);
+  background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+.legal-updated{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2)}
+.legal-note{font-size:.88rem;color:var(--muted-2)}
+.legal-table{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:6px 0 16px}
+.lt-row{display:grid;grid-template-columns:.8fr 2.2fr .6fr;gap:14px;padding:13px 16px;border-bottom:1px solid var(--line-2)}
+.lt-row:last-child{border-bottom:0}
+.lt-head{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
+  background:rgba(255,255,255,.03)}
+.lt-row span{color:var(--muted);font-size:.9rem;line-height:1.55}
+.foot-bottom a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.foot-bottom a:hover{color:var(--cream)}
+@media (max-width:640px){
+  .lt-row{grid-template-columns:1fr;gap:4px}
+  .lt-head{display:none}
+  .lt-row span:first-child{color:var(--cream);font-weight:700}
+}
+
+/* ============================================================
    RESPONSIVE — iPhone-first checks
    ============================================================ */
 @media (max-width:1100px){

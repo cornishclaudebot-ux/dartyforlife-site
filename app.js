@@ -32,6 +32,81 @@ CONFIG.mapRack         = "https://www.google.com/maps/search/?api=1&query=" + en
 const TRK = "website";
 const withTrk = (u) => u + (u.includes("?") ? "&" : "?") + "t=" + TRK;
 
+/* ============================================================
+   TRACKING — cookies, first-party attribution, Meta pixel.
+
+   1. dfl_vid   a random visitor id, 1st-party, 2 years.
+   2. dfl_first first-touch source (utm / referrer / t= tag) + landing page
+                + timestamp, written ONCE and never overwritten, so a lead
+                is credited to the ad that actually found them, not the
+                last page they happened to be on.
+   3. Meta pixel 1677287853642495 ("Club Pixel", the DartyForLife ad
+      account's own — Foam Nation's pixel deliberately stays off this site
+      per the audience-separation rule). It sets _fbp/_fbc, which is what
+      makes site visitors retargetable and feeds the existing Custom
+      Audiences + Lookalikes on act_1800256557597640.
+
+   Honors Global Privacy Control and Do Not Track: if a visitor's browser
+   sends either, the Meta pixel never loads and only the first-party id is
+   kept. See privacy.html.
+   ============================================================ */
+const COOKIE_DAYS=730;
+function setCookie(k,v,days){
+  try{
+    const d=new Date(Date.now()+days*864e5);
+    document.cookie=`${k}=${encodeURIComponent(v)};expires=${d.toUTCString()};path=/;SameSite=Lax`+
+      (location.protocol==="https:"?";Secure":"");
+  }catch(_){}
+}
+function getCookie(k){
+  try{
+    return document.cookie.split("; ").reduce((a,c)=>{
+      const i=c.indexOf("="); return c.slice(0,i)===k?decodeURIComponent(c.slice(i+1)):a;
+    },"");
+  }catch(_){ return ""; }
+}
+const privacyOptOut = (navigator.globalPrivacyControl===true) ||
+                      navigator.doNotTrack==="1" || window.doNotTrack==="1";
+
+const TRACK=(function(){
+  let vid=getCookie("dfl_vid");
+  if(!vid){
+    vid=(crypto&&crypto.randomUUID)?crypto.randomUUID()
+        :Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+  }
+  setCookie("dfl_vid",vid,COOKIE_DAYS);                 // refresh the window on every visit
+
+  // first touch wins: only written when the cookie is empty
+  let first=getCookie("dfl_first");
+  if(!first){
+    const q=new URLSearchParams(location.search);
+    const src=q.get("utm_source")||q.get("t")||
+      (document.referrer?(function(){try{return new URL(document.referrer).hostname;}catch(_){return "";}})():"")||"direct";
+    first=JSON.stringify({src,
+      medium:q.get("utm_medium")||"",campaign:q.get("utm_campaign")||"",
+      seg:q.get("v")||"",landing:location.pathname,ts:new Date().toISOString().slice(0,10)});
+    setCookie("dfl_first",first,COOKIE_DAYS);
+  }
+  let firstObj={}; try{ firstObj=JSON.parse(first)||{}; }catch(_){}
+  return { vid, first:firstObj };
+})();
+
+(function metaPixel(){
+  if(privacyOptOut) return;                       // respect GPC / DNT
+  const ID="1677287853642495";
+  /* eslint-disable */
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  /* eslint-enable */
+  window.fbq('init',ID);
+  window.fbq('track','PageView');
+})();
+// fbq is only present when tracking is allowed, so every call goes through this
+function track(ev,params){ try{ if(window.fbq) window.fbq('track',ev,params||{}); }catch(_){} }
+
 /* ---- HEAD COUNTS ("X going") — OFF ----
    Aiden's call 2026-08-03: no head counts anywhere on the site until he says
    to turn them on. This ONE switch controls all of them: the per-event card
@@ -201,7 +276,7 @@ function buildFooter(){
     </div>
     <div class="foot-bottom">
       <span>© <span id="year"></span> DartyForLife · Desert Drinkers · Phoenix, AZ · All rights reserved. Site design, content, and code are proprietary; copying or scraping is prohibited.</span>
-      <span>Ages 18 &amp; over to enter · 21 &amp; over to drink · Please party responsibly.</span>
+      <span>Ages 18 &amp; over to enter · 21 &amp; over to drink · Please party responsibly. · <a href="privacy.html">Privacy &amp; cookies</a></span>
     </div>
   </footer>`;
   document.getElementById("year").textContent=new Date().getFullYear();
@@ -562,6 +637,10 @@ document.addEventListener("click",e=>{
     const nm=(typeof nextMajor==="function")?nextMajor():null;
     url=(nm&&nm.url)?`https://posh.vip/e/${encodeURIComponent(nm.url)}`:CONFIG.posh;
   }
+  // Posh checkout happens off-site, so this click is the last thing we can
+  // observe. Fire it as the conversion signal Meta optimises against.
+  track("InitiateCheckout",{content_name:t.getAttribute("data-ev-title")||"storefront",
+                            content_category:"tickets"});
   window.open(withTrk(url),"_blank","noopener");   // ?t=website for conversion tracking
 });
 
@@ -769,6 +848,14 @@ function sendLead(kind,form){
     const all=fd.getAll(k);
     data[k]=all.length>1?all:all[0];
   }
+  // carry attribution so every signup is credited to the source that found them
+  data.visitor_id   = TRACK.vid;
+  data.first_source = TRACK.first.src || "";
+  data.first_medium = TRACK.first.medium || "";
+  data.first_campaign = TRACK.first.campaign || "";
+  data.first_landing  = TRACK.first.landing || "";
+  data.first_seen     = TRACK.first.ts || "";
+  track("Lead",{content_category:kind});
   return fetch(LEADS_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
 }
 /* Honest submits: only show "you're in" when the request actually landed.
