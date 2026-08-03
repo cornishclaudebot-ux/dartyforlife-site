@@ -76,7 +76,13 @@ const TRACK=(function(){
   }
   setCookie("dfl_vid",vid,COOKIE_DAYS);                 // refresh the window on every visit
 
-  // first touch wins: only written when the cookie is empty
+  /* First touch wins, but the cookie must be REWRITTEN every visit, not just
+     created. Browsers cap JS-set cookies (400 days generally, 7 days under
+     Safari ITP — which is exactly where Instagram in-app traffic lives), so a
+     write-once cookie quietly expires and the next pageview re-derives first
+     touch from document.referrer, i.e. our own hostname. That turns a real
+     paid campaign into a self-referral while dfl_vid survives, so the damage
+     is invisible downstream. Re-stamping the same value keeps it alive. */
   let first=getCookie("dfl_first");
   if(!first){
     const q=new URLSearchParams(location.search);
@@ -85,10 +91,12 @@ const TRACK=(function(){
     first=JSON.stringify({src,
       medium:q.get("utm_medium")||"",campaign:q.get("utm_campaign")||"",
       seg:q.get("v")||"",landing:location.pathname,ts:new Date().toISOString().slice(0,10)});
-    setCookie("dfl_first",first,COOKIE_DAYS);
   }
+  // dfl_first records which ad found you, so it is advertising attribution and
+  // is suppressed under GPC / DNT. dfl_vid stays: it is a functional id only.
+  if(!privacyOptOut) setCookie("dfl_first",first,COOKIE_DAYS);
   let firstObj={}; try{ firstObj=JSON.parse(first)||{}; }catch(_){}
-  return { vid, first:firstObj };
+  return { vid, first:privacyOptOut?{}:firstObj };
 })();
 
 (function metaPixel(){
@@ -842,11 +850,14 @@ document.addEventListener("click",e=>{
 addEventListener("keydown",e=>{ if(e.key==="Escape") closeGear(); });
 
 const LEADS_URL="https://social-command-center-lemon.vercel.app/api/public/leads";
-function sendLead(kind,form){
-  const fd=new FormData(form), data={kind};
+/* arrayFields: names that must stay arrays even when one box is ticked.
+   Without this the generic loop collapses a single checkbox to a string and
+   the backend sees a different shape depending on how much was selected. */
+function sendLead(kind,form,arrayFields){
+  const fd=new FormData(form), data={kind}, arr=new Set(arrayFields||[]);
   for(const k of new Set(fd.keys())){
     const all=fd.getAll(k);
-    data[k]=all.length>1?all:all[0];
+    data[k]=(arr.has(k)||all.length>1)?all:all[0];
   }
   // carry attribution so every signup is credited to the source that found them
   data.visitor_id   = TRACK.vid;
@@ -892,11 +903,10 @@ if(rentForm){
     if(!rentForm.querySelector('input[name="equipment"]:checked')){
       alert("Pick at least one piece of gear."); return;
     }
-    // always send equipment as an array, even when only one box is ticked
-    const fd=new FormData(rentForm), data={kind:"rental",equipment:fd.getAll("equipment")};
-    for(const k of new Set(fd.keys())){ if(k!=="equipment"){ const all=fd.getAll(k); data[k]=all.length>1?all:all[0]; } }
-    const p=fetch(LEADS_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
-    submitHonest(rentForm,p,"rentMsg",".field, .gf-set, button[type=submit]");
+    // goes through sendLead so a rental gets the same Meta Lead event and the
+    // same first-touch attribution as The List; equipment stays an array
+    submitHonest(rentForm,sendLead("rental",rentForm,["equipment"]),
+                 "rentMsg",".field, .gf-set, button[type=submit]");
   });
 }
 
@@ -1266,7 +1276,18 @@ function maybeXsell(){
    channel is a postMessage close signal, origin-checked.
    ============================================================ */
 const ISLAND_ORIGIN="https://openclaw-api.netlify.app";
+/* OFF until the concierge brain is actually answering. The widget's backend
+   currently returns {"error":"brain unavailable"} because ANTHROPIC_API_KEY
+   was never set on the openclaw-api Netlify project, and the embed catches
+   that and replies with its canned "check our Instagram" fallback. A visible
+   chat button on every page that deflects every real question reads worse
+   than having no chat, so it stays hidden. Flip to true once
+   `curl -X POST https://openclaw-api.netlify.app/.netlify/functions/chat
+    -H 'Content-Type: application/json' -d '{"brand":"darty","message":"hi"}'`
+   returns a `reply` field. */
+const SHOW_CONCIERGE = false;
 (function buildIsland(){
+  if(!SHOW_CONCIERGE) return;
   const CHAT_IC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a8 8 0 0 1-8 8H4l2.2-2.6A8 8 0 1 1 21 12z"/></svg>';
   const btn=document.createElement("button");
   btn.id="islandBtn"; btn.type="button";
