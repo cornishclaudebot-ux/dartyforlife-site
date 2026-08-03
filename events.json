@@ -1,7 +1,18 @@
 {
- "updated": "2026-08-02T22:54:06.761Z",
+ "updated": "2026-08-03T02:47:50.716Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
+  {
+   "date": "2026-09-01",
+   "time": "9:00 PM",
+   "title": "$2 TUESDAY AT THE 44",
+   "url": "2-tuesday-at-the-44",
+   "pid": "6a6ffc6a3643f350f0d31154",
+   "venue": "The 44 Live Music Bar",
+   "city": "Glendale, AZ 85302",
+   "flyer": "https://images.posh.vip/originals/6a6ffb903d2f238ecc8fda40",
+   "series": "bar"
+  },
   {
    "date": "2026-09-05",
    "time": "8:00 PM",
