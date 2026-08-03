@@ -32,6 +32,14 @@ CONFIG.mapRack         = "https://www.google.com/maps/search/?api=1&query=" + en
 const TRK = "website";
 const withTrk = (u) => u + (u.includes("?") ? "&" : "?") + "t=" + TRK;
 
+/* ---- HEAD COUNTS ("X going") — OFF ----
+   Aiden's call 2026-08-03: no head counts anywhere on the site until he says
+   to turn them on. This ONE switch controls all of them: the per-event card
+   pills and the "Going to the next one" stat tile. Flip to true to restore
+   both; the live per-sale pipeline keeps running either way, so the numbers
+   are correct the moment it comes back on. */
+const SHOW_GOING = false;
+
 /* ---- inline SVG icons (no emojis) ---- */
 const IC = {
   ig:'<svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 5 5 .06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.2 3.3-1.7 4.8-5 5-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-3.3-.2-4.8-1.7-5-5C2.04 15.6 2 15.2 2 12s0-3.6.07-4.9c.2-3.3 1.7-4.8 5-5C8.4 2.2 8.8 2.2 12 2.2zm0 4.8a5 5 0 100 10 5 5 0 000-10zm0 8.2a3.2 3.2 0 110-6.4 3.2 3.2 0 010 6.4zm5.2-9.4a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/></svg>',
@@ -231,7 +239,7 @@ function eventCard(ev){
   const pill = (ev.free && !document.body.classList.contains("theme-bars"))
     ? `<span class="pill pill-free">Free entry</span>`
     : `<span class="pill pill-${s}">${SERIES[s].label}</span>`;
-  const going = (typeof ev.sold==="number" && ev.sold>0)
+  const going = (SHOW_GOING && typeof ev.sold==="number" && ev.sold>0)
     ? `<span class="ev-going"><span class="dot"></span>${fmtGoing(ev.sold)} going</span>` : "";
   // Announced but not on sale yet (no Posh slug) → capture intent instead of a dead ticket link
   const cta = ev.url
@@ -394,13 +402,15 @@ function applyLiveCounts(){
       const live=byPid.get(String(ev.pid||""))??byName.get(String(ev.title).trim().toLowerCase());
       if(typeof live==="number"&&live>0&&live!==(ev.sold||0)){ ev.sold=live; changed=true; }
     });
-    if(changed) renderGrids();
+    // ev.sold stays current even while head counts are off, so flipping
+    // SHOW_GOING back on shows real numbers immediately with no re-render.
+    if(changed && SHOW_GOING) renderGrids();
     // live lifetime totals -> stats row (always-accurate numbers, his rule)
     if(j.totals){
       const set=(id,v)=>{const el=document.getElementById(id);if(el&&typeof v==="number"&&v>0){el.dataset.count=v;if(el._done)el.textContent=Number(v).toLocaleString("en-US");}};
       set("statNights",j.totals.nights);
       set("statTickets",j.totals.tickets);
-      set("statGoing",EVENTS.filter(isUpcoming).reduce((s,e)=>s+(Number(e.sold)||0),0));
+      if(SHOW_GOING) set("statGoing",EVENTS.filter(isUpcoming).reduce((s,e)=>s+(Number(e.sold)||0),0));
     }
   }).catch(()=>{});
 }
@@ -435,6 +445,7 @@ function countUp(el){
 /* ============================================================
    INIT CHROME + PAGE BEHAVIOUR
    ============================================================ */
+if(SHOW_GOING) document.documentElement.classList.add("show-going");  // reveals the stat tile
 buildNav(); buildFooter(); buildModal();
 
 // resolve data-cfg links + inject social icons where empty
