@@ -471,10 +471,39 @@ if(spot&&matchMedia("(pointer:fine)").matches){
   addEventListener("mouseleave",()=>spot.classList.remove("on"));
 }
 
-// marquees
-function fillMarquee(id,items){ const t=document.getElementById(id); if(!t) return; const set=items.map(x=>`<span>${x}</span>`).join(""); t.innerHTML=set+set; }
-const MQ=["Darty Bars Weekly","Headliners Monthly","DartyForLife Tempe","Free Events Monthly","Phoenix AZ","Tickets on Posh","Good Intentions Only","Party For Life"];
+/* marquees — every phrase that names a real destination is a link.
+   The strip is duplicated to loop seamlessly; only the first copy is
+   exposed to screen readers so nothing is announced twice. */
+const MQ=[
+  { t:"Darty Bars Weekly",    href:"bars.html"    },
+  { t:"Headliners Monthly",   href:"majors.html"  },
+  { t:"DartyForLife Tempe",   href:"tempe.html"   },
+  { t:"Free Events Monthly",  href:"index.html#upcoming" },
+  { t:"Phoenix AZ" },
+  { t:"Tickets on Posh",      href:withTrk(CONFIG.posh), ext:true },
+  { t:"Good Intentions Only" },
+  { t:"DartyForLife",         href:"index.html"   }
+];
+function fillMarquee(id,items){
+  const t=document.getElementById(id); if(!t) return;
+  // dupe=true marks the looping copy: hidden from screen readers and skipped
+  // by the tab key, so the same 8 links aren't announced or tabbed twice
+  const render=dupe=>items.map(x=>{
+    const hid=dupe?' aria-hidden="true" tabindex="-1"':'';
+    return x.href
+      ? `<a href="${x.href}"${x.ext?' target="_blank" rel="noopener"':''}${hid}>${esc(x.t)}</a>`
+      : `<span${hid}>${esc(x.t)}</span>`;
+  }).join("");
+  t.innerHTML = render(false) + render(true);
+}
 fillMarquee("mq1",MQ); fillMarquee("mq2",MQ);
+// phones have no hover: pause the scroll on touch so a strip can be tapped
+document.querySelectorAll(".marquee").forEach(m=>{
+  m.addEventListener("touchstart",()=>{
+    m.classList.add("paused");
+    clearTimeout(m._mqT); m._mqT=setTimeout(()=>m.classList.remove("paused"),2500);
+  },{passive:true});
+});
 
 // equalizer scroll cue
 document.querySelectorAll(".eq").forEach(eq=>{
@@ -822,6 +851,44 @@ applyInterest();
     });
   },{threshold:.25});
   reels.forEach(v=>vio.observe(v));
+})();
+
+/* ============================================================
+   GLASS TAB BAR — the hero navigator. The pill tracks whichever
+   tab you are on (hover on desktop, press on touch), springs over
+   to it, then the link takes you there. Rest position is the tab
+   matching the current page, else the first one.
+   ============================================================ */
+(function(){
+  const bar=document.getElementById("heroTabs"); if(!bar) return;
+  const pill=bar.querySelector(".gtabs-pill");
+  const tabs=[...bar.querySelectorAll(".gtab")];
+  if(!pill||!tabs.length) return;
+  const here=location.pathname.split("/").pop()||"index.html";
+  let restIdx=Math.max(0,tabs.findIndex(a=>a.getAttribute("href")===here));
+
+  function moveTo(i){
+    const t=tabs[i]; if(!t) return;
+    pill.style.width=t.offsetWidth+"px";
+    pill.style.transform="translateX("+t.offsetLeft+"px)";
+    tabs.forEach((a,n)=>a.classList.toggle("is-active",n===i));
+  }
+  function rest(){ moveTo(restIdx); }
+
+  // size it before the spring is armed so it doesn't fly in from the left
+  rest();
+  requestAnimationFrame(()=>bar.classList.add("ready"));
+
+  tabs.forEach((t,i)=>{
+    t.addEventListener("mouseenter",()=>moveTo(i));
+    t.addEventListener("focus",()=>moveTo(i));
+    // land the pill on the pressed tab before the page changes
+    t.addEventListener("pointerdown",()=>{ restIdx=i; moveTo(i); });
+  });
+  bar.addEventListener("mouseleave",rest);
+  addEventListener("resize",rest);
+  // fonts land after first paint and change tab widths
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(rest);
 })();
 
 /* ============================================================

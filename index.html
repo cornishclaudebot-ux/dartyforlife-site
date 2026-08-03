@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="styles.css?v=16" />
+<link rel="stylesheet" href="styles.css?v=17" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"DartyForLife",
  "alternateName":"Darty For Life · Desert Drinkers","url":"https://dartyforlife.com",
@@ -58,15 +58,20 @@
     <img class="hero-logo" src="media/brand/logo_real_stack_dd.png" alt="DartyForLife · Desert Drinkers" />
     <p class="hero-tag"><b>Arizona's biggest weekend, every weekend.</b> Headliner DJs, free events every month, and themed nights every week.</p>
     <div id="nextline" aria-live="polite"></div>
-    <div class="hero-actions">
-      <button class="btn btn-primary hero-cta" id="heroTickets" type="button" data-tickets="org" aria-label="Get tickets">Get Tickets</button>
-      <a class="btn btn-ghost hero-cta" href="#upcoming">See all events</a>
-    </div>
+    <!-- glass tab bar: the sliding pill follows the tab you pick, then it
+         takes you there. Replaces the old Get Tickets / See all events pair. -->
+    <nav class="gtabs" id="heroTabs" aria-label="Browse DartyForLife">
+      <span class="gtabs-pill" aria-hidden="true"></span>
+      <a class="gtab" href="majors.html">Headliners</a>
+      <a class="gtab" href="bars.html">Bars</a>
+      <a class="gtab" href="tempe.html">Tempe</a>
+      <a class="gtab" href="rentals.html">Rentals</a>
+    </nav>
   </div>
 </section>
 
 <!-- ===================== MARQUEE ===================== -->
-<div class="marquee" aria-hidden="true"><div class="marquee-track" id="mq1"></div></div>
+<div class="marquee"><div class="marquee-track" id="mq1"></div></div>
 
 <!-- ===================== NEXT HEADLINER ===================== -->
 <section id="next">
@@ -75,7 +80,23 @@
   </div>
 </section>
 
-<div class="marquee alt" aria-hidden="true"><div class="marquee-track" id="mq2"></div></div>
+<!-- ===================== UPCOMING (all series teaser) =====================
+     Sits directly under the next headliner: the calendar is the second thing
+     a visitor sees, before the "pick your night" pitch. -->
+<section id="upcoming">
+  <div class="wrap">
+    <div class="sec-head row reveal">
+      <div>
+        <span class="eyebrow">The calendar</span>
+        <h2 class="sec-title">Coming <em>up</em></h2>
+      </div>
+      <p class="sec-sub">Updates itself every day, straight from our box office on Posh.</p>
+    </div>
+    <div class="event-grid" data-events data-series="all" data-limit="6"></div>
+  </div>
+</section>
+
+<div class="marquee alt"><div class="marquee-track" id="mq2"></div></div>
 
 <!-- ===================== THE THREE NIGHTS ===================== -->
 <section id="series">
@@ -113,20 +134,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
     </div>
-  </div>
-</section>
-
-<!-- ===================== UPCOMING (all series teaser) ===================== -->
-<section id="upcoming">
-  <div class="wrap">
-    <div class="sec-head row reveal">
-      <div>
-        <span class="eyebrow">The calendar</span>
-        <h2 class="sec-title">Coming <em>up</em></h2>
-      </div>
-      <p class="sec-sub">Updates itself every day, straight from our box office on Posh.</p>
-    </div>
-    <div class="event-grid" data-events data-series="all" data-limit="6"></div>
   </div>
 </section>
 
@@ -294,7 +301,7 @@
 </main>
 
 <div id="footer-mount"></div>
-<script src="app.js?v=18"></script>
+<script src="app.js?v=19"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
