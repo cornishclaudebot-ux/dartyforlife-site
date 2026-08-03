@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-03T02:47:50.716Z",
+ "updated": "2026-08-03T17:08:36.793Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -11,7 +11,8 @@
    "venue": "The 44 Live Music Bar",
    "city": "Glendale, AZ 85302",
    "flyer": "https://images.posh.vip/originals/6a6ffb903d2f238ecc8fda40",
-   "series": "bar"
+   "series": "bar",
+   "sold": 1
   },
   {
    "date": "2026-09-05",
