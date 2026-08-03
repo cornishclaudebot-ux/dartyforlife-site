@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-03T18:04:12.652Z",
+ "updated": "2026-08-03T18:19:22.454Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -11,7 +11,7 @@
    "venue": "Rack Scottsdale",
    "city": "Scottsdale, AZ 85251",
    "flyer": "https://images.posh.vip/originals/6a70d5231d48dc7c6c609ef3",
-   "series": "bar",
+   "series": "tempe",
    "lat": 33.4911184,
    "lng": -111.9324351
   },
