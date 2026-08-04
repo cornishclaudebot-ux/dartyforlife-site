@@ -942,6 +942,45 @@ body.theme-bars{
    DFL TEMPE — split hero with photo
    ============================================================ */
 .pt-tempe{padding:150px 26px 40px}
+
+/* ============================================================
+   FEAR THE FORK — Tempe hero
+   Duotone recipe: maroon panel underneath, photo blended in
+   `luminosity` so it keeps its light and shadow but takes the panel's
+   hue. The mark then sits in `screen`, which lightens rather than
+   covers, so the photo stays visible through it.
+   ============================================================ */
+/* A full-bleed field of #8c1d40 reads PINK at this size. The reference that
+   works is the dark one: near-black maroon, with maroon and gold carried by
+   the artwork and type instead of the background. */
+.ftf{position:relative;overflow:hidden;padding:150px 26px 90px;
+  background:radial-gradient(120% 90% at 78% 45%,rgba(140,29,64,.42),transparent 62%),#16040c}
+.ftf-inner{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1.02fr .98fr;gap:48px;align-items:center}
+/* isolate: the blend modes inside must composite against THIS panel, not
+   punch through to the page behind it */
+.ftf-media{position:relative;isolation:isolate;border-radius:22px;overflow:hidden;
+  aspect-ratio:4/5;background:#2b0716;
+  border:1px solid rgba(255,198,39,.34);box-shadow:0 40px 110px -45px rgba(0,0,0,.95)}
+.ftf-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:contrast(1.06) url(#dflDuotone)}
+.ftf-defs{position:absolute;width:0;height:0;pointer-events:none}
+/* TRUE duotone: `color` takes hue+saturation from this layer and luminosity
+   from the photo under it, so even the bright areas stay maroon. A luminosity
+   blend alone washes out to grey wherever the photo is near-white. */
+/* `screen` lightens instead of covering, so the photo reads THROUGH the mark */
+.ftf-mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  height:86%;width:auto;color:var(--asu-gold);opacity:.34;mix-blend-mode:screen}
+.ftf-title{font-family:'Anton',sans-serif;text-transform:uppercase;color:var(--asu-gold);
+  font-size:clamp(3.6rem,12vw,9.5rem);line-height:.86;letter-spacing:.5px;margin:14px 0 18px;
+  text-shadow:0 18px 60px rgba(22,4,12,.85)}
+.ftf-sub{color:#f2ddc8;font-size:1.02rem;font-weight:600;max-width:34ch}
+@media(max-width:860px){
+  .ftf{padding:128px 22px 64px}
+  .ftf-inner{grid-template-columns:1fr;gap:30px}
+  .ftf-media{aspect-ratio:1/1;max-width:520px;width:100%;margin-inline:auto}
+  .ftf-sub{max-width:none}
+}
 .pt-split{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center;text-align:left}
 .pt-split .sec-sub{margin:0}
 .pt-photo{position:relative;border-radius:20px;overflow:hidden;border:1px solid rgba(255,198,39,.4);
