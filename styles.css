@@ -302,8 +302,11 @@ section{position:relative}
    (UnionTabView); that package is SwiftUI, so the material and
    the spring are rebuilt here in CSS.
    ============================================================ */
-.gtabs{display:flex;align-items:stretch;margin:26px auto 0;padding:5px;
-  border-radius:100px;max-width:min(560px,100%);
+/* the tab bar is the hero's primary control, so it always reads LARGER than
+   the headliner chip above it — min-width keeps that true even when a short
+   event name makes the chip narrow */
+.gtabs{display:flex;align-items:stretch;margin:26px auto 0;padding:6px;
+  border-radius:100px;max-width:min(620px,100%);min-width:min(430px,100%);
   background:var(--glass-bg);
   -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
   box-shadow:var(--glass-lift),var(--glass-spec)}
@@ -319,7 +322,7 @@ section{position:relative}
   /* spring with a little overshoot, the way the iOS pill settles */
   transition:transform .48s cubic-bezier(.34,1.42,.5,1),width .48s cubic-bezier(.34,1.42,.5,1),opacity .25s var(--ease)}
 .gtab{position:relative;z-index:1;flex:1 1 0;display:inline-flex;align-items:center;justify-content:center;
-  padding:13px 10px;border-radius:100px;font-family:'Inter',sans-serif;font-weight:800;font-size:.78rem;
+  padding:16px 22px;border-radius:100px;font-family:'Inter',sans-serif;font-weight:800;font-size:.92rem;
   letter-spacing:.06em;text-transform:uppercase;color:rgba(246,239,228,.66);white-space:nowrap;
   transition:color .3s var(--ease);-webkit-tap-highlight-color:transparent}
 .gtab:hover,.gtab.is-active{color:#fff}
