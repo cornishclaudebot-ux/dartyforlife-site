@@ -1292,15 +1292,19 @@ function maybeXsell(){
    does not exist until the launcher is tapped. The only inbound
    channel is a postMessage close signal, origin-checked.
    ============================================================ */
-const ISLAND_ORIGIN="https://openclaw-api.netlify.app";
-/* OFF until the concierge brain is actually answering. The widget's backend
-   currently returns {"error":"brain unavailable"} because ANTHROPIC_API_KEY
-   was never set on the openclaw-api Netlify project, and the embed catches
-   that and replies with its canned "check our Instagram" fallback. A visible
-   chat button on every page that deflects every real question reads worse
-   than having no chat, so it stays hidden. Flip to true once
-   `curl -X POST https://openclaw-api.netlify.app/.netlify/functions/chat
-    -H 'Content-Type: application/json' -d '{"brand":"darty","message":"hi"}'`
+const ISLAND_ORIGIN="https://openclaw-six-rho.vercel.app";
+/* OFF until the concierge brain is actually answering. The backend moved to
+   Vercel because Netlify deploys on this account are blocked by a credit
+   paywall AND a Netlify env var never reaches an already-deployed function,
+   so the key could not be picked up there. The Vercel endpoint is live and
+   its origin allow-list is enforcing; it still answers {"error":"brain
+   unavailable"} until ANTHROPIC_API_KEY is set on the Vercel project. The
+   embed catches that and replies with its canned "check our Instagram"
+   fallback, and a chat button that deflects every real question reads worse
+   than no chat, so it stays hidden. Flip to true once
+   `curl -X POST https://openclaw-six-rho.vercel.app/api/chat
+    -H 'Content-Type: application/json' -H 'Origin: https://dartyforlife.com'
+    -d '{"brand":"darty","message":"hi"}'`
    returns a `reply` field. */
 const SHOW_CONCIERGE = false;
 (function buildIsland(){
