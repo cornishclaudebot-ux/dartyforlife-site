@@ -276,6 +276,7 @@ function buildFooter(){
       <div class="foot-col">
         <h5>Get In</h5>
         <a data-tickets="org" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Tickets · Posh</a>
+        <a href="texts.html">Text alerts</a>
         <a href="rentals.html">Rent our gear</a>
         <a href="${CONFIG.ig}" target="_blank" rel="noopener">Instagram</a>
         <a href="${CONFIG.tt}" target="_blank" rel="noopener">TikTok</a>

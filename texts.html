@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Text Alerts: DARTYFORLIFE · Phoenix</title>
+<meta name="description" content="Get DartyForLife presale codes and event announcements by text. Free to join, reply STOP any time." />
+<meta name="theme-color" content="#080907" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<meta name="robots" content="index, follow, noimageai" />
+<meta name="copyright" content="DartyForLife LLC. All rights reserved. Unauthorized copying, scraping, or replication of this site's design, content, or code is prohibited." />
+<link rel="canonical" href="https://dartyforlife.com/texts.html" />
+<meta property="og:title" content="Text Alerts: DARTYFORLIFE" />
+<meta property="og:description" content="Presale codes and event drops, sent first to the list. Reply STOP any time." />
+<meta property="og:image" content="https://dartyforlife.com/og.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=23" />
+<script>if(navigator.globalPrivacyControl===true){window.doNotTrack="1"}</script>
+<style>
+  .tx-wrap{max-width:560px;margin:0 auto;padding:0 22px}
+  .tx-form{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px;margin-top:26px}
+  .tx-form label{display:block;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:7px}
+  .tx-form input[type=text],.tx-form input[type=tel],.tx-form input[type=email]{
+    width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:11px;padding:13px 14px;
+    color:var(--cream);font-family:'Inter',sans-serif;font-size:1rem;margin-bottom:18px;transition:.25s}
+  .tx-form input:focus{outline:none;border-color:var(--magenta);box-shadow:0 0 0 3px rgba(255,43,214,.18)}
+  .tx-consent{display:flex;gap:12px;align-items:flex-start;margin:4px 0 20px}
+  .tx-consent input{margin-top:3px;width:19px;height:19px;flex:none;accent-color:var(--magenta)}
+  .tx-consent span{font-size:.82rem;line-height:1.55;color:var(--muted)}
+  .tx-fine{font-size:.76rem;color:var(--muted-2);line-height:1.6;margin-top:16px}
+  .tx-fine a{color:var(--gt-cyan)}
+  .tx-msg{margin-top:16px;font-size:.9rem;display:none}
+  .tx-msg.err{display:block;color:#ff6b6b}
+  .tx-msg.ok{display:block;color:var(--uv)}
+  .tx-done{display:none;text-align:center;padding:14px 0}
+  .tx-done.on{display:block}
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="spotlight" aria-hidden="true"></div>
+<div id="nav-mount"></div>
+
+<main>
+<section class="page-top">
+  <div class="tx-wrap">
+    <div class="chip" style="margin-bottom:16px">Desert Drinkers</div>
+    <h1 class="display" style="font-size:clamp(2.4rem,7vw,3.6rem);margin-bottom:14px">Get the codes<br>before everyone else</h1>
+    <p style="color:var(--muted);font-size:1.03rem;line-height:1.65;max-width:44ch">
+      Presale codes, lineup drops, and free entry windows go out by text first. Usually a few times a
+      month, more when a major is on sale. Reply STOP any time and you are off immediately.
+    </p>
+
+    <form class="tx-form" id="tx-form" novalidate>
+      <input class="hp" type="text" name="bot-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <label for="tx-name">First name</label>
+      <input id="tx-name" type="text" autocomplete="given-name" maxlength="80" />
+
+      <label for="tx-phone">Mobile number</label>
+      <input id="tx-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(602) 555-0134" required />
+
+      <label for="tx-email">Email (optional)</label>
+      <input id="tx-email" type="email" autocomplete="email" maxlength="120" />
+
+      <div class="tx-consent">
+        <input id="tx-consent" type="checkbox" required />
+        <span id="tx-disclosure">I agree to receive recurring automated marketing text messages from
+          DartyForLife at the number provided, including presale codes and event announcements.
+          Consent is not a condition of purchase. Message and data rates may apply. Message
+          frequency varies. Reply STOP to cancel, HELP for help.</span>
+      </div>
+
+      <button class="btn btn-primary btn-block" type="submit" id="tx-submit">Send me the codes</button>
+      <div class="tx-msg" id="tx-msg"></div>
+
+      <p class="tx-fine">
+        We never sell or share your number. See our
+        <a href="privacy.html">Privacy Policy</a>.
+      </p>
+    </form>
+
+    <div class="tx-done" id="tx-done">
+      <div class="display" style="font-size:2rem;color:var(--uv);margin-bottom:10px">You are on the list</div>
+      <p style="color:var(--muted)">Next presale code comes straight to your phone. Reply STOP any time.</p>
+      <a class="btn btn-ghost" href="index.html" style="margin-top:18px">Back to events</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<div id="footer-mount"></div>
+<script src="app.js?v=23"></script>
+<script>
+/* Posts to the SCC public lane on Vercel, same as the leads form. The endpoint
+   re-validates everything and stores its OWN copy of the disclosure wording, so
+   the text beside the checkbox above must stay in step with DISCLOSURES["dfl-v1"]
+   in social-command-center/src/app/api/public/sms-optin/route.ts. */
+(function () {
+  var URL_ = "https://social-command-center-lemon.vercel.app/api/public/sms-optin";
+  var f = document.getElementById("tx-form");
+  var msg = document.getElementById("tx-msg");
+  var btn = document.getElementById("tx-submit");
+  if (!f) return;
+
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    msg.className = "tx-msg";
+    msg.textContent = "";
+
+    var phone = document.getElementById("tx-phone").value || "";
+    var digits = phone.replace(/\D/g, "");
+    if (digits.length === 11 && digits.charAt(0) === "1") digits = digits.slice(1);
+    if (digits.length !== 10) {
+      msg.className = "tx-msg err";
+      msg.textContent = "Enter a valid 10 digit US mobile number.";
+      return;
+    }
+    if (!document.getElementById("tx-consent").checked) {
+      msg.className = "tx-msg err";
+      msg.textContent = "Check the box so we are allowed to text you.";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Adding you...";
+
+    fetch(URL_, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        phone: digits,
+        consent: true,
+        disclosure_key: "dfl-v1",
+        brand: "dartyforlife",
+        name: document.getElementById("tx-name").value || "",
+        email: document.getElementById("tx-email").value || "",
+        source_url: window.location.href,
+        "bot-field": f.querySelector('[name="bot-field"]').value || ""
+      })
+    })
+      .then(function (r) { return r.json().catch(function () { return { ok: r.ok }; }); })
+      .then(function (j) {
+        if (j && j.ok) {
+          f.style.display = "none";
+          document.getElementById("tx-done").classList.add("on");
+          return;
+        }
+        throw new Error((j && j.error) || "Something went wrong.");
+      })
+      .catch(function (err) {
+        btn.disabled = false;
+        btn.textContent = "Send me the codes";
+        msg.className = "tx-msg err";
+        msg.textContent = err.message || "Something went wrong. Try again.";
+      });
+  });
+})();
+</script>
+</body>
+</html>
