@@ -97,7 +97,8 @@ if git diff --quiet events.json scripts/geocache.json counts.json 2>/dev/null; t
 fi
 
 ts > heartbeat.txt
-git add events.json scripts/geocache.json counts.json heartbeat.txt
+# -A so new AND removed cal/*.ics both get staged as events roll on and off
+git add -A events.json scripts/geocache.json counts.json heartbeat.txt cal
 git -c user.name="dartyforlife-events-bot" -c user.email="actions@users.noreply.github.com" \
     commit -q -m "Auto-update events + going counts from Posh ($(date -u +"%Y-%m-%d %H:%MZ"))"
 

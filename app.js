@@ -382,6 +382,21 @@ function nextMajor(){
   return EVENTS.filter(e=>classify(e)==="major"&&isUpcoming(e))
                .sort((a,b)=>(a.date||"").localeCompare(b.date||""))[0]||null;
 }
+/* Apple devices get Apple Maps, everything else Google — the same rule the
+   touring map uses, hoisted to module scope so cards rendered AFTER load can
+   build their own links (the [data-venue] handler only binds once, at load). */
+const PREFERS_APPLE=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+function mapsUrlFor(venue,city){
+  const q=encodeURIComponent([venue,city].filter(Boolean).join(", "));
+  return PREFERS_APPLE ? `https://maps.apple.com/?q=${q}`
+                       : `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+/* mirrors slugify() in scripts/ics.mjs — these two MUST agree or the date
+   link 404s. Change one, change the other. */
+function calSlug(ev){
+  if(ev.url) return String(ev.url).toLowerCase().replace(/[^a-z0-9-]/g,"");
+  return String(ev.title||"event").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+}
 let cdTimer=null;
 function renderNext(){
   const ev=nextMajor();
@@ -417,8 +432,10 @@ function renderNext(){
         <span class="eyebrow">Next headliner</span>
         <div class="nm-name">${esc(ev.title)}</div>
         <div class="nm-meta">
-          <span class="mrow">${IC.cal}<b>${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</b></span>
-          <span class="mrow">${IC.pin}${esc(ev.venue||"")}</span>
+          <a class="mrow mrow-act" href="cal/${calSlug(ev)}.ics"
+             aria-label="Add ${esc(ev.title)} to your calendar">${IC.cal}<b>${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</b></a>
+          ${ev.venue?`<a class="mrow mrow-act" href="${mapsUrlFor(ev.venue,ev.city)}" target="_blank" rel="noopener"
+             aria-label="Open ${esc(ev.venue)} in maps">${IC.pin}${esc(ev.venue)}</a>`:""}
           ${ev.time?`<span class="mrow"><b>Doors ${esc(ev.time)}</b></span>`:""}
         </div>
         <div class="countdown">
@@ -564,7 +581,7 @@ const MQ=[
   { t:"Free Events Monthly",  href:"index.html#upcoming" },
   { t:"Phoenix AZ" },
   { t:"Tickets on Posh",      href:withTrk(CONFIG.posh), ext:true },
-  { t:"Good Intentions Only" },
+  { t:"Good Intentions" },
   { t:"DartyForLife",         href:"index.html"   }
 ];
 function fillMarquee(id,items){

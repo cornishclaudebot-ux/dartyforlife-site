@@ -151,6 +151,14 @@ try { writeFileSync(CACHE, JSON.stringify(geocache, null, 1) + '\n'); } catch {}
 
 let previous = null;
 try { previous = JSON.stringify(JSON.parse(readFileSync(OUT, 'utf8')).events); } catch {}
+/* One .ics per event so the date on a card is a one-tap add-to-calendar.
+   Runs BEFORE the no-change guard below: events.json can be identical while
+   /cal is missing or stale (first run, a deleted file, a changed template),
+   and these must never drift apart. Rewriting identical bytes is a no-op to git. */
+const cal = await import('./ics.mjs');
+const files = cal.writeIcsFiles(events, new URL('../cal/', import.meta.url));
+console.log(`Wrote ${files.length} calendar files.`);
+
 if (previous === JSON.stringify(events)) { console.log(`No changes (${events.length} events).`); process.exit(0); }
 
 writeFileSync(OUT, JSON.stringify({ updated: new Date().toISOString(), source: API, events }, null, 1) + '\n');

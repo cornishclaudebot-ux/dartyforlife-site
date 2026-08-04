@@ -205,7 +205,18 @@ section{position:relative}
 .hero-bg{position:absolute;inset:0;z-index:0;background:
   radial-gradient(120% 80% at 50% 0%,rgba(12,99,237,.32),transparent 55%),
   radial-gradient(100% 60% at 50% 110%,rgba(139,61,255,.22),transparent 60%),var(--black)}
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.44;filter:saturate(1.05) contrast(1.04);z-index:0}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.44;filter:saturate(1.05) contrast(1.04);z-index:0;pointer-events:none}
+
+/* iOS draws its OWN play button over any video it refuses to autoplay, and
+   Low Power Mode refuses even muted inline video. Every video on this site is
+   a decorative loop, never a thing to press, so the native control must never
+   be drawn. Each selector is its own rule on purpose: one unrecognised
+   -webkit- pseudo inside a selector LIST would invalidate the whole list. */
+video::-webkit-media-controls{display:none!important;-webkit-appearance:none}
+video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none}
+video::-webkit-media-controls-play-button{display:none!important;-webkit-appearance:none}
+video::-webkit-media-controls-panel{display:none!important;-webkit-appearance:none}
+video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none}
 .beam{position:absolute;top:-30%;left:50%;width:150px;height:160%;
   background:linear-gradient(to bottom,rgba(139,61,255,.55),rgba(139,61,255,0) 70%);filter:blur(38px);
   transform-origin:top center;mix-blend-mode:screen;opacity:.6;z-index:0;pointer-events:none}
@@ -378,8 +389,17 @@ section{position:relative}
   background:radial-gradient(circle,rgba(139,61,255,.28),transparent 65%);filter:blur(50px);pointer-events:none}
 .nm-name{font-family:'Anton';font-weight:400;text-transform:uppercase;letter-spacing:.5px;line-height:.9;
   font-size:clamp(2.4rem,6vw,4.2rem);color:var(--cream);margin:4px 0 10px}
-.nm-meta{display:flex;flex-wrap:wrap;gap:14px;color:var(--muted);font-size:.92rem;font-weight:600;margin-bottom:18px}
-.nm-meta .mrow{display:inline-flex;align-items:center;gap:7px}
+.nm-meta{display:flex;flex-wrap:wrap;gap:6px;color:var(--muted);font-size:.92rem;font-weight:600;margin-bottom:18px}
+/* 10px vertical padding takes each row to a 44px tap target. Real padding,
+   not negative margins: those would make neighbouring hit areas overlap once
+   the rows wrap on a phone, and a mis-tap here opens the wrong app. */
+.nm-meta .mrow{display:inline-flex;align-items:center;gap:7px;padding:10px 8px}
+/* the date and the venue are real links: date opens the calendar sheet,
+   venue opens whichever map app the device prefers */
+.nm-meta a.mrow-act{color:inherit;cursor:pointer;border-radius:10px;
+  transition:color .2s var(--ease),background .2s var(--ease);-webkit-tap-highlight-color:transparent}
+.nm-meta a.mrow-act:hover,.nm-meta a.mrow-act:focus-visible{color:var(--cream);background:rgba(246,239,228,.08)}
+.nm-meta a.mrow-act:hover b{text-decoration:underline;text-underline-offset:3px}
 .nm-meta svg{width:15px;height:15px;fill:var(--magenta)}
 .nm-meta b{color:var(--cream)}
 /* the big Posh-style GOING tile — bottom-right of the headliner card */

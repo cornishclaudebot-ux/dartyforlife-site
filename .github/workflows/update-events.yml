@@ -79,10 +79,13 @@ jobs:
       - name: Opportunistic Posh pull (silent on the expected 403)
         run: |
           if node scripts/update-events.mjs; then
-            if ! git diff --quiet events.json scripts/geocache.json counts.json 2>/dev/null; then
+            # stage first, then ask if anything is staged: `git diff --quiet`
+            # cannot see NEW untracked .ics files under cal/, so a first run
+            # (or a newly announced event) would otherwise never get committed
+            git add -A events.json scripts/geocache.json counts.json cal
+            if ! git diff --cached --quiet; then
               git config user.name "dartyforlife-events-bot"
               git config user.email "actions@users.noreply.github.com"
-              git add events.json scripts/geocache.json counts.json
               git commit -m "Auto-update events from Posh (cloud pull)"
               git push
             fi
