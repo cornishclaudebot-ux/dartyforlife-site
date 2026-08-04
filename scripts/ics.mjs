@@ -89,10 +89,12 @@ export function buildIcs(ev, { site = 'https://dartyforlife.com' } = {}) {
 
   if (time) {
     lines.push(`DTSTART;TZID=America/Phoenix:${date}T${time}`);
-    /* Doors time is published; a closing time is not. Four hours is a
-       calendar BLOCK so the entry has sensible length — it is deliberately
-       not shown anywhere on the site as an end time. */
-    lines.push('DURATION:PT4H');
+    /* One hour, not four. The entry's job is to MARK the doors time, not to
+       reserve someone's whole night — a fat block reads as an imposition and
+       is the kind of thing people delete. The alarm below is what actually
+       drives attendance. This is a marker length, never an end time, and is
+       not shown anywhere on the site. */
+    lines.push('DURATION:PT1H');
   } else {
     lines.push(`DTSTART;VALUE=DATE:${date}`);
   }
@@ -102,6 +104,18 @@ export function buildIcs(ev, { site = 'https://dartyforlife.com' } = {}) {
   if (ev.lat != null && ev.lng != null) lines.push(`GEO:${ev.lat};${ev.lng}`);
   lines.push(`DESCRIPTION:${esc(ev.time ? `Doors ${ev.time}. Tickets: ${tickets}` : `Tickets: ${tickets}`)}`);
   lines.push(`URL:${esc(tickets)}`);
+
+  /* A calendar entry nobody gets pinged about does not bring anybody out.
+     Apple Calendar honours VALARM on an imported .ics, so a timed event gets
+     a nudge two hours before doors — late enough to be the real "start
+     getting ready" moment, early enough to still make plans. All-day entries
+     get no alarm: a relative trigger on a DATE start fires at midnight. */
+  if (time) {
+    lines.push('BEGIN:VALARM', 'ACTION:DISPLAY',
+      `DESCRIPTION:${esc(`${ev.title || 'DartyForLife'} tonight${ev.time ? `. Doors ${ev.time}.` : ''}`)}`,
+      'TRIGGER:-PT2H', 'END:VALARM');
+  }
+
   lines.push('END:VEVENT', 'END:VCALENDAR');
 
   return lines.map(fold).join('\r\n') + '\r\n';
