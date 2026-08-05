@@ -944,32 +944,15 @@ body.theme-bars{
 .pt-tempe{padding:150px 26px 40px}
 
 /* ============================================================
-   TEMPE INTRO
-   Same shape as the Darty Bars intro: full-bleed, artwork as hero,
-   copy anchored underneath.
+   TEMPE PAGE TOP
+   The intro artwork was removed at his request, so the marquee is now the
+   first thing under the FIXED header and needs its own clearance — without
+   this it tucks underneath the nav.
    ============================================================ */
-/* The art is a 16:9 composition whose wordmark spans the full width, so it is
-   never cropped to fill the viewport — object-fit:cover would slice the type.
-   It sits at its natural ratio on the matching grooved plate, which absorbs
-   whatever height is left over and makes the letterbox look deliberate. */
-.pt-tempe-intro{position:relative;min-height:96svh;overflow:hidden;
-  display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:112px 22px 64px;gap:34px;
-  background:#2a040b url('media/brand/tempe-plate.jpg') center/cover no-repeat}
-/* the plate's own vignette is centred, so darken the outer edges to hide the
-   seam where the artwork meets it */
-.pt-tempe-intro::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(120% 78% at 50% 46%,transparent 40%,rgba(24,3,9,.55) 78%,rgba(18,2,6,.9) 100%)}
-.tempe-art{position:relative;z-index:2;display:block;width:100%;max-width:1180px;
-  border-radius:20px;overflow:hidden;
-  box-shadow:0 40px 120px -40px rgba(0,0,0,.95),0 0 90px -30px rgba(224,27,61,.5)}
-.tempe-art img{display:block;width:100%;height:auto}
-.tempe-intro-copy{position:relative;z-index:2;max-width:760px;display:flex;flex-direction:column;align-items:center}
-.pt-tempe-intro .sec-sub{margin-inline:auto;color:#f0d9c6;max-width:52ch}
-@media (max-width:760px){
-  .pt-tempe-intro{min-height:0;padding:104px 16px 48px;gap:26px}
-  .tempe-art{border-radius:14px}
-}
+.theme-tempe main > .marquee:first-child{margin-top:78px}
+@media (max-width:760px){ .theme-tempe main > .marquee:first-child{margin-top:66px} }
+.theme-tempe #events{padding-top:56px}
+
 .pt-photo img{width:100%;height:100%;object-fit:cover}
 .pt-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 70%,rgba(7,5,9,.55))}
 @media (max-width:900px){
