@@ -944,45 +944,31 @@ body.theme-bars{
 .pt-tempe{padding:150px 26px 40px}
 
 /* ============================================================
-   FEAR THE FORK — Tempe intro
+   TEMPE INTRO
    Same shape as the Darty Bars intro: full-bleed, artwork as hero,
-   copy anchored at the bottom.
+   copy anchored underneath.
    ============================================================ */
+/* The art is a 16:9 composition whose wordmark spans the full width, so it is
+   never cropped to fill the viewport — object-fit:cover would slice the type.
+   It sits at its natural ratio on the matching grooved plate, which absorbs
+   whatever height is left over and makes the letterbox look deliberate. */
 .pt-tempe-intro{position:relative;min-height:96svh;overflow:hidden;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:140px 22px 70px;
-  background:radial-gradient(115% 80% at 50% 38%,#a5122b 0%,#7d0d20 38%,#450711 72%,#2a040b 100%)}
-/* Generated contour grooves. MASK ONLY — applying the same SVG as both a
-   background-image and a mask multiplies its alpha by itself and the texture
-   all but disappears. Solid colour + mask keeps the colour controllable here. */
-.tempe-topo{position:absolute;inset:0;pointer-events:none;opacity:.3;
-  background-color:#ffcf9a;
-  -webkit-mask:url('media/brand/topo-lines.svg') repeat 0 0/1100px auto;
-  mask:url('media/brand/topo-lines.svg') repeat 0 0/1100px auto}
-/* the fork is a MASK, so the file stays external and cacheable while still
-   taking a gradient fill and a glow that a flat <img> could never carry */
-.tempe-fork{position:relative;margin:0 auto 26px;
-  height:clamp(210px,38svh,430px);width:auto;aspect-ratio:2384/3656;pointer-events:none;
-  background:linear-gradient(178deg,#ffd451 0%,#ffc627 34%,#f4623a 68%,#e01b3d 100%);
-  -webkit-mask:url('media/brand/asu-fork.svg') center/contain no-repeat;
-  mask:url('media/brand/asu-fork.svg') center/contain no-repeat;
-  filter:drop-shadow(0 0 42px rgba(255,150,60,.5)) drop-shadow(0 0 120px rgba(224,27,61,.55))}
-/* the aura travels with the mark instead of being pinned to the section */
-.tempe-fork::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:230%;height:150%;border-radius:50%;z-index:-1;
-  background:radial-gradient(circle,rgba(255,198,39,.22),rgba(224,27,61,.15) 42%,transparent 68%)}
-/* floor shadow so the copy separates from the artwork */
-.pt-tempe-intro::after{content:"";position:absolute;inset:auto 0 0 0;height:46%;pointer-events:none;
-  background:linear-gradient(180deg,transparent,rgba(28,4,10,.82) 62%,rgba(22,3,8,.96))}
+  text-align:center;padding:112px 22px 64px;gap:34px;
+  background:#2a040b url('media/brand/tempe-plate.jpg') center/cover no-repeat}
+/* the plate's own vignette is centred, so darken the outer edges to hide the
+   seam where the artwork meets it */
+.pt-tempe-intro::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 78% at 50% 46%,transparent 40%,rgba(24,3,9,.55) 78%,rgba(18,2,6,.9) 100%)}
+.tempe-art{position:relative;z-index:2;display:block;width:100%;max-width:1180px;
+  border-radius:20px;overflow:hidden;
+  box-shadow:0 40px 120px -40px rgba(0,0,0,.95),0 0 90px -30px rgba(224,27,61,.5)}
+.tempe-art img{display:block;width:100%;height:auto}
 .tempe-intro-copy{position:relative;z-index:2;max-width:760px;display:flex;flex-direction:column;align-items:center}
-.ftf-title{font-family:'Anton',sans-serif;text-transform:uppercase;color:var(--asu-gold);
-  font-size:clamp(2.9rem,8.4vw,5.6rem);line-height:.84;letter-spacing:.5px;margin:0 0 18px;
-  text-shadow:0 10px 40px rgba(20,2,8,.9),0 0 90px rgba(255,198,39,.28)}
-.pt-tempe-intro .eyebrow{margin-bottom:10px}
-.pt-tempe-intro .sec-sub{margin-inline:auto;color:#f0d9c6;max-width:44ch}
+.pt-tempe-intro .sec-sub{margin-inline:auto;color:#f0d9c6;max-width:52ch}
 @media (max-width:760px){
-  .pt-tempe-intro{min-height:92svh;padding:140px 20px 44px}
-  .tempe-fork{height:clamp(180px,30svh,300px);margin-bottom:20px}
+  .pt-tempe-intro{min-height:0;padding:104px 16px 48px;gap:26px}
+  .tempe-art{border-radius:14px}
 }
 .pt-photo img{width:100%;height:100%;object-fit:cover}
 .pt-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 70%,rgba(7,5,9,.55))}

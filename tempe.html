@@ -12,11 +12,11 @@
 <link rel="canonical" href="https://dartyforlife.com/tempe.html" />
 <meta property="og:title" content="DartyForLife Tempe" />
 <meta property="og:description" content="The college side of Darty. Every Thursday at The Rack, Old Town Scottsdale." />
-<meta property="og:image" content="https://dartyforlife.com/media/brand/tempe-hero.jpg" />
+<meta property="og:image" content="https://dartyforlife.com/media/brand/tempe-intro.jpg?v=1" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=24" />
+<link rel="stylesheet" href="styles.css?v=25" />
 <script>if(navigator.globalPrivacyControl===true){window.doNotTrack="1"}</script>
   <script defer src="https://site-stats-dartyforlife.vercel.app/script.js" data-website-id="b3256c0a-fb20-445a-bf64-9430fa7dd86a" data-domains="dartyforlife.com,www.dartyforlife.com" data-do-not-track="true"></script>
 </head>
@@ -26,17 +26,23 @@
 <div id="nav-mount"></div>
 
 <main>
-<!-- FEAR THE FORK intro. Built on the Darty Bars pattern: full-bleed, the
-     artwork IS the hero, copy anchored at the bottom. The fork is applied as a
-     CSS mask so it stays an external cacheable file while still taking a
-     gradient fill and a glow. Topographic grooves are generated, not traced. -->
+<!-- Tempe intro, on the Darty Bars pattern: full-bleed, the artwork IS the
+     hero, copy anchored underneath. The art is a 16:9 composition whose type
+     spans the full width, so it is NEVER cropped to fill a tall viewport —
+     that would cut the wordmark in half. It sits at its natural ratio on the
+     matching grooved plate, which absorbs whatever height is left over. -->
 <section class="pt-tempe-intro">
-  <div class="tempe-topo" aria-hidden="true"></div>
+  <!-- The artwork carries the wordmark, so it IS the page title, the same way
+       the neon sign is the title on the Darty Bars page. The h1 is
+       screen-reader only and repeats exactly what the art says. -->
+  <h1 class="sr-only">DartyForLife Tempe</h1>
+  <picture class="tempe-art">
+    <source media="(max-width:700px)" srcset="media/brand/tempe-intro-900.jpg?v=1" />
+    <img src="media/brand/tempe-intro.jpg?v=1" width="1672" height="941" fetchpriority="high"
+         alt="DartyForLife Tempe: a partygoer covered in gold paint in front of a crowd" />
+  </picture>
   <div class="tempe-intro-copy">
-    <div class="tempe-fork" aria-hidden="true"></div>
-    <h1 class="ftf-title">Fear <br />the <br />Fork</h1>
-    <span class="eyebrow asu">DartyForLife Tempe · Thursdays · Old Town Scottsdale</span>
-    <p class="sec-sub">The college side of Darty. Same energy, welcoming all Sun Devils.</p>
+    <p class="sec-sub">The college side of Darty. Every Thursday at The Rack in Old Town Scottsdale. Ages 21 &amp; over.</p>
   </div>
 </section>
 
