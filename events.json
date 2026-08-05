@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-05T14:07:49.657Z",
+ "updated": "2026-08-05T16:56:00.034Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -12,7 +12,7 @@
    "city": "Scottsdale, AZ 85251",
    "flyer": "https://images.posh.vip/originals/6a70d5231d48dc7c6c609ef3",
    "series": "tempe",
-   "sold": 62,
+   "sold": 63,
    "lat": 33.490326,
    "lng": -111.9264701
   },
