@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=23" />
+<link rel="stylesheet" href="styles.css?v=24" />
 <script>if(navigator.globalPrivacyControl===true){window.doNotTrack="1"}</script>
   <script defer src="https://site-stats-dartyforlife.vercel.app/script.js" data-website-id="b3256c0a-fb20-445a-bf64-9430fa7dd86a" data-domains="dartyforlife.com,www.dartyforlife.com" data-do-not-track="true"></script>
 </head>
@@ -26,44 +26,17 @@
 <div id="nav-mount"></div>
 
 <main>
-<!-- FEAR THE FORK. The photo runs through an SVG duotone (filter defined
-     below) and the saguaro sits on top in `screen`, so the picture reads
-     THROUGH the mark instead of being covered by it. The mark is our own
-     saguaro, whose three prongs carry the fork read — deliberately NOT the
-     ASU pitchfork, which is ASU's registered trademark. -->
-<section class="page-top asu pt-tempe ftf">
-  <div class="ftf-inner">
-    <div class="ftf-copy">
-      <!-- brand string stays in the eyebrow: the slogan took the h1, and
-           "DartyForLife Tempe" is this page's exact-match search target -->
-      <span class="eyebrow asu">DartyForLife Tempe · Thursdays</span>
-      <!-- real spaces around the breaks: without them textContent is
-           "FeartheFork", which is what Google indexes and a screen reader says -->
-      <h1 class="ftf-title">Fear <br />the <br />Fork</h1>
-      <p class="ftf-sub">The college side of Darty. Same energy, welcoming all Sun Devils.</p>
-    </div>
-    <div class="ftf-media">
-      <!-- Real duotone. A `color` blend keeps the photo's luminosity, so its
-           bright areas just wash out to pink. This remaps the tonal range
-           instead: shadows to maroon-black, midtones to ASU maroon,
-           highlights to gold. sRGB is required or it renders washed out. -->
-      <svg class="ftf-defs" aria-hidden="true" focusable="false"><defs>
-        <filter id="dflDuotone" color-interpolation-filters="sRGB">
-          <feColorMatrix type="matrix" values="
-            .2126 .7152 .0722 0 0  .2126 .7152 .0722 0 0  .2126 .7152 .0722 0 0  0 0 0 1 0"/>
-          <feComponentTransfer>
-            <feFuncR type="table" tableValues="0.086 0.549 1.0"/>
-            <feFuncG type="table" tableValues="0.016 0.114 0.776"/>
-            <feFuncB type="table" tableValues="0.047 0.251 0.153"/>
-          </feComponentTransfer>
-        </filter>
-      </defs></svg>
-      <img src="media/brand/tempe-hero.jpg" alt="DartyForLife Tempe partygoer covered in paint" />
-      <svg class="ftf-mark" viewBox="0 0 60 70" fill="none" stroke="currentColor" aria-hidden="true"
-           stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M30 16V62"/><path d="M16 48V35q0-9 12-9"/><path d="M44 48V35q0-9 -12-9"/>
-      </svg>
-    </div>
+<!-- FEAR THE FORK intro. Built on the Darty Bars pattern: full-bleed, the
+     artwork IS the hero, copy anchored at the bottom. The fork is applied as a
+     CSS mask so it stays an external cacheable file while still taking a
+     gradient fill and a glow. Topographic grooves are generated, not traced. -->
+<section class="pt-tempe-intro">
+  <div class="tempe-topo" aria-hidden="true"></div>
+  <div class="tempe-intro-copy">
+    <div class="tempe-fork" aria-hidden="true"></div>
+    <h1 class="ftf-title">Fear <br />the <br />Fork</h1>
+    <span class="eyebrow asu">DartyForLife Tempe · Thursdays · Old Town Scottsdale</span>
+    <p class="sec-sub">The college side of Darty. Same energy, welcoming all Sun Devils.</p>
   </div>
 </section>
 

@@ -944,47 +944,46 @@ body.theme-bars{
 .pt-tempe{padding:150px 26px 40px}
 
 /* ============================================================
-   FEAR THE FORK — Tempe hero
-   Duotone recipe: maroon panel underneath, photo blended in
-   `luminosity` so it keeps its light and shadow but takes the panel's
-   hue. The mark then sits in `screen`, which lightens rather than
-   covers, so the photo stays visible through it.
+   FEAR THE FORK — Tempe intro
+   Same shape as the Darty Bars intro: full-bleed, artwork as hero,
+   copy anchored at the bottom.
    ============================================================ */
-/* A full-bleed field of #8c1d40 reads PINK at this size. The reference that
-   works is the dark one: near-black maroon, with maroon and gold carried by
-   the artwork and type instead of the background. */
-.ftf{position:relative;overflow:hidden;padding:150px 26px 90px;
-  background:radial-gradient(120% 90% at 78% 45%,rgba(140,29,64,.42),transparent 62%),#16040c}
-.ftf-inner{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;width:100%;
-  display:grid;grid-template-columns:1.02fr .98fr;gap:48px;align-items:center}
-/* isolate: the blend modes inside must composite against THIS panel, not
-   punch through to the page behind it */
-.ftf-media{position:relative;isolation:isolate;border-radius:22px;overflow:hidden;
-  aspect-ratio:4/5;background:#2b0716;
-  border:1px solid rgba(255,198,39,.34);box-shadow:0 40px 110px -45px rgba(0,0,0,.95)}
-.ftf-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  filter:contrast(1.06) url(#dflDuotone)}
-.ftf-defs{position:absolute;width:0;height:0;pointer-events:none}
-/* TRUE duotone: `color` takes hue+saturation from this layer and luminosity
-   from the photo under it, so even the bright areas stay maroon. A luminosity
-   blend alone washes out to grey wherever the photo is near-white. */
-/* `screen` lightens instead of covering, so the photo reads THROUGH the mark */
-.ftf-mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  height:86%;width:auto;color:var(--asu-gold);opacity:.34;mix-blend-mode:screen}
+.pt-tempe-intro{position:relative;min-height:96svh;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:140px 22px 70px;
+  background:radial-gradient(115% 80% at 50% 38%,#a5122b 0%,#7d0d20 38%,#450711 72%,#2a040b 100%)}
+/* Generated contour grooves. MASK ONLY — applying the same SVG as both a
+   background-image and a mask multiplies its alpha by itself and the texture
+   all but disappears. Solid colour + mask keeps the colour controllable here. */
+.tempe-topo{position:absolute;inset:0;pointer-events:none;opacity:.3;
+  background-color:#ffcf9a;
+  -webkit-mask:url('media/brand/topo-lines.svg') repeat 0 0/1100px auto;
+  mask:url('media/brand/topo-lines.svg') repeat 0 0/1100px auto}
+/* the fork is a MASK, so the file stays external and cacheable while still
+   taking a gradient fill and a glow that a flat <img> could never carry */
+.tempe-fork{position:relative;margin:0 auto 26px;
+  height:clamp(210px,38svh,430px);width:auto;aspect-ratio:2384/3656;pointer-events:none;
+  background:linear-gradient(178deg,#ffd451 0%,#ffc627 34%,#f4623a 68%,#e01b3d 100%);
+  -webkit-mask:url('media/brand/asu-fork.svg') center/contain no-repeat;
+  mask:url('media/brand/asu-fork.svg') center/contain no-repeat;
+  filter:drop-shadow(0 0 42px rgba(255,150,60,.5)) drop-shadow(0 0 120px rgba(224,27,61,.55))}
+/* the aura travels with the mark instead of being pinned to the section */
+.tempe-fork::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:230%;height:150%;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(255,198,39,.22),rgba(224,27,61,.15) 42%,transparent 68%)}
+/* floor shadow so the copy separates from the artwork */
+.pt-tempe-intro::after{content:"";position:absolute;inset:auto 0 0 0;height:46%;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(28,4,10,.82) 62%,rgba(22,3,8,.96))}
+.tempe-intro-copy{position:relative;z-index:2;max-width:760px;display:flex;flex-direction:column;align-items:center}
 .ftf-title{font-family:'Anton',sans-serif;text-transform:uppercase;color:var(--asu-gold);
-  font-size:clamp(3.6rem,12vw,9.5rem);line-height:.86;letter-spacing:.5px;margin:14px 0 18px;
-  text-shadow:0 18px 60px rgba(22,4,12,.85)}
-.ftf-sub{color:#f2ddc8;font-size:1.02rem;font-weight:600;max-width:34ch}
-@media(max-width:860px){
-  .ftf{padding:128px 22px 64px}
-  .ftf-inner{grid-template-columns:1fr;gap:30px}
-  .ftf-media{aspect-ratio:1/1;max-width:520px;width:100%;margin-inline:auto}
-  .ftf-sub{max-width:none}
+  font-size:clamp(2.9rem,8.4vw,5.6rem);line-height:.84;letter-spacing:.5px;margin:0 0 18px;
+  text-shadow:0 10px 40px rgba(20,2,8,.9),0 0 90px rgba(255,198,39,.28)}
+.pt-tempe-intro .eyebrow{margin-bottom:10px}
+.pt-tempe-intro .sec-sub{margin-inline:auto;color:#f0d9c6;max-width:44ch}
+@media (max-width:760px){
+  .pt-tempe-intro{min-height:92svh;padding:140px 20px 44px}
+  .tempe-fork{height:clamp(180px,30svh,300px);margin-bottom:20px}
 }
-.pt-split{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center;text-align:left}
-.pt-split .sec-sub{margin:0}
-.pt-photo{position:relative;border-radius:20px;overflow:hidden;border:1px solid rgba(255,198,39,.4);
-  box-shadow:0 40px 100px -50px rgba(140,29,64,.85);aspect-ratio:4/5;max-height:520px;justify-self:end;width:100%;max-width:420px}
 .pt-photo img{width:100%;height:100%;object-fit:cover}
 .pt-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 70%,rgba(7,5,9,.55))}
 @media (max-width:900px){
