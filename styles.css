@@ -944,14 +944,31 @@ body.theme-bars{
 .pt-tempe{padding:150px 26px 40px}
 
 /* ============================================================
-   TEMPE PAGE TOP
-   The intro artwork was removed at his request, so the marquee is now the
-   first thing under the FIXED header and needs its own clearance — without
-   this it tucks underneath the nav.
+   TEMPE INTRO — full bleed, no frame
+   #110002 is sampled from the artwork's own left/right/top edges, so any
+   height the 16:9 art doesn't fill is indistinguishable from the art itself.
+   No radius, no shadow, no inset: the framed-photo version of this got cut.
    ============================================================ */
-.theme-tempe main > .marquee:first-child{margin-top:78px}
-@media (max-width:760px){ .theme-tempe main > .marquee:first-child{margin-top:66px} }
-.theme-tempe #events{padding-top:56px}
+.tempe-intro{position:relative;background:#110002;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;min-height:62svh;padding:0 0 52px;text-align:center}
+/* art sits flush to the top so the nav floats over its dark strip, exactly
+   like the nav over the hero video on the home page */
+.tempe-art{position:relative;display:block;width:100%}
+.tempe-art img{display:block;width:100%;height:auto}
+/* the artwork's bottom edge cuts through the subject, so dissolve him into
+   the page rather than ending on a hard horizontal seam */
+.tempe-art::after{content:"";position:absolute;inset:auto 0 0 0;height:22%;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(17,0,2,.65) 58%,#110002)}
+.tempe-intro-copy{position:relative;z-index:2;max-width:760px;padding:26px 22px 0}
+.tempe-intro .sec-sub{margin-inline:auto;color:#f0d9c6;max-width:52ch}
+@media (max-width:760px){
+  /* On a phone the 16:9 art is only ~219px tall, so a nav floating over it
+     covers the top of the wordmark. Push the art clear of the fixed header —
+     the strip above it is the artwork's own edge colour, so the offset is
+     invisible and it just reads as breathing room. */
+  .tempe-intro{min-height:0;padding:64px 0 40px}
+  .tempe-intro-copy{padding:22px 16px 0}
+}
 
 .pt-photo img{width:100%;height:100%;object-fit:cover}
 .pt-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 70%,rgba(7,5,9,.55))}
