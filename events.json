@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-08T03:38:12.826Z",
+ "updated": "2026-08-09T05:58:59.784Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -26,7 +26,7 @@
    "city": "Glendale, AZ 85302",
    "flyer": "https://images.posh.vip/originals/6a6ffb903d2f238ecc8fda40",
    "series": "bar",
-   "sold": 89,
+   "sold": 90,
    "lat": 33.5831282,
    "lng": -112.1552594
   },
@@ -40,7 +40,7 @@
    "city": "Phoenix, AZ 85031",
    "flyer": "https://images.posh.vip/originals/6a763459a6b1557626779e3b",
    "series": "major",
-   "sold": 58,
+   "sold": 62,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
