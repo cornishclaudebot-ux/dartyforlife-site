@@ -1068,10 +1068,22 @@ body.theme-tempe{
   .reel-row{grid-template-columns:repeat(3,1fr)}
 }
 @media (max-width:1000px){
-  .nextmajor{grid-template-columns:1fr}
-  .nextmajor>*{min-width:0}  /* aspect-ratio flyer must never force the column wider than the card */
-  .nm-flyer{min-height:0;aspect-ratio:4/3;background-position:center 22%}
-  .nm-flyer::after{background:linear-gradient(180deg,transparent 55%,var(--surface) 100%)}
+  /* The headliner card keeps its DESKTOP composition all the way down to the
+     phone: flyer on the left, everything else on the right, just minimized.
+     The flyer takes its height from the body beside it (grid stretch), so it
+     can never collapse to nothing the way an aspect-ratio-only box can when
+     the row has no content of its own. The 90deg edge fade from the base rule
+     still applies, because the art still sits beside the copy. */
+  .nextmajor>*{min-width:0}  /* the flyer column must never force the grid wider than the card */
+  /* The 340px desktop floor would pad the card out down here, but 0 is the wrong
+     floor too: it is what let the flyer render as nothing at all. 180 sits under
+     the shortest this card ever gets, so grid stretch still sets the real height
+     and the art is guaranteed to be on screen either way. */
+  .nm-flyer{min-height:180px}
+  /* the fade covers a fixed 45% of the base rule; across a column this narrow
+     that eats real artwork, so pull it back to the last 30% */
+  .nm-flyer::after{background:linear-gradient(90deg,transparent 70%,var(--surface) 100%)}
+  .nm-body{padding:30px 26px}
   .series-grid{grid-template-columns:1fr}
   .series{min-height:0}
   .visit-grid{grid-template-columns:1fr}
@@ -1095,13 +1107,20 @@ body.theme-tempe{
   .foot-inner{grid-template-columns:1fr}
   .foot-bottom{flex-direction:column}
   .sun-stage{height:170vh}
-  /* iPhone: everything in the headliner card centers */
-  .nm-body{padding:28px 20px;text-align:center;align-items:center}
-  .nm-meta{justify-content:center}
-  .going{margin-inline:auto}
-  .countdown{max-width:none;gap:8px}
-  .cd-cell{padding:12px 4px}
-  .nm-actions{justify-content:center}
+  /* iPhone: the headliner card is the desktop card scaled down, not a restacked
+     one. Everything below trims the copy column so the two-column card stays
+     short enough that the flyer next to it reads as art, not as a sliver. */
+  .nm-body{padding:22px 18px}
+  .nm-body .eyebrow{font-size:.58rem;letter-spacing:.2em;gap:7px;margin-bottom:9px}
+  .nm-body .eyebrow::before{width:16px}
+  .nm-name{font-size:clamp(1.8rem,8.2vw,2.7rem);margin:2px 0 7px}
+  .nm-meta{font-size:.74rem;gap:0;margin-bottom:11px}
+  .nm-meta .mrow{padding:8px 6px}
+  .nm-meta svg{width:13px;height:13px}
+  .countdown{max-width:none;gap:5px;margin-bottom:15px}
+  .cd-cell{padding:9px 2px;border-radius:10px}
+  .cd-cell .lab{font-size:.46rem;letter-spacing:.1em;margin-top:4px}
+  .nm-actions .btn{padding:12px 16px;font-size:.7rem;gap:7px}
 }
 @media (max-width:560px){
   /* iPhone nav: small logo top-left, Get Tickets pulled inward, hamburger never clipped */
@@ -1115,6 +1134,11 @@ body.theme-tempe{
   #nextline{margin:20px 0 4px}
   .nl-tag{font-size:.6rem;gap:7px;padding:9px 13px;letter-spacing:.07em}
   .nl-tag b{max-width:38vw;overflow:hidden;text-overflow:ellipsis}
+  /* headliner card on a real phone: the .62/1 column split is inherited from
+     desktop untouched, so only the type has to come down. The countdown row is
+     what sets the card's minimum width, so its digits scale with the viewport
+     instead of holding the desktop floor. */
+  .cd-cell .num{font-size:clamp(1.05rem,5.2vw,1.7rem)}
   /* full-width cards on phones — the flyer art is the hero */
   .event-grid{grid-template-columns:1fr}
   .ev h3{font-size:1.7rem}
