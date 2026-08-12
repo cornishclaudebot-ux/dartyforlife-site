@@ -441,6 +441,7 @@ function renderNext(){
       <div class="nm-body">
         <span class="eyebrow">Next headliner</span>
         <div class="nm-name">${esc(ev.title)}</div>
+        <p class="sr-only">${esc(ev.title)}, ${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}${ev.time?`, doors ${esc(ev.time)}`:""}${ev.venue?`, at ${esc(ev.venue)}`:""}.</p>
         <div class="nm-meta">
           <a class="mrow mrow-act" href="cal/${calSlug(ev)}.ics"
              aria-label="Add ${esc(ev.title)} to your calendar">${IC.cal}<b>${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</b></a>
@@ -448,7 +449,7 @@ function renderNext(){
              aria-label="Open ${esc(ev.venue)} in maps">${IC.pin}${esc(ev.venue)}</a>`:""}
           ${ev.time?`<span class="mrow"><b>Doors ${esc(ev.time)}</b></span>`:""}
         </div>
-        ${strip?"":`<div class="countdown">${["Days","Hours","Mins","Secs"].map(l=>`<div class="cd-cell"><div class="num" data-k="${l}">--</div><div class="lab">${l}</div></div>`).join("")}</div>`}
+        ${strip?"":`<div class="countdown" aria-hidden="true">${["Days","Hours","Mins","Secs"].map(l=>`<div class="cd-cell"><div class="num" data-k="${l}">--</div><div class="lab">${l}</div></div>`).join("")}</div>`}
         ${going}
         <div class="nm-actions">
           ${ev.url
