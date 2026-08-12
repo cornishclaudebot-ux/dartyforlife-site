@@ -14,16 +14,16 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:6a7cd32f78d45c1d947609ce@dartyforlife.com
-DTSTAMP:20260812T203001Z
-DTSTART;TZID=America/Phoenix:20260812T161500
+DTSTAMP:20260812T203506Z
+DTSTART;TZID=America/Phoenix:20260903T210000
 DURATION:PT1H
 SUMMARY:Thirsty Thursday
 LOCATION:The 44 Live\, Glendale\, AZ 85302
-DESCRIPTION:Doors 4:15 PM. Tickets: https://posh.vip/e/thirsty-thursday-140
+DESCRIPTION:Doors 9:00 PM. Tickets: https://posh.vip/e/thirsty-thursday-140
 URL:https://posh.vip/e/thirsty-thursday-140
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:Thirsty Thursday tonight. Doors 4:15 PM.
+DESCRIPTION:Thirsty Thursday tonight. Doors 9:00 PM.
 TRIGGER:-PT2H
 END:VALARM
 END:VEVENT

@@ -1,18 +1,7 @@
 {
- "updated": "2026-08-12T20:30:01.009Z",
+ "updated": "2026-08-12T20:35:06.543Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
-  {
-   "date": "2026-08-12",
-   "time": "4:15 PM",
-   "title": "Thirsty Thursday",
-   "url": "thirsty-thursday-140",
-   "pid": "6a7cd32f78d45c1d947609ce",
-   "venue": "The 44 Live",
-   "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6a7cd2eb26929a2f02fa7146",
-   "series": "bar"
-  },
   {
    "date": "2026-08-20",
    "time": "9:00 PM",
@@ -40,6 +29,17 @@
    "sold": 96,
    "lat": 33.5831282,
    "lng": -112.1552594
+  },
+  {
+   "date": "2026-09-03",
+   "time": "9:00 PM",
+   "title": "Thirsty Thursday",
+   "url": "thirsty-thursday-140",
+   "pid": "6a7cd32f78d45c1d947609ce",
+   "venue": "The 44 Live",
+   "city": "Glendale, AZ 85302",
+   "flyer": "https://images.posh.vip/originals/6a7cd2eb26929a2f02fa7146",
+   "series": "bar"
   },
   {
    "date": "2026-09-05",
