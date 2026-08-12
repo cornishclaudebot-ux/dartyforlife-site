@@ -403,6 +403,9 @@ function renderNext(){
   const ev=nextMajor();
   const line=document.getElementById("nextline");
   const card=document.getElementById("nextCard");
+  // The BIG countdown lives above the card, between the marquee and the
+  // headliner spot. Pages without the strip keep the countdown inside the card.
+  const strip=document.getElementById("cdStrip");
   // Hero "Get Tickets" points straight at the on-sale headliner (1-tap to that
   // event's Posh checkout); falls back to the storefront when nothing's slugged.
   const heroBtn=document.getElementById("heroTickets");
@@ -418,6 +421,7 @@ function renderNext(){
   }
   if(!ev){
     if(line) line.innerHTML="";
+    if(strip){ strip.hidden=true; strip.innerHTML=""; }
     if(card){ card.classList.add("in");
       card.innerHTML=`<div class="nm-body"><span class="eyebrow">Between headliners</span><div class="nm-name">Season loading</div><p class="nm-empty">The next one drops soon. Get on The List so you hear it first.</p><div class="nm-actions"><a class="btn btn-primary" href="${home}#list">Join The List</a></div></div>`;
     }
@@ -427,6 +431,11 @@ function renderNext(){
   if(line) line.innerHTML=`<a class="nl-tag" href="#next"><span class="k">Next headliner</span><span class="sep">·</span><b>${esc(ev.title)}</b><span class="sep">·</span><span class="nl-date">${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</span></a>`;
   if(card){
     const going=""; // his call: the countdown card doesn't need the head count (it lives on the event cards)
+    const cdCells=["Days","Hours","Mins","Secs"].map(l=>`<div class="cds-cell"><div class="num" data-k="${l}">--</div><div class="cds-lab">${l}</div></div>`).join("");
+    if(strip){
+      strip.innerHTML=`<span class="cds-k">Next headliner in</span><div class="cds-row" role="group" aria-label="Countdown to ${esc(ev.title)}">${cdCells}</div>`;
+      strip.hidden=false; strip.classList.add("in");
+    }
     card.innerHTML=`
       <div class="nm-flyer" ${ev.flyer?`style="background-image:url('${esc(ev.flyer)}')"`:""}></div>
       <div class="nm-body">
@@ -439,9 +448,7 @@ function renderNext(){
              aria-label="Open ${esc(ev.venue)} in maps">${IC.pin}${esc(ev.venue)}</a>`:""}
           ${ev.time?`<span class="mrow"><b>Doors ${esc(ev.time)}</b></span>`:""}
         </div>
-        <div class="countdown">
-          ${["Days","Hours","Mins","Secs"].map(l=>`<div class="cd-cell"><div class="num" data-k="${l}">--</div><div class="lab">${l}</div></div>`).join("")}
-        </div>
+        ${strip?"":`<div class="countdown">${["Days","Hours","Mins","Secs"].map(l=>`<div class="cd-cell"><div class="num" data-k="${l}">--</div><div class="lab">${l}</div></div>`).join("")}</div>`}
         ${going}
         <div class="nm-actions">
           ${ev.url
@@ -450,7 +457,7 @@ function renderNext(){
         </div>
       </div>`;
     const target=new Date(d.getFullYear(),d.getMonth(),d.getDate(),21,0,0).getTime();
-    const cells=card.querySelectorAll(".num");
+    const cells=(strip||card).querySelectorAll(".num");
     const set=(k,v)=>cells.forEach(c=>{ if(c.dataset.k===k) c.textContent=String(v).padStart(2,"0"); });
     function tick(){
       let diff=Math.max(0,target-Date.now());
