@@ -31,19 +31,20 @@
   --bone:    #f6efe4;
   --muted:   #a49bb3;   /* cool muted text          */
   --muted-2: #675e75;   /* dim text                 */
-  /* LIQUID GLASS — real glass reads CLEAR with a bright refracting rim,
-     not heavy frost. Low blur so shapes stay legible through it, high
-     saturation + brightness for the lens lift, and the edge work below
-     (.glass::before) is what actually sells it as glass. */
-  --glass-bg:   rgba(255,255,255,.045);
-  --glass-brd:  rgba(255,255,255,.20);
-  --glass-blur: blur(7px) saturate(210%) brightness(1.14);
-  --glass-lift: 0 14px 42px -14px rgba(0,0,0,.75);
+  /* LIQUID GLASS v2 — the Instagram/iOS read. Real glass is CLEAR: the pane
+     itself is nearly colorless, the color is whatever light sits behind it.
+     What sells it: (1) a continuous crisp hairline rim with opposing
+     catch-lights, (2) one clean top specular like light on a curved pane,
+     (3) a lens backdrop (blur+saturate) — and NO milky interior wash. The
+     old inset white bloom is what made v1 read as frosted plastic. */
+  --glass-bg:   rgba(255,255,255,.055);
+  --glass-brd:  rgba(255,255,255,.22);
+  --glass-blur: blur(9px) saturate(240%) brightness(1.18);
+  --glass-lift: 0 18px 48px -18px rgba(0,0,0,.8),0 2px 6px -1px rgba(0,0,0,.4);
   --glass-spec:
-    inset 0 1.5px 0 rgba(255,255,255,.62),
-    inset 0 -1px 0 rgba(255,255,255,.16),
-    inset 0 10px 24px -18px rgba(255,255,255,.75),
-    inset 0 -12px 26px -18px rgba(0,0,0,.6);
+    inset 0 1px 0 rgba(255,255,255,.60),
+    inset 0 -1px 0 rgba(255,255,255,.14),
+    inset 0 -14px 24px -20px rgba(0,0,0,.5);
   --maxw:    1180px;
   --radius:  16px;
   --btn-r:   100px;
@@ -98,18 +99,25 @@ header.site.scrolled{background:rgba(8,9,7,.84);backdrop-filter:blur(14px) satur
    so the brand colour still carries the hierarchy while the material stays
    identical everywhere. Text is light because a translucent fill over the
    dark site can't carry the old near-black label. */
+/* v2: the pane is CLEAR. The white curved-pane gradient is the resting
+   specular; brand color is only a whisper of interior light plus the outer
+   glow, never a paint job — that tinted fill was what read as plastic. */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:'Inter',sans-serif;font-weight:800;
   letter-spacing:.06em;text-transform:uppercase;font-size:.82rem;padding:13px 24px;border-radius:var(--btn-r);
   transition:.3s var(--ease);position:relative;overflow:hidden;white-space:nowrap;cursor:pointer;
   --tint:246,239,228;
-  color:#fff;
-  background:linear-gradient(180deg,rgba(var(--tint),.32),rgba(var(--tint),.17));
-  border:1px solid rgba(var(--tint),.46);
+  color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4),0 2px 12px rgba(0,0,0,.35);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 45%,rgba(255,255,255,.01) 55%,rgba(255,255,255,.07)),
+    linear-gradient(180deg,rgba(var(--tint),.14),rgba(var(--tint),.08));
+  border:1px solid rgba(255,255,255,.12);
   -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
   box-shadow:var(--glass-lift),var(--glass-spec)}
 .btn:hover{transform:translateY(-2px);
-  background:linear-gradient(180deg,rgba(var(--tint),.46),rgba(var(--tint),.27));
-  border-color:rgba(var(--tint),.66)}
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06) 45%,rgba(255,255,255,.02) 55%,rgba(255,255,255,.10)),
+    linear-gradient(180deg,rgba(var(--tint),.22),rgba(var(--tint),.12));
+  border-color:rgba(255,255,255,.2)}
 .btn::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;pointer-events:none;
   background:linear-gradient(105deg,transparent,rgba(255,255,255,.3),transparent);transform:skewX(-18deg);transition:left .6s var(--ease)}
 .btn:hover::after{left:140%}
@@ -244,8 +252,6 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
   filter:blur(28px);z-index:-1;pointer-events:none}
 .flicker{animation:neonBuzz 5.5s infinite}
 @keyframes neonBuzz{0%,28%,30%,61%,63%,90%,100%{opacity:1}29%{opacity:.5}62%{opacity:.42}91%,93%{opacity:.72}}
-.hero-tag{font-size:clamp(1rem,2.1vw,1.28rem);color:var(--muted);max-width:600px;margin:20px auto 4px;font-weight:400}
-.hero-tag b{color:var(--cream);font-weight:700}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px}
 .hero-actions .hero-cta{font-size:1.02rem;padding:14px 30px}
 @media(max-width:520px){.hero-actions{width:100%;max-width:360px}.hero-actions .hero-cta{flex:1 1 140px}}
@@ -285,18 +291,18 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
    filters in backdrop-filter, so it falls back to the rim work,
    which carries the look on its own.
    ============================================================ */
-.gtabs,.gtabs-pill,.btn,.nl-tag,#islandBtn,.ev .ev-cta{position:relative}
-/* Refracting rim: bright at top-left AND bottom-right, near-invisible across
-   the middle. That opposing catch-light is the single cue that reads as thick
-   glass rather than a translucent panel. Drawn as a masked 1.2px border so it
-   follows any border-radius. */
+.gtabs,.gtabs-pill,.btn,.nl-tag,#islandBtn,.ev .ev-cta,.series{position:relative}
+/* Refracting rim: a CONTINUOUS crisp hairline (iOS/Instagram never lets the
+   edge vanish mid-run) that flares at top-left AND bottom-right. The opposing
+   catch-light is the cue that reads as thick glass rather than a translucent
+   panel. Drawn as a masked 1.2px border so it follows any border-radius. */
 .gtabs::before,.gtabs-pill::before,.btn::before,.nl-tag::before,
-#islandBtn::before,.ev .ev-cta::before{
+#islandBtn::before,.ev .ev-cta::before,.series::before{
   content:"";position:absolute;inset:0;border-radius:inherit;padding:1.2px;pointer-events:none;z-index:0;
   background:linear-gradient(135deg,
-    rgba(255,255,255,.95) 0%, rgba(255,255,255,.30) 17%,
-    rgba(255,255,255,.05) 41%, rgba(255,255,255,.05) 59%,
-    rgba(255,255,255,.36) 83%, rgba(255,255,255,.92) 100%);
+    rgba(255,255,255,.95) 0%, rgba(255,255,255,.40) 15%,
+    rgba(255,255,255,.15) 40%, rgba(255,255,255,.15) 60%,
+    rgba(255,255,255,.44) 85%, rgba(255,255,255,.95) 100%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
           mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask-composite:exclude}
@@ -322,12 +328,14 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
   -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
   box-shadow:var(--glass-lift),var(--glass-spec)}
 /* the pill is a brighter pane of glass ON the bar — no second backdrop-filter,
-   nesting them muddies the result; a lifted white fill reads cleaner */
+   nesting them muddies the result. v2: curved-pane gradient (bright top, clear
+   middle, faint bottom re-light) instead of a flat white wash */
 .gtabs-pill{position:absolute;top:5px;bottom:5px;left:0;width:0;border-radius:100px;pointer-events:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,.13));
+  background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.09) 52%,rgba(255,255,255,.15));
   box-shadow:0 8px 22px -10px rgba(0,0,0,.7),
-    inset 0 1.5px 0 rgba(255,255,255,.6),
-    inset 0 -10px 20px -16px rgba(0,0,0,.5);
+    inset 0 1px 0 rgba(255,255,255,.65),
+    inset 0 -1px 0 rgba(255,255,255,.18),
+    inset 0 -10px 18px -16px rgba(0,0,0,.4);
   opacity:0;transition:opacity .25s var(--ease)}
 .gtabs.ready .gtabs-pill{opacity:1;
   /* spring with a little overshoot, the way the iOS pill settles */
@@ -335,6 +343,7 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
 .gtab{position:relative;z-index:1;flex:1 1 0;display:inline-flex;align-items:center;justify-content:center;
   padding:16px 22px;border-radius:100px;font-family:'Inter',sans-serif;font-weight:800;font-size:.92rem;
   letter-spacing:.06em;text-transform:uppercase;color:rgba(246,239,228,.66);white-space:nowrap;
+  text-shadow:0 1px 8px rgba(0,0,0,.45);
   transition:color .3s var(--ease);-webkit-tap-highlight-color:transparent}
 .gtab:hover,.gtab.is-active{color:#fff}
 .gtab:focus-visible{outline:2px solid #fff;outline-offset:-3px}
@@ -397,25 +406,26 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
 .nextmajor{display:grid;grid-template-columns:.62fr 1fr;gap:0;align-items:stretch;
   background:linear-gradient(160deg,var(--surface-2),var(--surface));border:1px solid var(--line);
   border-radius:22px;overflow:hidden;position:relative;box-shadow:0 40px 100px -50px rgba(0,0,0,.9)}
+/* the WHOLE card is the Get Tickets button (no inner CTA to compete with it),
+   so it carries the pointer, the lift, and a real focus ring itself */
+.nextmajor[role="button"]{cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease)}
+.nextmajor[role="button"]:hover{transform:translateY(-4px);border-color:rgba(139,61,255,.55);
+  box-shadow:0 50px 120px -46px rgba(139,61,255,.5)}
+.nextmajor[role="button"]:active{transform:translateY(-1px)}
+.nextmajor[role="button"]:focus-visible{outline:3px solid var(--gt-cyan);outline-offset:4px}
 .nm-flyer{position:relative;min-height:340px;background:#0a0810 center/cover no-repeat}
 .nm-flyer::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,var(--surface) 100%)}
 .nm-body{position:relative;padding:40px 44px;display:flex;flex-direction:column;justify-content:center}
 .nm-body::before{content:"";position:absolute;width:400px;height:400px;right:-140px;top:-160px;
   background:radial-gradient(circle,rgba(139,61,255,.28),transparent 65%);filter:blur(50px);pointer-events:none}
+.nm-body .eyebrow{font-size:.95rem}
 .nm-name{font-family:'Anton';font-weight:400;text-transform:uppercase;letter-spacing:.5px;line-height:.9;
-  font-size:clamp(2.4rem,6vw,4.2rem);color:var(--cream);margin:4px 0 10px}
-.nm-meta{display:flex;flex-wrap:wrap;gap:6px;color:var(--muted);font-size:.92rem;font-weight:600;margin-bottom:18px}
-/* 10px vertical padding takes each row to a 44px tap target. Real padding,
-   not negative margins: those would make neighbouring hit areas overlap once
-   the rows wrap on a phone, and a mis-tap here opens the wrong app. */
-.nm-meta .mrow{display:inline-flex;align-items:center;gap:7px;padding:10px 8px}
-/* the date and the venue are real links: date opens the calendar sheet,
-   venue opens whichever map app the device prefers */
-.nm-meta a.mrow-act{color:inherit;cursor:pointer;border-radius:10px;
-  transition:color .2s var(--ease),background .2s var(--ease);-webkit-tap-highlight-color:transparent}
-.nm-meta a.mrow-act:hover,.nm-meta a.mrow-act:focus-visible{color:var(--cream);background:rgba(246,239,228,.08)}
-.nm-meta a.mrow-act:hover b{text-decoration:underline;text-underline-offset:3px}
-.nm-meta svg{width:15px;height:15px;fill:var(--magenta)}
+  font-size:clamp(3rem,7.4vw,5.4rem);color:var(--cream);margin:4px 0 12px}
+/* date / venue / doors are plain text now — the card itself is the only tap */
+.nm-meta{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:1.18rem;font-weight:600;margin-bottom:0}
+.nm-meta .mrow{display:inline-flex;align-items:center;gap:9px;padding:2px 0}
+.nm-meta svg{width:19px;height:19px;fill:var(--magenta)}
 .nm-meta b{color:var(--cream)}
 /* the big Posh-style GOING tile — bottom-right of the headliner card */
 .going-big{position:absolute;right:26px;bottom:24px;z-index:2;text-align:center;padding:16px 26px;border-radius:18px;
@@ -457,10 +467,21 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
    SERIES CARDS (home) — Majors / Darty Bars / Tempe
    ============================================================ */
 .series-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+/* v2: the three series cards are panes of the same liquid glass as the
+   buttons (his ask) — clear fill with a curved-pane highlight over each
+   card's own colored glow, masked rim from the shared ::before, lens
+   backdrop on desktop (touch devices drop the blur below, same perf rule
+   as every other repeating glass element) */
 .series{position:relative;display:flex;flex-direction:column;min-height:380px;border-radius:20px;overflow:hidden;
-  border:1px solid var(--line);background:linear-gradient(165deg,var(--surface-2),var(--surface));
+  border:1px solid rgba(255,255,255,.10);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 40%,rgba(255,255,255,.01) 60%,rgba(255,255,255,.05)),
+    rgba(13,10,18,.42);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-lift),var(--glass-spec);
   padding:30px;transition:transform .3s var(--ease),border-color .3s,box-shadow .3s}
 .series:hover{transform:translateY(-6px)}
+.series>*{position:relative;z-index:1}
 .series .s-kicker{font-weight:800;font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;margin-bottom:12px;display:inline-flex;align-items:center;gap:9px}
 .series .s-kicker::before{content:"";width:26px;height:2px;display:inline-block}
 .series h3{font-family:'Anton';font-weight:400;font-size:clamp(2rem,4vw,2.8rem);line-height:.92;letter-spacing:.5px;text-transform:uppercase;margin:0 0 12px}
@@ -470,19 +491,21 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
 .series .s-cad .dot{width:8px;height:8px;border-radius:50%;flex:none}
 .series .s-go{margin-top:16px}
 .series::after{content:"";position:absolute;width:340px;height:340px;right:-120px;top:-140px;filter:blur(55px);pointer-events:none;opacity:.8}
-.series.s-major{border-color:rgba(255,43,214,.28)}
-.series.s-major:hover{border-color:rgba(255,43,214,.6);box-shadow:0 26px 70px -30px rgba(255,43,214,.5)}
-.series.s-major::after{background:radial-gradient(circle,rgba(255,43,214,.22),transparent 65%)}
+/* identity = the colored glow BEHIND the pane + kicker + dot. Resting border
+   stays neutral so the glass rim reads clean; color hits the edge on hover. */
+.series.s-major:hover{border-color:rgba(255,43,214,.55);
+  box-shadow:0 26px 70px -30px rgba(255,43,214,.5),var(--glass-lift),var(--glass-spec)}
+.series.s-major::after{background:radial-gradient(circle,rgba(255,43,214,.26),transparent 65%)}
 .series.s-major .s-kicker{color:var(--magenta)}.series.s-major .s-kicker::before{background:var(--magenta)}
 .series.s-major .s-cad .dot{background:var(--magenta);animation:pulse 2s infinite}
-.series.s-bars{border-color:rgba(245,48,30,.3)}
-.series.s-bars:hover{border-color:rgba(245,48,30,.62);box-shadow:0 26px 70px -30px rgba(245,48,30,.5)}
-.series.s-bars::after{background:radial-gradient(circle,rgba(245,48,30,.2),transparent 65%)}
+.series.s-bars:hover{border-color:rgba(245,48,30,.55);
+  box-shadow:0 26px 70px -30px rgba(245,48,30,.5),var(--glass-lift),var(--glass-spec)}
+.series.s-bars::after{background:radial-gradient(circle,rgba(245,48,30,.24),transparent 65%)}
 .series.s-bars .s-kicker{color:var(--bars)}.series.s-bars .s-kicker::before{background:var(--bars)}
 .series.s-bars .s-cad .dot{background:var(--bars);animation:pulse 2s infinite}
-.series.s-tempe{border-color:rgba(140,29,64,.55)}
-.series.s-tempe:hover{border-color:rgba(255,198,39,.6);box-shadow:0 26px 70px -30px rgba(140,29,64,.75)}
-.series.s-tempe::after{background:radial-gradient(circle,rgba(140,29,64,.4),transparent 65%)}
+.series.s-tempe:hover{border-color:rgba(255,198,39,.55);
+  box-shadow:0 26px 70px -30px rgba(140,29,64,.75),var(--glass-lift),var(--glass-spec)}
+.series.s-tempe::after{background:radial-gradient(circle,rgba(140,29,64,.45),transparent 65%)}
 .series.s-tempe .s-kicker{color:var(--asu-gold)}.series.s-tempe .s-kicker::before{background:var(--asu-gold)}
 .series.s-tempe .s-cad .dot{background:var(--asu-gold);animation:pulse 2s infinite}
 
@@ -533,13 +556,18 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
   color:var(--gt-cyan);margin-bottom:10px}
 .ev .ev-going .dot{width:7px;height:7px;border-radius:50%;background:var(--gt-cyan);animation:pulse 2s infinite}
 /* event CTAs are glass too, tinted per series. These sit on flyer art, so the
-   tint runs a little heavier than the standalone buttons for legibility. */
+   tint runs a little heavier than the standalone buttons for legibility —
+   but v2 still cuts it hard: the blurred flyer IS the color, the pane on top
+   stays clear with a white curved-pane highlight. */
 .ev .ev-cta{--tint:255,43,214;font-size:.78rem;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;
   display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:10px 16px;border-radius:100px;
   transition:.2s;text-transform:uppercase;letter-spacing:.05em;
-  background:linear-gradient(180deg,rgba(var(--tint),.52),rgba(var(--tint),.34));
-  border:1px solid rgba(var(--tint),.62);
-  -webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);
+  text-shadow:0 1px 2px rgba(0,0,0,.5),0 2px 10px rgba(0,0,0,.4);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05) 48%,rgba(255,255,255,.08)),
+    linear-gradient(180deg,rgba(var(--tint),.30),rgba(var(--tint),.18));
+  border:1px solid rgba(255,255,255,.16);
+  -webkit-backdrop-filter:blur(14px) saturate(220%) brightness(1.12);backdrop-filter:blur(14px) saturate(220%) brightness(1.12);
   box-shadow:0 8px 22px -10px rgba(0,0,0,.7),var(--glass-spec)}
 .ev .ev-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px -8px rgba(255,43,214,.8)}
 .ev[data-series="bar"] .ev-cta{--tint:245,48,30;color:#fff}
@@ -563,7 +591,13 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
 .fchip{padding:9px 18px;border-radius:100px;border:1px solid var(--line);background:transparent;color:var(--muted);
   font-family:'Inter';font-weight:700;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.2s var(--ease)}
 .fchip:hover{color:var(--cream);border-color:var(--muted-2)}
-.fchip.active{--tint:255,43,214;color:#fff;background:linear-gradient(180deg,rgba(var(--tint),.42),rgba(var(--tint),.24));border-color:rgba(var(--tint),.6);-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%)}
+.fchip.active{--tint:255,43,214;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.4);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 48%,rgba(255,255,255,.07)),
+    linear-gradient(180deg,rgba(var(--tint),.20),rgba(var(--tint),.11));
+  border-color:rgba(255,255,255,.2);
+  -webkit-backdrop-filter:blur(14px) saturate(220%);backdrop-filter:blur(14px) saturate(220%);
+  box-shadow:0 6px 18px -8px rgba(var(--tint),.55),inset 0 1px 0 rgba(255,255,255,.5)}
 
 /* ============================================================
    RELIVE THE NIGHTS — video strip
@@ -1037,11 +1071,23 @@ body.theme-tempe{
    on a 40px button anyway.
    ============================================================ */
 @media (hover:none){
-  .btn,.ev .ev-cta,.fchip,.pill,.date-chip,.map-card,.mobile-menu{
+  .btn,.ev .ev-cta,.fchip,.pill,.date-chip,.map-card,.mobile-menu,.series{
     -webkit-backdrop-filter:none !important;backdrop-filter:none !important}
-  /* compensate: the fill carries a touch more weight without the blur */
-  .btn{background:linear-gradient(180deg,rgba(var(--tint),.42),rgba(var(--tint),.26))}
-  .ev .ev-cta{background:linear-gradient(180deg,rgba(var(--tint),.66),rgba(var(--tint),.46))}
+  /* compensate WITHOUT going back to the tinted-plastic fill: keep the clear
+     curved-pane look, add a faint dark base layer for label contrast — the
+     translucency to the page (hero video moves behind the nav button) still
+     reads as glass even blurless */
+  .btn{background:
+    linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,.05) 45%,rgba(255,255,255,.02) 55%,rgba(255,255,255,.09)),
+    linear-gradient(180deg,rgba(var(--tint),.20),rgba(var(--tint),.12)),
+    rgba(10,8,14,.30)}
+  .ev .ev-cta{background:
+    linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,.06) 48%,rgba(255,255,255,.10)),
+    linear-gradient(180deg,rgba(var(--tint),.38),rgba(var(--tint),.24)),
+    rgba(10,8,14,.30)}
+  .series{background:
+    linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 40%,rgba(255,255,255,.01) 60%,rgba(255,255,255,.05)),
+    rgba(13,10,18,.62)}
   /* the cursor spotlight is meaningless without a cursor and it composites
      a 640px blended layer every frame */
   .spotlight{display:none}
@@ -1111,24 +1157,26 @@ body.theme-tempe{
   .nm-body{padding:calc(40 * var(--nm)) calc(44 * var(--nm))}
   .nm-body::before{width:calc(400 * var(--nm));height:calc(400 * var(--nm));
     right:calc(-140 * var(--nm));top:calc(-160 * var(--nm));filter:blur(calc(50 * var(--nm)))}
-  .nm-body .eyebrow{font-size:calc(11.84 * var(--nm));gap:calc(10 * var(--nm));
-    margin-bottom:calc(16 * var(--nm))}
-  .nm-body .eyebrow::before{width:calc(30 * var(--nm));height:calc(2 * var(--nm))}
-  .nm-name{font-size:calc(67.2 * var(--nm));margin:calc(4 * var(--nm)) 0 calc(10 * var(--nm))}
-  .nm-meta{font-size:calc(14.72 * var(--nm));gap:calc(6 * var(--nm));
-    margin-bottom:calc(18 * var(--nm))}
-  .nm-meta .mrow{padding:calc(10 * var(--nm)) calc(8 * var(--nm));gap:calc(7 * var(--nm))}
-  .nm-meta a.mrow-act{border-radius:calc(10 * var(--nm))}
-  .nm-meta svg{width:calc(15 * var(--nm));height:calc(15 * var(--nm))}
+  /* the lettering is the money now (no button left on the card), so every
+     line scales from the bigger desktop sizes AND floors at a readable size
+     instead of riding --nm to the bottom — on a 375px phone the floors win */
+  .nm-body .eyebrow{font-size:max(calc(15.2 * var(--nm)),.68rem);gap:max(calc(10 * var(--nm)),6px);
+    margin-bottom:max(calc(16 * var(--nm)),8px)}
+  .nm-body .eyebrow::before{width:max(calc(30 * var(--nm)),16px);height:2px}
+  .nm-name{font-size:max(calc(86.4 * var(--nm)),2.15rem);
+    margin:max(calc(4 * var(--nm)),3px) 0 max(calc(12 * var(--nm)),8px)}
+  .nm-meta{font-size:max(calc(18.88 * var(--nm)),.82rem);
+    gap:max(calc(8 * var(--nm)),5px) max(calc(18 * var(--nm)),12px);margin-bottom:0}
+  .nm-meta .mrow{padding:2px 0;gap:max(calc(9 * var(--nm)),6px)}
+  .nm-meta svg{width:max(calc(19 * var(--nm)),13px);height:max(calc(19 * var(--nm)),13px)}
   .countdown{max-width:calc(440 * var(--nm));gap:calc(10 * var(--nm));
     margin-bottom:calc(22 * var(--nm))}
   .cd-cell{padding:calc(14 * var(--nm)) calc(6 * var(--nm));border-radius:calc(12 * var(--nm))}
   .cd-cell .num{font-size:calc(38.4 * var(--nm))}
   .cd-cell .lab{font-size:calc(9.28 * var(--nm));margin-top:calc(6 * var(--nm))}
   .nm-actions{gap:calc(12 * var(--nm))}
-  /* the ONE part of the card that does not shrink with the rest: Get Tickets
-     is the money tap, so it scales from the bigger 16/34 desktop size and
-     floors at a real 47px-tall target instead of riding --nm to the bottom */
+  /* only the between-headliners empty state still renders a button (Join The
+     List) — keep it floored at a real 47px-tall target */
   .nm-actions .btn{font-size:max(calc(15.2 * var(--nm)),.78rem);gap:max(calc(9 * var(--nm)),7px);
     padding:max(calc(16 * var(--nm)),12px) max(calc(34 * var(--nm)),24px);min-height:47px}
   .nm-actions .btn svg{width:max(calc(16 * var(--nm)),15px);height:max(calc(16 * var(--nm)),15px)}
@@ -1221,13 +1269,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,.fchip:focus-visible,[d
 #islandBtn{position:fixed;right:18px;bottom:18px;z-index:1200;display:inline-flex;align-items:center;gap:8px;
   --tint:255,43,214;color:#fff;border-radius:100px;padding:12px 18px;cursor:pointer;
   font:800 .78rem 'Inter',sans-serif;letter-spacing:.06em;text-transform:uppercase;
-  background:linear-gradient(180deg,rgba(var(--tint),.46),rgba(var(--tint),.28));
-  border:1px solid rgba(var(--tint),.6);
+  text-shadow:0 1px 2px rgba(0,0,0,.4),0 2px 10px rgba(0,0,0,.35);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 45%,rgba(255,255,255,.01) 55%,rgba(255,255,255,.07)),
+    linear-gradient(180deg,rgba(var(--tint),.16),rgba(var(--tint),.09));
+  border:1px solid rgba(255,255,255,.14);
   -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
-  box-shadow:0 10px 30px -10px rgba(255,43,214,.8),var(--glass-spec);transition:.3s var(--ease)}
+  box-shadow:0 10px 30px -10px rgba(255,43,214,.6),var(--glass-lift),var(--glass-spec);transition:.3s var(--ease)}
 #islandBtn:hover{transform:translateY(-2px);
-  background:linear-gradient(180deg,rgba(var(--tint),.6),rgba(var(--tint),.38));
-  box-shadow:0 16px 40px -10px rgba(255,43,214,.95),var(--glass-spec)}
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06) 45%,rgba(255,255,255,.02) 55%,rgba(255,255,255,.10)),
+    linear-gradient(180deg,rgba(var(--tint),.24),rgba(var(--tint),.13));
+  box-shadow:0 16px 40px -10px rgba(255,43,214,.8),var(--glass-lift),var(--glass-spec)}
 #islandBtn svg{width:17px;height:17px}
 #islandPanel{position:fixed;right:18px;bottom:76px;z-index:1250;width:min(380px,calc(100vw - 24px));
   height:min(580px,calc(100vh - 110px));border:1px solid var(--line);border-radius:18px;overflow:hidden;

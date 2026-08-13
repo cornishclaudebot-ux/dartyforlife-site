@@ -383,21 +383,6 @@ function nextMajor(){
   return EVENTS.filter(e=>classify(e)==="major"&&isUpcoming(e))
                .sort((a,b)=>(a.date||"").localeCompare(b.date||""))[0]||null;
 }
-/* Apple devices get Apple Maps, everything else Google — the same rule the
-   touring map uses, hoisted to module scope so cards rendered AFTER load can
-   build their own links (the [data-venue] handler only binds once, at load). */
-const PREFERS_APPLE=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
-function mapsUrlFor(venue,city){
-  const q=encodeURIComponent([venue,city].filter(Boolean).join(", "));
-  return PREFERS_APPLE ? `https://maps.apple.com/?q=${q}`
-                       : `https://www.google.com/maps/search/?api=1&query=${q}`;
-}
-/* mirrors slugify() in scripts/ics.mjs — these two MUST agree or the date
-   link 404s. Change one, change the other. */
-function calSlug(ev){
-  if(ev.url) return String(ev.url).toLowerCase().replace(/[^a-z0-9-]/g,"");
-  return String(ev.title||"event").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
-}
 let cdTimer=null;
 function renderNext(){
   const ev=nextMajor();
@@ -423,6 +408,9 @@ function renderNext(){
     if(line) line.innerHTML="";
     if(strip){ strip.hidden=true; strip.innerHTML=""; }
     if(card){ card.classList.add("in");
+      // between headliners the card is NOT a button — its Join The List link handles itself
+      ["data-tickets","data-ev-url","data-ev-title","data-notify","role","tabindex","aria-label"]
+        .forEach(a=>card.removeAttribute(a));
       card.innerHTML=`<div class="nm-body"><span class="eyebrow">Between headliners</span><div class="nm-name">Season loading</div><p class="nm-empty">The next one drops soon. Get on The List so you hear it first.</p><div class="nm-actions"><a class="btn btn-primary" href="${home}#list">Join The List</a></div></div>`;
     }
     return;
@@ -436,6 +424,25 @@ function renderNext(){
       strip.innerHTML=`<span class="cds-k">Next headliner in</span><div class="cds-row" role="group" aria-label="Countdown to ${esc(ev.title)}">${cdCells}</div>`;
       strip.hidden=false; strip.classList.add("in");
     }
+    // The WHOLE card is the ticket button (his call: no inner Get Tickets, the
+    // entire tab clicks through). Attributes live on the card so the one
+    // delegated [data-tickets] handler catches any tap inside it; date and
+    // venue are plain text so nothing competes with the money tap.
+    if(ev.url){
+      card.setAttribute("data-tickets","ev");
+      card.setAttribute("data-ev-url",ev.url);
+      card.setAttribute("data-ev-title",ev.title);
+      card.removeAttribute("data-notify");
+      card.setAttribute("aria-label",`Get tickets for ${ev.title}`);
+    } else {
+      card.setAttribute("data-notify",ev.title);
+      card.removeAttribute("data-tickets");
+      card.removeAttribute("data-ev-url");
+      card.removeAttribute("data-ev-title");
+      card.setAttribute("aria-label",`Get notified about ${ev.title}`);
+    }
+    card.setAttribute("role","button");
+    card.setAttribute("tabindex","0");
     card.innerHTML=`
       <div class="nm-flyer" ${ev.flyer?`style="background-image:url('${esc(ev.flyer)}')"`:""}></div>
       <div class="nm-body">
@@ -443,19 +450,12 @@ function renderNext(){
         <div class="nm-name">${esc(ev.title)}</div>
         <p class="sr-only">${esc(ev.title)}, ${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}${ev.time?`, doors ${esc(ev.time)}`:""}${ev.venue?`, at ${esc(ev.venue)}`:""}.</p>
         <div class="nm-meta">
-          <a class="mrow mrow-act" href="cal/${calSlug(ev)}.ics"
-             aria-label="Add ${esc(ev.title)} to your calendar">${IC.cal}<b>${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</b></a>
-          ${ev.venue?`<a class="mrow mrow-act" href="${mapsUrlFor(ev.venue,ev.city)}" target="_blank" rel="noopener"
-             aria-label="Open ${esc(ev.venue)} in maps">${IC.pin}${esc(ev.venue)}</a>`:""}
+          <span class="mrow">${IC.cal}<b>${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</b></span>
+          ${ev.venue?`<span class="mrow">${IC.pin}${esc(ev.venue)}</span>`:""}
           ${ev.time?`<span class="mrow"><b>Doors ${esc(ev.time)}</b></span>`:""}
         </div>
         ${strip?"":`<div class="countdown" aria-hidden="true">${["Days","Hours","Mins","Secs"].map(l=>`<div class="cd-cell"><div class="num" data-k="${l}">--</div><div class="lab">${l}</div></div>`).join("")}</div>`}
         ${going}
-        <div class="nm-actions">
-          ${ev.url
-            ? `<button class="btn btn-primary" data-tickets="ev" data-ev-url="${esc(ev.url)}" data-ev-title="${esc(ev.title)}">Get Tickets ${IC.arrow}</button>`
-            : `<button class="btn btn-primary" data-notify="${esc(ev.title)}">Get Notified ${IC.arrow}</button>`}
-        </div>
       </div>`;
     const target=new Date(d.getFullYear(),d.getMonth(),d.getDate(),21,0,0).getTime();
     const cells=(strip||card).querySelectorAll(".num");
@@ -684,6 +684,16 @@ document.addEventListener("click",e=>{
   if(e.target.closest(".ev-cta")) return;          // the button handles itself
   const cta=card.querySelector(".ev-cta");
   if(cta) cta.click();
+});
+
+// the headliner card is a whole-card button (role=button, no inner CTA) —
+// Enter/Space must activate it like a real one for keyboard users
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Enter"&&e.key!==" ") return;
+  const t=e.target&&e.target.closest
+    ? e.target.closest('[role="button"][data-tickets],[role="button"][data-notify]') : null;
+  if(!t) return;
+  e.preventDefault(); t.click();
 });
 
 /* ============================================================
