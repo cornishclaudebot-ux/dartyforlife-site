@@ -14,6 +14,7 @@ const CONFIG = {
   tt:      "https://tiktok.com/@dartyforlife",
   fb:      "https://facebook.com/dartyforlife",
   email:   "contact@dartyforlife.com",
+  bus:     "https://www.wildwestpartybus.com/",   // partner · Wild West Party Bus
   stratus: "4344 W Indian School Rd, Phoenix, AZ 85031",
   the44:   "4494 W Peoria Ave, Glendale, AZ 85302",
   rack:    "3636 N Scottsdale Rd, Scottsdale, AZ 85251"
@@ -130,7 +131,8 @@ const IC = {
   fb:'<svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.5 2.9h-2.3v7A10 10 0 0022 12z"/></svg>',
   pin:'<svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>',
   cal:'<svg viewBox="0 0 24 24"><path d="M7 2v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2h-2V2h-2v2H9V2zm12 8v10H5V10z"/></svg>',
-  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  chev:'<svg class="ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>'
 };
 
 /* ============================================================
@@ -226,6 +228,23 @@ function buildNav(){
         <a href="rentals.html"${act('rentals.html')}>Rentals</a>
       </div>
       <div class="nav-right">
+        <!-- PARTY BUS: a tab in the top right that drops the whole rental down
+             in place, so the bus is one tap from every page instead of a scroll
+             to the bottom of home. Same glass as the hero tab bar. -->
+        <div class="busdrop-wrap" id="busWrap">
+          <button class="busdrop-tab" id="busTab" aria-expanded="false" aria-controls="busDrop">
+            <span>Party Bus</span>${IC.chev}
+          </button>
+          <div class="busdrop" id="busDrop" hidden>
+            <span class="bd-kicker">Partner · Wild West Party Bus</span>
+            <p class="bd-copy">Book the bus for your crew and pull up to the show together.</p>
+            <div class="bd-grid">
+              ${["bus-3","bus-8","bus-5","bus-1","bus-6","bus-4"].map(b=>
+                `<img src="media/gallery/bus/${b}.jpg" alt="Wild West Party Bus" loading="lazy" decoding="async">`).join("")}
+            </div>
+            <a class="btn btn-primary btn-sm bd-cta" href="${CONFIG.bus}" target="_blank" rel="noopener">Book the bus</a>
+          </div>
+        </div>
         <div class="nav-social">
           <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
           <a href="${CONFIG.tt}" target="_blank" rel="noopener" aria-label="TikTok">${IC.tt}</a>
@@ -242,6 +261,7 @@ function buildNav(){
     <a href="tempe.html" class="mm-tempe">Tempe</a>
     <a href="${home}#relive">Highlights</a>
     <a href="rentals.html">Equipment Rentals</a>
+    <a href="${CONFIG.bus}" target="_blank" rel="noopener">Party Bus</a>
     <a class="btn btn-primary" data-tickets="org" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Get Tickets</a>
     <div class="mm-social">
       <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
@@ -573,6 +593,31 @@ if(header) addEventListener("scroll",()=>header.classList.toggle("scrolled",scro
 const ham=document.getElementById("hamburger"),mm=document.getElementById("mobileMenu");
 if(ham){ ham.addEventListener("click",()=>mm.classList.toggle("open"));
   mm.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>mm.classList.remove("open"))); }
+
+/* PARTY BUS drop-down. Click toggles (so it works on touch), a fine pointer
+   also opens it on hover, and it closes on outside click, Escape, or scroll —
+   a panel that hangs off the header while the page moves under it reads broken. */
+(function busDropdown(){
+  const wrap=document.getElementById("busWrap"),tab=document.getElementById("busTab"),
+        drop=document.getElementById("busDrop");
+  if(!wrap||!tab||!drop) return;
+  let t;
+  const set=on=>{
+    clearTimeout(t);
+    tab.setAttribute("aria-expanded",on?"true":"false");
+    if(on){ drop.hidden=false; requestAnimationFrame(()=>wrap.classList.add("open")); }
+    else { wrap.classList.remove("open"); t=setTimeout(()=>{drop.hidden=true;},260); }
+  };
+  const isOpen=()=>tab.getAttribute("aria-expanded")==="true";
+  tab.addEventListener("click",e=>{e.stopPropagation();set(!isOpen());});
+  if(matchMedia("(pointer:fine)").matches){
+    wrap.addEventListener("mouseenter",()=>set(true));
+    wrap.addEventListener("mouseleave",()=>set(false));
+  }
+  document.addEventListener("click",e=>{ if(isOpen()&&!wrap.contains(e.target)) set(false); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&isOpen()){ set(false); tab.focus(); } });
+  addEventListener("scroll",()=>{ if(isOpen()) set(false); },{passive:true});
+})();
 
 const spot=document.querySelector(".spotlight");
 if(spot&&matchMedia("(pointer:fine)").matches){

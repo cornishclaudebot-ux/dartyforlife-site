@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=31" />
+<link rel="stylesheet" href="styles.css?v=32" />
 <script>if(navigator.globalPrivacyControl===true){window.doNotTrack="1"}</script>
   <script defer src="https://site-stats-dartyforlife.vercel.app/script.js" data-website-id="b3256c0a-fb20-445a-bf64-9430fa7dd86a" data-domains="dartyforlife.com,www.dartyforlife.com" data-do-not-track="true"></script>
 </head>
@@ -38,61 +38,6 @@
 <!-- No next-headliner block here (his call): the grid one scroll down IS the
      headliners, so the card was saying the same thing twice. Home keeps it. -->
 
-<style>
-.leg-wrap{max-width:1100px;margin:0 auto}
-.leg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:28px}
-@media(max-width:760px){.leg-grid{grid-template-columns:1fr}}
-.leg-card{border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:26px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.01))}
-.leg-card .leg-tag{font-family:'Anton',sans-serif;letter-spacing:.6px;font-size:.72rem;text-transform:uppercase;color:#E9B949;opacity:.95}
-.leg-card h3{font-family:'Anton',sans-serif;font-size:1.55rem;margin:6px 0 4px;letter-spacing:.5px;text-transform:uppercase;color:#fff}
-.leg-stat{font-weight:800;color:#fff;font-size:.88rem;margin-bottom:10px;opacity:.85}
-.leg-card p{color:rgba(255,255,255,.72);line-height:1.6;margin:0;font-size:.95rem}
-</style>
-
-<section id="legendary">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow">The ones people still talk about</span>
-      <h2 class="sec-title">Legendary <em>Nights</em></h2>
-      <p class="sec-sub">100+ events and 13,000+ through the doors last season. These are the builds that put DartyForLife on the map. Every one fully themed, fully produced, and impossible to fake.</p>
-    </div>
-    <div class="leg-wrap">
-      <div class="leg-grid">
-
-        <div class="leg-card reveal">
-          <span class="leg-tag">Halloween · Stratus</span>
-          <h3>Fear Forest</h3>
-          <div class="leg-stat">3,500+ through the gates over the weekend</div>
-          <p>Our crown jewel. A multi-night Halloween festival that takes over the entire Stratus Event Center with full festival production, headline sound, and a haunted build you have to walk through to believe. The biggest thing DartyForLife does all year, and it sells out.</p>
-        </div>
-
-        <div class="leg-card reveal">
-          <span class="leg-tag">Spring · Headliner</span>
-          <h3>Return of the Pirates</h3>
-          <div class="leg-stat">2,300+ tickets · 1,000+ aboard</div>
-          <p>An entire venue mapped out and transformed into a curated pirate world: immersive décor, detailed installations, multi-level staging, and hidden moments tucked in every corner. A headliner draw (TooTurnt Tony) sent the event page to a record 56,000 views. This wasn't a party, it was a set you sailed through.</p>
-        </div>
-
-        <div class="leg-card reveal">
-          <span class="leg-tag">New Year · All-White Rave</span>
-          <h3>Paint the World</h3>
-          <div class="leg-stat">1,100+ painted in</div>
-          <p>An all-white New Year paint rave with 500 gallons of glow paint, champagne sprays, paint guns firing color through the crowd, three massive LED walls, glowing bubble machines, confetti geysers, and a DartyForLife glow arch dripping paint. Strict all-white dress code. You walked in, and you were no longer in Phoenix.</p>
-        </div>
-
-        <div class="leg-card reveal">
-          <span class="leg-tag">The Open · Two Nights</span>
-          <h3>Club 16</h3>
-          <div class="leg-stat">A full arena build during the Phoenix Open</div>
-          <p>Our rebuild of the Waste Management Phoenix Open's legendary Hole 16, the golf world's only stadium hole. We recreated that Colosseum energy indoors with multi-level staging and elevated VIP high-rise platforms wrapping the crowd, for a two-night takeover during the biggest week in Phoenix.</p>
-        </div>
-
-      </div>
-      <p class="sec-sub reveal" style="margin-top:26px;text-align:center">Plus a full roster of themed worlds: How DartyForLife Stole Christmas, Lucked Up, White Lies, Space Cowboys, Gone Wild, AstroRave, Luau and more. Themed nights, done right, every single time.</p>
-    </div>
-  </div>
-</section>
-
 <section id="events">
   <div class="wrap">
     <div class="sec-head row reveal">
@@ -106,9 +51,133 @@
   </div>
 </section>
 
+<style>
+/* ============================================================
+   LEGENDARY NIGHTS — each card wears its own night. The event's
+   real art sits behind the card, and the copy rides a pane of the
+   SAME glass as the hero tab bar on the landing page (same
+   --glass-* tokens, same refracting rim from styles.css), so the
+   theming never costs legibility. Club 16 is the one card with no
+   photo on file, so its green is built in CSS: mowed fairway
+   stripes and a pin flag, not a stock golf picture.
+   ============================================================ */
+.leg-wrap{max-width:1100px;margin:0 auto}
+.leg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:28px}
+@media(max-width:760px){.leg-grid{grid-template-columns:1fr}}
+
+.leg-card{position:relative;isolation:isolate;overflow:hidden;border-radius:20px;
+  min-height:360px;display:flex;flex-direction:column;justify-content:flex-end;
+  border:1px solid rgba(255,255,255,.10);background:#0a0a0c}
+/* the accent hairline is the card's tell before you read a word of it */
+.leg-card::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:2;
+  background:linear-gradient(90deg,transparent,var(--leg-accent),transparent);opacity:.85}
+.leg-art{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;
+  transform:scale(1.03);transition:transform .7s var(--ease)}
+.leg-art::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(5,5,7,.12) 0%,rgba(5,5,7,.44) 44%,rgba(5,5,7,.80) 100%)}
+.leg-card:hover .leg-art{transform:scale(1.07)}
+
+/* the glass pane: same material as the hero tab bar */
+.leg-pane{position:relative;z-index:1;margin:0 12px 12px;padding:20px 20px 22px;border-radius:16px;
+  background:var(--glass-bg);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-lift),var(--glass-spec)}
+.leg-pane>*{position:relative;z-index:1}
+.leg-card .leg-tag{font-family:'Anton',sans-serif;letter-spacing:.6px;font-size:.72rem;text-transform:uppercase;
+  color:var(--leg-accent);text-shadow:0 1px 10px rgba(0,0,0,.6)}
+.leg-card h3{font-family:'Anton',sans-serif;font-size:1.55rem;margin:6px 0 4px;letter-spacing:.5px;
+  text-transform:uppercase;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.55)}
+.leg-stat{font-weight:800;color:#fff;font-size:.88rem;margin-bottom:10px;opacity:.9}
+.leg-card p{color:rgba(255,255,255,.82);line-height:1.6;margin:0;font-size:.95rem}
+
+/* --- the four nights --- */
+.leg--fear{--leg-accent:#E01A1A}
+.leg--fear .leg-art{background-image:url('media/legendary/fear-forest.jpg')}
+.leg--pirate{--leg-accent:#E8B84B}
+.leg--pirate .leg-art{background-image:url('media/legendary/pirates.jpg')}
+.leg--paint{--leg-accent:#FF2BD6}
+.leg--paint .leg-art{background-image:url('media/legendary/paint.jpg')}
+.leg--club{--leg-accent:#7CE23F}
+/* Club 16: a stadium-hole green, drawn. Mower stripes cut across the turf,
+   sunlight falls from the top, and the pin sits where the flag stood. */
+.leg--club .leg-art{
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='150' viewBox='0 0 120 150'%3E%3Cpath d='M46 148V10' stroke='%23f2f2ea' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M47 11l44 13-44 14z' fill='%237CE23F'/%3E%3Ccircle cx='46' cy='148' r='7' fill='%23050705' opacity='.55'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(101deg,rgba(255,255,255,.075) 0 34px,rgba(0,0,0,0) 34px 68px),
+    radial-gradient(120% 78% at 50% -6%,rgba(196,255,150,.24),rgba(0,0,0,0) 62%),
+    linear-gradient(180deg,#1a4a24 0%,#0f2d17 52%,#06170c 100%);
+  background-size:78px 98px,auto,auto,auto;
+  background-position:right 34px top 22px,center,center,center;
+  background-repeat:no-repeat,repeat,no-repeat,no-repeat}
+.leg--club .leg-art::after{
+  background:linear-gradient(180deg,rgba(4,10,5,.10) 0%,rgba(4,10,5,.42) 44%,rgba(4,10,5,.80) 100%)}
+
+@media(max-width:760px){
+  .leg-card{min-height:300px}
+  .leg-pane{margin:0 10px 10px;padding:18px}
+}
+@media(prefers-reduced-motion:reduce){ .leg-art,.leg-card:hover .leg-art{transition:none;transform:none} }
+</style>
+
+<section id="legendary">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The ones people still talk about</span>
+      <h2 class="sec-title">Legendary <em>Nights</em></h2>
+      <p class="sec-sub">100+ events and 13,000+ through the doors last season. These are the builds that put DartyForLife on the map. Every one fully themed, fully produced, and impossible to fake.</p>
+    </div>
+    <div class="leg-wrap">
+      <div class="leg-grid">
+
+        <article class="leg-card leg--fear reveal">
+          <span class="leg-art" aria-hidden="true"></span>
+          <div class="leg-pane">
+            <span class="leg-tag">Halloween · Stratus</span>
+            <h3>Fear Forest</h3>
+            <div class="leg-stat">3,500+ through the gates over the weekend</div>
+            <p>Our crown jewel. A multi-night Halloween festival that takes over the entire Stratus Event Center with full festival production, headline sound, and a haunted build you have to walk through to believe. The biggest thing DartyForLife does all year, and it sells out.</p>
+          </div>
+        </article>
+
+        <article class="leg-card leg--pirate reveal">
+          <span class="leg-art" aria-hidden="true"></span>
+          <div class="leg-pane">
+            <span class="leg-tag">Spring · Headliner</span>
+            <h3>Return of the Pirates</h3>
+            <div class="leg-stat">2,300+ tickets · 1,000+ aboard</div>
+            <p>An entire venue mapped out and transformed into a curated pirate world: immersive décor, detailed installations, multi-level staging, and hidden moments tucked in every corner. A headliner draw (TooTurnt Tony) sent the event page to a record 56,000 views. This wasn't a party, it was a set you sailed through.</p>
+          </div>
+        </article>
+
+        <article class="leg-card leg--paint reveal">
+          <span class="leg-art" aria-hidden="true"></span>
+          <div class="leg-pane">
+            <span class="leg-tag">New Year · All-White Rave</span>
+            <h3>Paint the World</h3>
+            <div class="leg-stat">1,100+ painted in</div>
+            <p>An all-white New Year paint rave with 500 gallons of glow paint, champagne sprays, paint guns firing color through the crowd, three massive LED walls, glowing bubble machines, confetti geysers, and a DartyForLife glow arch dripping paint. Strict all-white dress code. You walked in, and you were no longer in Phoenix.</p>
+          </div>
+        </article>
+
+        <article class="leg-card leg--club reveal">
+          <span class="leg-art" aria-hidden="true"></span>
+          <div class="leg-pane">
+            <span class="leg-tag">The Open · Two Nights</span>
+            <h3>Club 16</h3>
+            <div class="leg-stat">A full arena build during the Phoenix Open</div>
+            <p>Our rebuild of the Waste Management Phoenix Open's legendary Hole 16, the golf world's only stadium hole. We recreated that Colosseum energy indoors with multi-level staging and elevated VIP high-rise platforms wrapping the crowd, for a two-night takeover during the biggest week in Phoenix.</p>
+          </div>
+        </article>
+
+      </div>
+      <p class="sec-sub reveal" style="margin-top:26px;text-align:center">Plus a full roster of themed worlds: How DartyForLife Stole Christmas, Lucked Up, White Lies, Space Cowboys, Gone Wild, AstroRave, Luau and more. Themed nights, done right, every single time.</p>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <div id="footer-mount"></div>
-<script src="app.js?v=26"></script>
+<script src="app.js?v=27"></script>
 </body>
 </html>

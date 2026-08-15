@@ -94,6 +94,41 @@ header.site.scrolled{background:rgba(8,9,7,.84);backdrop-filter:blur(14px) satur
 .nav-social a svg{width:16px;height:16px;fill:var(--bone);transition:.3s}
 .nav-social a:hover svg{fill:#14040f}
 
+/* ---------- PARTY BUS drop-down (top right of every page) ----------
+   The tab reads as part of the nav; the panel underneath is the same glass
+   material as the hero tab bar (--glass-* tokens + the shared refracting rim),
+   so it lands as a pane of the site rather than a browser menu. Desktop only —
+   phones get Party Bus inside the hamburger menu, where the room is. */
+.busdrop-wrap{position:relative}
+.busdrop-tab{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:100px;cursor:pointer;white-space:nowrap;
+  font-family:'Inter',sans-serif;font-weight:800;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:#fff;background:rgba(255,255,255,.05);border:1px solid var(--line);
+  text-shadow:0 1px 8px rgba(0,0,0,.55);transition:.28s var(--ease);-webkit-tap-highlight-color:transparent}
+.busdrop-tab:hover,.busdrop-wrap.open .busdrop-tab{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35)}
+.busdrop-tab .ic-chev{width:13px;height:13px;transition:transform .3s var(--ease)}
+.busdrop-wrap.open .busdrop-tab .ic-chev{transform:rotate(180deg)}
+.busdrop-tab:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* the panel hangs over the hero VIDEO, so it carries a dark tint under the
+   same blur — clear glass alone left the copy unreadable on bright frames */
+.busdrop{position:absolute;top:calc(100% + 12px);right:0;width:340px;padding:16px;border-radius:20px;z-index:1100;
+  background:linear-gradient(180deg,rgba(10,9,14,.80),rgba(10,9,14,.68));
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-lift),var(--glass-spec);
+  opacity:0;transform:translateY(-8px) scale(.98);transform-origin:top right;pointer-events:none;
+  transition:opacity .22s var(--ease),transform .26s var(--ease)}
+.busdrop-wrap.open .busdrop{opacity:1;transform:none;pointer-events:auto}
+.busdrop>*{position:relative;z-index:1}
+.bd-kicker{display:block;font-family:'Anton',sans-serif;font-size:.72rem;letter-spacing:.7px;text-transform:uppercase;
+  color:#FF6FE2;text-shadow:0 1px 10px rgba(0,0,0,.7)}
+.bd-copy{margin:6px 0 12px;font-size:.86rem;line-height:1.5;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.bd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+.bd-grid img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:9px;display:block;
+  border:1px solid rgba(255,255,255,.10)}
+.bd-cta{width:100%}
+@media(max-width:900px){ .busdrop-wrap{display:none} }
+@media(prefers-reduced-motion:reduce){ .busdrop{transition:opacity .15s} }
+
 /* ---------- buttons ---------- */
 /* Every button is liquid glass. Variants only set --tint (an r,g,b triplet),
    so the brand colour still carries the hierarchy while the material stays
@@ -291,13 +326,16 @@ video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit
    filters in backdrop-filter, so it falls back to the rim work,
    which carries the look on its own.
    ============================================================ */
-.gtabs,.gtabs-pill,.btn,.nl-tag,#islandBtn,.ev .ev-cta,.series{position:relative}
+/* .busdrop is deliberately absent here: it sets its own position:absolute
+   further up, and this blanket rule would win on source order and drop the
+   panel into the nav's flow. */
+.gtabs,.gtabs-pill,.btn,.nl-tag,#islandBtn,.ev .ev-cta,.series,.leg-pane{position:relative}
 /* Refracting rim: a CONTINUOUS crisp hairline (iOS/Instagram never lets the
    edge vanish mid-run) that flares at top-left AND bottom-right. The opposing
    catch-light is the cue that reads as thick glass rather than a translucent
    panel. Drawn as a masked 1.2px border so it follows any border-radius. */
 .gtabs::before,.gtabs-pill::before,.btn::before,.nl-tag::before,
-#islandBtn::before,.ev .ev-cta::before,.series::before{
+#islandBtn::before,.ev .ev-cta::before,.series::before,.leg-pane::before,.busdrop::before{
   content:"";position:absolute;inset:0;border-radius:inherit;padding:1.2px;pointer-events:none;z-index:0;
   background:linear-gradient(135deg,
     rgba(255,255,255,.95) 0%, rgba(255,255,255,.40) 15%,
@@ -1228,7 +1266,10 @@ body.theme-tempe{
   .marquee.alt{display:none}
   .series{padding:22px}
   .series .s-cad{display:none}
-  #upcoming .ev:nth-child(n+4){display:none}
+  /* phones show 3 cards, but a MAJOR headliner is never one of the ones that
+     gets cut — Fear Forest sits last by date and was falling off the phone
+     entirely while the bar nights ahead of it stayed. Majors always survive. */
+  #upcoming .ev:nth-child(n+4):not([data-series="major"]){display:none}
   .foot-col{display:none}
   .foot-inner{grid-template-columns:1fr}
   footer.site{padding:44px 22px 32px}
