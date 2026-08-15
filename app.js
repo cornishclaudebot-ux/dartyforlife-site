@@ -718,7 +718,7 @@ console.log("%cDARTYFORLIFE","font-size:28px;font-weight:900;color:#ff2bd6",
    Facts sourced from manufacturer + retailer pages (Jul 2026).
    ============================================================ */
 const GEAR=[
- { id:"foam1", name:"HD Pro Stacker Foam Cannon", model:"Foam Daddy HD Pro Stacker", qty:1, img:"media/gallery/gear/foam-o3.jpg?v=3", imgs:["media/gallery/gear/foam-o3.jpg?v=3","media/gallery/gear/foam-o1.jpg?v=3","media/gallery/gear/foam-o5.jpg?v=2","media/gallery/gear/foam-o6.jpg?v=2"], note:"Foam solution sold separately",
+ { id:"foam1", name:"HD Pro Stacker Foam Cannon", model:"Foam Daddy HD Pro Stacker", qty:1, img:"media/gallery/gear/foam-o3.jpg?v=3", imgs:["media/gallery/gear/foam-o3.jpg?v=3","media/gallery/gear/foam-o1.jpg?v=3","media/gallery/gear/foam-o5-fit.jpg?v=5","media/gallery/gear/foam-o6-fit.jpg?v=5"], note:"Foam solution sold separately",
    tag:"Dense, stackable foam up to 30 feet out.",
    from:"FoamDaddy LLC · Phoenix, Arizona. The flagship cannon of the premier US foam party supplier, built in our own backyard.",
    desc:"FoamDaddy's flagship professional cannon, the machine behind commercial foam parties. It throws dense, stackable foam up to 30 feet and blankets roughly a 30 by 30 foot party zone.",
@@ -726,7 +726,7 @@ const GEAR=[
    use:["Mix the concentrate with water in a big reservoir per the dilution chart (2 gal of concentrate makes roughly 800 gallons of foam).","Drop the pump in, connect the 10-ft hose, and mount the cannon on its tripod.","Aim slightly upward over the pit and run it from the wireless remote. One batch runs about 4 hours.","Rinse the pump, hose, and mesh with clean water after the event."],
    specs:[["Throw distance","Up to 30 ft"],["Coverage","~30 x 30 ft zone"],["Power","110V · ~9A with pump"],["Weight","42 lb"],["Includes","Wireless remote, pump, 10-ft hose, tripod"],["Runtime","~4 hrs per solution batch"]],
    rev:{line:"550+ five-star reviews reported by Foam Daddy",src:"foamdaddy.com"} },
- { id:"foam2", name:"Large Foam Cannon", model:"Foam Daddy Large Foam Cannon", qty:1, img:"media/gallery/gear/foam2-o1.jpg?v=3", imgs:["media/gallery/gear/foam2-o1.jpg?v=3","media/gallery/gear/foam2-o2.jpg?v=3","media/gallery/gear/foam2-o3.jpg?v=3","media/gallery/gear/foam2-o4.jpg?v=3"], note:"Foam solution sold separately",
+ { id:"foam2", name:"Large Foam Cannon", model:"Foam Daddy Large Foam Cannon", qty:1, img:"media/gallery/gear/foam2-o1.jpg?v=3", imgs:["media/gallery/gear/foam2-o1.jpg?v=3","media/gallery/gear/foam2-o2.jpg?v=3","media/gallery/gear/foam2-o3-fit.jpg?v=5","media/gallery/gear/foam2-o4-fit.jpg?v=5"], note:"Foam solution sold separately",
    tag:"Elevated foam volume, 20 to 24 feet out.",
    from:"FoamDaddy LLC · Phoenix, Arizona. Same hometown builder as our HD Pro Stacker.",
    desc:"FoamDaddy's Large Foam Cannon on its swivel tripod mount. It pumps out volumes of foam from an elevated position, throwing 20 to 24 feet and blanketing a 30 by 30 foot zone up to 4 feet deep. Run it solo or cross-fire with the HD Pro Stacker for full-lot coverage.",
