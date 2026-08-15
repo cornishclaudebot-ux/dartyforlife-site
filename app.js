@@ -718,7 +718,7 @@ console.log("%cDARTYFORLIFE","font-size:28px;font-weight:900;color:#ff2bd6",
    Facts sourced from manufacturer + retailer pages (Jul 2026).
    ============================================================ */
 const GEAR=[
- { id:"foam1", name:"HD Pro Stacker Foam Cannon", model:"Foam Daddy HD Pro Stacker", qty:1, img:"media/gallery/gear/foam-o3.jpg?v=3", imgs:["media/gallery/gear/foam-o3.jpg?v=3","media/gallery/gear/foam-o1.jpg?v=3","media/gallery/gear/foam-o5-fit.jpg?v=5","media/gallery/gear/foam-o6-fit.jpg?v=5"], note:"Foam solution sold separately",
+ { id:"foam1", name:"HD Pro Stacker Foam Cannon", model:"Foam Daddy HD Pro Stacker", qty:1, img:"media/gallery/gear/foam-o3.jpg?v=3", imgs:["media/gallery/gear/foam-o3.jpg?v=3","media/gallery/gear/foam-o1.jpg?v=3","media/gallery/gear/foam-o7-fit.jpg?v=5","media/gallery/gear/foam-o6-fit.jpg?v=5"], note:"Foam solution sold separately",
    tag:"Dense, stackable foam up to 30 feet out.",
    from:"FoamDaddy LLC · Phoenix, Arizona. The flagship cannon of the premier US foam party supplier, built in our own backyard.",
    desc:"FoamDaddy's flagship professional cannon, the machine behind commercial foam parties. It throws dense, stackable foam up to 30 feet and blankets roughly a 30 by 30 foot party zone.",
