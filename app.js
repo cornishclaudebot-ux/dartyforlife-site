@@ -742,7 +742,7 @@ const GEAR=[
    use:["Set it on a pole or tripod, or use the tilt-back angle as a floor monitor.","Run XLR from your mixer or DJ gear into the input.","Pick a DSP preset for the job: dance music, mic, monitor.","Set gain so the limit light only flicks on the loudest peaks. Pair with our KS subs for full-range dance floors."],
    specs:[["Amplifier","Class-D, up to 2,000W peak (K.2 line)"],["Design","Two-way: woofer + 1.4\" compression driver"],["DSP","Factory presets + savable scenes"],["Rigging","Pole mount + tilt-back angles"],["I/O","XLR combo in, XLR thru"]],
    rev:{stars:"4.5/5",count:"163 reviews",src:"Sweetwater (K12.2, flagship of the line)",line:"Reviewers report clear, powerful sound and years of reliability across bars, halls, and outdoor events."} },
- { id:"ksub", name:"QSC KS118 Subwoofer", model:"QSC KS118 · 18\" · 3,600W", qty:4, img:"media/gallery/gear/ksub-c2.jpg?v=3", imgs:["media/gallery/gear/ksub-c2.jpg?v=3","media/gallery/gear/ksub-c1.jpg?v=3","media/gallery/gear/ksub-c3.jpg?v=3"],
+ { id:"ksub", name:"QSC KS118 Subwoofer", model:"QSC KS118 · 18\" · 3,600W", qty:4, img:"media/gallery/gear/ksub-o1.jpg?v=4", imgs:["media/gallery/gear/ksub-o1.jpg?v=4","media/gallery/gear/ksub-o2.jpg?v=4","media/gallery/gear/ksub-o3.jpg?v=4","media/gallery/gear/ksub-o4.jpg?v=4","media/gallery/gear/ksub-o5.jpg?v=4","media/gallery/gear/ksub-o6.jpg?v=4"],
    tag:"Chest-punch low end on wheels.",
    from:"QSC · Costa Mesa, California. The matching sub line to the K Family, from a company building pro audio since 1968.",
    desc:"The QSC KS118: an 18-inch powered subwoofer with 3,600 watts of peak Class-D power in a rolling birch cabinet. It fills in everything the tops don't reach. Rent one for warmth or four for a real dance floor.",
