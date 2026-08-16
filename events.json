@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-16T01:14:45.855Z",
+ "updated": "2026-08-16T01:19:50.743Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -76,7 +76,7 @@
    "addr": "4344 W Indian School Rd Apt 32, Phoenix, AZ 85031, USA",
    "age": 18,
    "series": "major",
-   "sold": 25,
+   "sold": 26,
    "lat": 33.4961217,
    "lng": -112.1541374
   }
