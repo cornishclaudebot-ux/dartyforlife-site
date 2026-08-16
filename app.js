@@ -13,6 +13,7 @@ const CONFIG = {
   ig:      "https://instagram.com/dartyforlife",
   tt:      "https://tiktok.com/@dartyforlife",
   fb:      "https://facebook.com/dartyforlife",
+  snap:    "https://www.snapchat.com/add/dartyforlife",
   email:   "contact@dartyforlife.com",
   bus:     "https://www.wildwestpartybus.com/",   // partner · Wild West Party Bus
   stratus: "4344 W Indian School Rd, Phoenix, AZ 85031",
@@ -129,6 +130,7 @@ const IC = {
   ig:'<svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.3.15 4.8 1.7 5 5 .06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.2 3.3-1.7 4.8-5 5-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-3.3-.2-4.8-1.7-5-5C2.04 15.6 2 15.2 2 12s0-3.6.07-4.9c.2-3.3 1.7-4.8 5-5C8.4 2.2 8.8 2.2 12 2.2zm0 4.8a5 5 0 100 10 5 5 0 000-10zm0 8.2a3.2 3.2 0 110-6.4 3.2 3.2 0 010 6.4zm5.2-9.4a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/></svg>',
   tt:'<svg viewBox="0 0 24 24"><path d="M16.5 5.8a4.8 4.8 0 01-3-1.3v8.8a5.5 5.5 0 11-5.5-5.5c.3 0 .6 0 .8.07v2.8a2.7 2.7 0 102 2.6V2h2.7a4.8 4.8 0 003 4.2z"/></svg>',
   fb:'<svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.5 2.9h-2.3v7A10 10 0 0022 12z"/></svg>',
+  snap:'<svg viewBox="0 0 24 24"><path d="M12 2.1c2.9 0 4.9 2.1 4.9 4.9 0 .8-.05 1.6-.1 2.3.42-.25.9-.4 1.35-.24.6.2.95.8.75 1.35-.22.6-.98.92-1.6 1.2-.5.23-.9.42-.9.72 0 .6 1.4 2.35 3.4 2.95.5.15.72.6.5 1-.3.6-1.3.9-2.2 1-.1.5-.2 1-.5 1.2-.4.3-1.1.1-1.9 0-.8-.1-1.5.2-2.2.7-.7.5-1.1.9-1.5.9s-.8-.4-1.5-.9c-.7-.5-1.4-.8-2.2-.7-.8.1-1.5.3-1.9 0-.3-.2-.4-.7-.5-1.2-.9-.1-1.9-.4-2.2-1-.22-.4 0-.85.5-1 2-.6 3.4-2.35 3.4-2.95 0-.3-.4-.49-.9-.72-.62-.28-1.38-.6-1.6-1.2-.2-.55.15-1.15.75-1.35.45-.16.93-.01 1.35.24-.05-.7-.1-1.5-.1-2.3 0-2.8 2-4.9 4.9-4.9z"/></svg>',
   pin:'<svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>',
   cal:'<svg viewBox="0 0 24 24"><path d="M7 2v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2h-2V2h-2v2H9V2zm12 8v10H5V10z"/></svg>',
   arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
@@ -248,6 +250,7 @@ function buildNav(){
         <div class="nav-social">
           <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
           <a href="${CONFIG.tt}" target="_blank" rel="noopener" aria-label="TikTok">${IC.tt}</a>
+          <a href="${CONFIG.snap}" target="_blank" rel="noopener" aria-label="Snapchat">${IC.snap}</a>
         </div>
         <a class="btn btn-primary btn-sm" data-tickets="org" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Get Tickets</a>
         <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -266,6 +269,7 @@ function buildNav(){
     <div class="mm-social">
       <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
       <a href="${CONFIG.tt}" target="_blank" rel="noopener" aria-label="TikTok">${IC.tt}</a>
+      <a href="${CONFIG.snap}" target="_blank" rel="noopener" aria-label="Snapchat">${IC.snap}</a>
       <a href="${CONFIG.fb}" target="_blank" rel="noopener" aria-label="Facebook">${IC.fb}</a>
     </div>
   </div>`;
@@ -283,6 +287,7 @@ function buildFooter(){
         <div class="socials">
           <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
           <a href="${CONFIG.tt}" target="_blank" rel="noopener" aria-label="TikTok">${IC.tt}</a>
+          <a href="${CONFIG.snap}" target="_blank" rel="noopener" aria-label="Snapchat">${IC.snap}</a>
           <a href="${CONFIG.fb}" target="_blank" rel="noopener" aria-label="Facebook">${IC.fb}</a>
         </div>
       </div>
@@ -300,6 +305,7 @@ function buildFooter(){
         <a href="rentals.html">Rent our gear</a>
         <a href="${CONFIG.ig}" target="_blank" rel="noopener">Instagram</a>
         <a href="${CONFIG.tt}" target="_blank" rel="noopener">TikTok</a>
+        <a href="${CONFIG.snap}" target="_blank" rel="noopener">Snapchat</a>
         <a href="mailto:${CONFIG.email}">${CONFIG.email}</a>
       </div>
     </div>
@@ -580,11 +586,11 @@ buildNav(); buildFooter(); buildModal();
 // resolve data-cfg links + inject social icons where empty
 document.querySelectorAll("[data-cfg]").forEach(el=>{
   const k=el.getAttribute("data-cfg");
-  const map={ig:CONFIG.ig,tt:CONFIG.tt,fb:CONFIG.fb,posh:CONFIG.posh,
+  const map={ig:CONFIG.ig,tt:CONFIG.tt,fb:CONFIG.fb,snap:CONFIG.snap,posh:CONFIG.posh,
     mapStratus:CONFIG.mapStratus,mapStratusApple:CONFIG.mapStratusApple,map44:CONFIG.map44,
     mapRack:CONFIG.mapRack};
   if(k in map) el.href=map[k];
-  if((k==="ig"||k==="tt"||k==="fb")&&!el.innerHTML.trim()) el.innerHTML=IC[k];
+  if((k==="ig"||k==="tt"||k==="fb"||k==="snap")&&!el.innerHTML.trim()) el.innerHTML=IC[k];
 });
 
 const header=document.getElementById("header");
