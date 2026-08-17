@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-17T09:20:54.488Z",
+ "updated": "2026-08-17T10:49:15.058Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -11,12 +11,8 @@
    "venue": "Bar Ocho",
    "city": "Tempe, AZ 85288",
    "flyer": "https://images.posh.vip/originals/6a82a3848171efba67102ff4",
-   "addr": "715 S Rural Rd, Tempe, AZ 85288, USA",
-   "end": "2026-08-21T02:00",
-   "desc": "18+",
-   "age": 18,
    "series": "tempe",
-   "sold": 96
+   "sold": 97
   },
   {
    "date": "2026-09-01",
@@ -27,10 +23,6 @@
    "venue": "The 44 Live Music Bar",
    "city": "Glendale, AZ 85302",
    "flyer": "https://images.posh.vip/originals/6a6ffb903d2f238ecc8fda40",
-   "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
-   "end": "2026-09-02T02:00",
-   "desc": "FIRST NIGHT BACK | AGES 18 AND UP",
-   "age": 18,
    "series": "bar",
    "sold": 107,
    "lat": 33.5831282,
@@ -45,10 +37,6 @@
    "venue": "The 44 Live",
    "city": "Glendale, AZ 85302",
    "flyer": "https://images.posh.vip/originals/6a7cd2eb26929a2f02fa7146",
-   "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
-   "end": "2026-09-04T02:00",
-   "desc": "Karaoke Night | Ages 18 and over",
-   "age": 18,
    "series": "bar",
    "sold": 39
   },
@@ -61,10 +49,6 @@
    "venue": "Stratus Event Center",
    "city": "Phoenix, AZ 85031",
    "flyer": "https://images.posh.vip/originals/6a7b822a6d0ba1b761fbf001",
-   "addr": "4344 W Indian School Rd Apt 32, Phoenix, AZ 85031, USA",
-   "end": "2026-09-06T02:00",
-   "desc": "AGES 18 & OVER",
-   "age": 18,
    "series": "major",
    "sold": 222,
    "lat": 33.4961217,
@@ -79,10 +63,6 @@
    "venue": "Stratus Event Center",
    "city": "Phoenix, AZ 85031",
    "flyer": "https://images.posh.vip/originals/6a46a244325127a0ee52cb15",
-   "addr": "4344 W Indian School Rd Apt 32, Phoenix, AZ 85031, USA",
-   "end": "2026-11-02T02:00",
-   "desc": "Ages 18 & over",
-   "age": 18,
    "series": "major",
    "sold": 26,
    "lat": 33.4961217,
