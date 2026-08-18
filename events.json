@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-18T23:13:14.900Z",
+ "updated": "2026-08-18T23:18:19.218Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "18+",
    "age": 18,
    "series": "tempe",
-   "sold": 288
+   "sold": 294
   },
   {
    "date": "2026-08-21",
@@ -32,7 +32,7 @@
    "desc": "18+",
    "age": 18,
    "series": "tempe",
-   "sold": 19
+   "sold": 20
   },
   {
    "date": "2026-09-01",
