@@ -12,5 +12,8 @@
   "lng": -111.9264701
  },
  "The 44 Live, Glendale, AZ 85302": null,
- "Bar Ocho, Tempe, AZ 85288": null
+ "Bar Ocho, Tempe, AZ 85288": [
+  33.423168,
+  -111.9258239
+ ]
 }
