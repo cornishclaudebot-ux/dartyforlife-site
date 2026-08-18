@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Getting your tickets…</title>
+<style>
+  html,body{margin:0;height:100%;background:#0b0b0f;color:#fff;
+    font:500 16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif}
+  .w{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;padding:24px;text-align:center}
+  .s{width:34px;height:34px;border:3px solid rgba(255,255,255,.18);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  a{color:#fff}
+  @media (prefers-reduced-motion:reduce){.s{animation:none}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="s" role="status" aria-label="Loading"></div>
+  <div>Taking you to checkout…</div>
+  <noscript><a id="ns" href="https://posh.vip/g/dartyforlife">Continue to tickets</a></noscript>
+</div>
+<script>
+/* ============================================================
+   /go/ — the dartyforlife.com -> Posh handoff.
+
+   WHY THIS EXISTS
+   Ticket checkout happens on posh.vip, where we can run no code. Ads that point
+   straight at posh.vip therefore produce a buyer we never observe in a browser:
+   no _fbp, no _fbc, no IP, no user agent. The server-side Purchase we send from
+   the sale webhook then has hashed email/phone as its ONLY match signal, which
+   caps Event Match Quality and is why the pixel and Conversions API populations
+   barely overlap in Events Manager.
+
+   Routing an ad through here fixes that. We observe the click, hand the signals
+   to our own endpoint, and stitch a cid onto the Posh ?t= tag. Posh echoes that
+   tag back to the sale webhook as tracking_link, so the join is EXACT rather
+   than a fuzzy time-window guess that could credit the wrong buyer.
+
+   USAGE   /go/?e=<posh-event-slug>&t=<campaign-tag>
+   e.g.    /go/?e=solar-spur&t=ads-dfl-canva06
+
+   PRIVACY
+   Honors Global Privacy Control and Do Not Track exactly like the main site: on
+   opt-out we fire no pixel, mint no cid, and send nothing to our endpoint. The
+   visitor is redirected with the plain campaign tag and loses no functionality.
+
+   SPEED
+   Zero perceived lag is the requirement, so nothing is awaited. The pixel event
+   goes out as an image beacon (the documented noscript mechanism) instead of
+   loading fbevents.js, and our own POST uses sendBeacon, which browsers finish
+   after navigation. The redirect fires immediately.
+   ============================================================ */
+(function(){
+  "use strict";
+  var PIXEL   = "1677287853642495";                 // Club Pixel, same dataset the CAPI posts to
+  var CLICK   = "https://social-command-center-lemon.vercel.app/api/public/click";
+  var STORE   = "https://posh.vip/g/dartyforlife";  // storefront fallback
+  var q       = new URLSearchParams(location.search);
+
+  /* --- destination, strictly validated -------------------------------------
+     `e` becomes part of a URL we send people to, so it is never trusted: only a
+     lowercase slug is allowed and the host is hardcoded. That makes this page
+     useless as an open redirect. */
+  var slug = (q.get("e") || "").toLowerCase();
+  var dest = /^[a-z0-9][a-z0-9-]{0,79}$/.test(slug)
+      ? "https://posh.vip/e/" + encodeURIComponent(slug)
+      : STORE;
+
+  /* campaign tag: same charset Posh already round-trips for us today */
+  var camp = (q.get("t") || "").replace(/[^A-Za-z0-9_-]/g, "").slice(0, 80);
+
+  function go(url){ try{ location.replace(url); }catch(_){ location.href = url; } }
+
+  var optOut = (navigator.globalPrivacyControl === true) ||
+               navigator.doNotTrack === "1" || window.doNotTrack === "1";
+
+  if (optOut) {                                     // no tracking at all, still a working link
+    go(camp ? dest + "?t=" + camp : dest);
+    return;
+  }
+
+  /* --- cookie helpers (same conventions as app.js) ------------------------- */
+  function getC(k){
+    try{
+      return document.cookie.split("; ").reduce(function(a,c){
+        var i = c.indexOf("=");
+        return c.slice(0,i) === k ? decodeURIComponent(c.slice(i+1)) : a;
+      }, "");
+    }catch(_){ return ""; }
+  }
+  function setC(k,v,days){
+    try{
+      var d = new Date(Date.now() + days*864e5);
+      document.cookie = k+"="+encodeURIComponent(v)+";expires="+d.toUTCString()+
+        ";path=/;SameSite=Lax"+(location.protocol==="https:"?";Secure":"");
+    }catch(_){}
+  }
+
+  var now = Date.now();
+
+  /* _fbp: Meta's browser id. Reuse the one the main site's pixel already set so
+     a visitor who browsed the site first keeps one identity. Format is fixed by
+     Meta: fb.1.<ms>.<random>. */
+  var fbp = getC("_fbp");
+  if (!fbp) {
+    fbp = "fb.1." + now + "." + Math.floor(Math.random()*1e10);
+    setC("_fbp", fbp, 90);
+  }
+
+  /* _fbc: the click id, derived from fbclid on the landing URL. This is the
+     single strongest signal here because it ties the purchase to one ad click. */
+  var fbclid = q.get("fbclid") || "";
+  var fbc = fbclid ? "fb.1." + now + "." + fbclid : getC("_fbc");
+  if (fbclid) setC("_fbc", fbc, 90);
+
+  /* --- the join key --------------------------------------------------------
+     Must survive a round trip through Posh, so keep it short and URL-safe. The
+     server regex accepts [A-Za-z0-9_-]{8,64}. */
+  function cidGen(){
+    try{
+      if (crypto && crypto.randomUUID) return crypto.randomUUID().replace(/-/g,"").slice(0,24);
+      var a = new Uint8Array(12); crypto.getRandomValues(a);
+      return Array.prototype.map.call(a, function(b){ return ("0"+b.toString(16)).slice(-2); }).join("");
+    }catch(_){
+      return (now.toString(36) + Math.random().toString(36).slice(2,12)).slice(0,24);
+    }
+  }
+  var cid = cidGen();
+  var eventId = "ic_" + cid;   // shared with the server so InitiateCheckout can dedupe later
+
+  /* --- pixel InitiateCheckout, as an instant image beacon -------------------
+     fbevents.js queues events and sends them asynchronously, which a fast
+     redirect would drop. The /tr endpoint is the same one the official noscript
+     fallback uses and it fires synchronously enough to survive. */
+  try{
+    var p = new Image(1,1);
+    p.src = "https://www.facebook.com/tr/?id=" + encodeURIComponent(PIXEL) +
+            "&ev=InitiateCheckout&noscript=0" +
+            "&eid=" + encodeURIComponent(eventId) +
+            "&dl="  + encodeURIComponent(location.href) +
+            "&cd[content_category]=tickets" +
+            (slug ? "&cd[content_name]=" + encodeURIComponent(slug) : "");
+  }catch(_){}
+
+  /* --- hand the signals to our own store -----------------------------------
+     sendBeacon is queued by the browser and completes after we navigate away,
+     so it costs the buyer nothing. fetch+keepalive is the fallback. */
+  var payload = JSON.stringify({
+    cid: cid, campaign: camp || null, posh_slug: slug || null,
+    fbp: fbp || null, fbc: fbc || null, event_id: eventId,
+    landing_url: location.href
+  });
+  var sent = false;
+  try{
+    if (navigator.sendBeacon)
+      sent = navigator.sendBeacon(CLICK, new Blob([payload], {type:"application/json"}));
+  }catch(_){}
+  if (!sent) {
+    try{ fetch(CLICK, {method:"POST", headers:{"Content-Type":"application/json"},
+                       body:payload, keepalive:true, mode:"cors"}); }catch(_){}
+  }
+
+  /* --- send them on --------------------------------------------------------
+     `--` separates the campaign tag from the cid so existing reporting can keep
+     grouping by the tag simply by splitting on it. */
+  var tag = (camp ? camp : "site") + "--" + cid;
+  go(dest + "?t=" + tag);
+})();
+</script>
+</body>
+</html>

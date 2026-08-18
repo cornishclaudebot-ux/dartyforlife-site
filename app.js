@@ -18,12 +18,12 @@ const CONFIG = {
   bus:     "https://www.wildwestpartybus.com/",   // partner · Wild West Party Bus
   stratus: "4344 W Indian School Rd, Phoenix, AZ 85031",
   the44:   "4494 W Peoria Ave, Glendale, AZ 85302",
-  rack:    "3636 N Scottsdale Rd, Scottsdale, AZ 85251"
+  ocho:    "715 S Rural Rd, Tempe, AZ 85281"
 };
 CONFIG.mapStratus      = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.stratus);
 CONFIG.mapStratusApple = "https://maps.apple.com/?q=" + encodeURIComponent(CONFIG.stratus);
 CONFIG.map44           = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.the44);
-CONFIG.mapRack         = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.rack);
+CONFIG.mapOcho         = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.ocho);
 
 /* ---- Posh conversion tracking ----
    Every ticket link that leaves this site carries ?t=website. Posh reads that
@@ -143,13 +143,13 @@ const IC = {
    ============================================================ */
 const SERIES = {
   major:{ label:"Headliner",  page:"majors.html" },
-  bar:  { label:"Darty Bars", page:"bars.html"   },
+  bar:  { label:"Glendale",   page:"bars.html"   },
   tempe:{ label:"Tempe",      page:"tempe.html"  }
 };
-/* The Rack is the ASU lane's home bar, so it routes to tempe even though the
-   address is Scottsdale. Matched on the VENUE field with a word boundary: a
-   loose "rack" also matches "track" in a title or a Spotify link. */
-const TEMPE_VENUE = /\brack\b/;
+/* Bar Ocho is the ASU lane's home bar; "rack" stays so past Rack nights keep
+   classifying. Matched on the VENUE field with a word boundary: a loose
+   "rack" also matches "track" in a title or a Spotify link. */
+const TEMPE_VENUE = /\brack\b|\bocho\b/;
 function classify(ev){
   const hay = ((ev.venue||"") + " " + (ev.city||"") + " " + (ev.title||"")).toLowerCase();
   if(ev.series) return ev.series;                    // explicit wins
@@ -224,29 +224,12 @@ function buildNav(){
       </a>
       <div class="nav-links">
         <a href="majors.html"${act('majors.html')}>Headliners</a>
-        <a href="bars.html" class="nl-bars"${act('bars.html')}>Darty Bars</a>
+        <a href="bars.html" class="nl-bars"${act('bars.html')}>Glendale</a>
         <a href="tempe.html" class="nl-tempe"${act('tempe.html')}>Tempe</a>
         <a href="${home}#relive">Highlights</a>
         <a href="rentals.html"${act('rentals.html')}>Rentals</a>
       </div>
       <div class="nav-right">
-        <!-- PARTY BUS: a tab in the top right that drops the whole rental down
-             in place, so the bus is one tap from every page instead of a scroll
-             to the bottom of home. Same glass as the hero tab bar. -->
-        <div class="busdrop-wrap" id="busWrap">
-          <button class="busdrop-tab" id="busTab" aria-expanded="false" aria-controls="busDrop">
-            <span>Party Bus</span>${IC.chev}
-          </button>
-          <div class="busdrop" id="busDrop" hidden>
-            <span class="bd-kicker">Partner · Wild West Party Bus</span>
-            <p class="bd-copy">Book the bus for your crew and pull up to the show together.</p>
-            <div class="bd-grid">
-              ${["bus-3","bus-8","bus-5","bus-1","bus-6","bus-4"].map(b=>
-                `<img src="media/gallery/bus/${b}.jpg" alt="Wild West Party Bus" loading="lazy" decoding="async">`).join("")}
-            </div>
-            <a class="btn btn-primary btn-sm bd-cta" href="${CONFIG.bus}" target="_blank" rel="noopener">Book the bus</a>
-          </div>
-        </div>
         <div class="nav-social">
           <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
           <a href="${CONFIG.tt}" target="_blank" rel="noopener" aria-label="TikTok">${IC.tt}</a>
@@ -260,7 +243,7 @@ function buildNav(){
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
     <a href="majors.html" class="mm-majors">Headliners</a>
-    <a href="bars.html" class="mm-bars">Darty Bars</a>
+    <a href="bars.html" class="mm-bars">Glendale</a>
     <a href="tempe.html" class="mm-tempe">Tempe</a>
     <a href="${home}#relive">Highlights</a>
     <a href="rentals.html">Equipment Rentals</a>
@@ -294,13 +277,14 @@ function buildFooter(){
       <div class="foot-col">
         <h5>The Nights</h5>
         <a href="majors.html">Monthly headliners</a>
-        <a href="bars.html">Darty Bars · weekly</a>
-        <a href="tempe.html">DartyForLife Tempe</a>
+        <a href="bars.html">Glendale · weekly</a>
+        <a href="tempe.html">Tempe · Thursdays</a>
         <a href="${home}#relive">Highlight reels</a>
       </div>
       <div class="foot-col">
         <h5>Get In</h5>
         <a data-tickets="org" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Tickets · Posh</a>
+        <a href="18-and-over-events-phoenix.html">18+ events in Phoenix</a>
         <a href="texts.html">Text alerts</a>
         <a href="rentals.html">Rent our gear</a>
         <a href="${CONFIG.ig}" target="_blank" rel="noopener">Instagram</a>
@@ -385,6 +369,11 @@ function renderGrids(){
     const limit=parseInt(grid.dataset.limit||"0",10);
     let list=EVENTS.filter(isUpcoming);
     if(want!=="all") list=list.filter(e=>classify(e)===want);
+    /* data-age="18" -> only nights an 18 year old can actually get into.
+       An event with no stated age is EXCLUDED, never assumed 18+: putting a
+       21+ door on an 18+ page sends kids to a door that turns them away. */
+    const maxAge=parseInt(grid.dataset.age||"0",10);
+    if(maxAge) list=list.filter(e=>typeof e.age==="number"&&e.age<=maxAge);
     list.sort((a,b)=>(a.date||"").localeCompare(b.date||""));
     // returning buyers see their own series first; sort is stable, so date
     // order holds within each group. Mixed "all" grids only — never filters.
@@ -392,7 +381,7 @@ function renderGrids(){
     if(want==="all"&&seg) list.sort((a,b)=>(classify(b)===seg)-(classify(a)===seg));
     if(limit) list=list.slice(0,limit);
     // no mockups, ever: an empty calendar gets an honest note + a Get Notified path
-    const label=want==="bar"?"Darty Bars":want==="tempe"?"DartyForLife Tempe":"DartyForLife";
+    const label=want==="bar"?"Glendale":want==="tempe"?"Tempe":"DartyForLife";
     const btnClass=document.body.classList.contains("theme-bars")?"btn btn-bars"
       :document.body.classList.contains("theme-tempe")?"btn btn-asu":"btn btn-primary";
     grid.innerHTML=list.length?list.map(eventCard).join("")
@@ -588,7 +577,7 @@ document.querySelectorAll("[data-cfg]").forEach(el=>{
   const k=el.getAttribute("data-cfg");
   const map={ig:CONFIG.ig,tt:CONFIG.tt,fb:CONFIG.fb,snap:CONFIG.snap,posh:CONFIG.posh,
     mapStratus:CONFIG.mapStratus,mapStratusApple:CONFIG.mapStratusApple,map44:CONFIG.map44,
-    mapRack:CONFIG.mapRack};
+    mapOcho:CONFIG.mapOcho};
   if(k in map) el.href=map[k];
   if((k==="ig"||k==="tt"||k==="fb"||k==="snap")&&!el.innerHTML.trim()) el.innerHTML=IC[k];
 });
@@ -600,31 +589,6 @@ const ham=document.getElementById("hamburger"),mm=document.getElementById("mobil
 if(ham){ ham.addEventListener("click",()=>mm.classList.toggle("open"));
   mm.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>mm.classList.remove("open"))); }
 
-/* PARTY BUS drop-down. Click toggles (so it works on touch), a fine pointer
-   also opens it on hover, and it closes on outside click, Escape, or scroll —
-   a panel that hangs off the header while the page moves under it reads broken. */
-(function busDropdown(){
-  const wrap=document.getElementById("busWrap"),tab=document.getElementById("busTab"),
-        drop=document.getElementById("busDrop");
-  if(!wrap||!tab||!drop) return;
-  let t;
-  const set=on=>{
-    clearTimeout(t);
-    tab.setAttribute("aria-expanded",on?"true":"false");
-    if(on){ drop.hidden=false; requestAnimationFrame(()=>wrap.classList.add("open")); }
-    else { wrap.classList.remove("open"); t=setTimeout(()=>{drop.hidden=true;},260); }
-  };
-  const isOpen=()=>tab.getAttribute("aria-expanded")==="true";
-  tab.addEventListener("click",e=>{e.stopPropagation();set(!isOpen());});
-  if(matchMedia("(pointer:fine)").matches){
-    wrap.addEventListener("mouseenter",()=>set(true));
-    wrap.addEventListener("mouseleave",()=>set(false));
-  }
-  document.addEventListener("click",e=>{ if(isOpen()&&!wrap.contains(e.target)) set(false); });
-  addEventListener("keydown",e=>{ if(e.key==="Escape"&&isOpen()){ set(false); tab.focus(); } });
-  addEventListener("scroll",()=>{ if(isOpen()) set(false); },{passive:true});
-})();
-
 const spot=document.querySelector(".spotlight");
 if(spot&&matchMedia("(pointer:fine)").matches){
   addEventListener("mousemove",e=>{spot.classList.add("on");spot.style.transform=`translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%)`;},{passive:true});
@@ -635,9 +599,9 @@ if(spot&&matchMedia("(pointer:fine)").matches){
    The strip is duplicated to loop seamlessly; only the first copy is
    exposed to screen readers so nothing is announced twice. */
 const MQ=[
-  { t:"Darty Bars Weekly",    href:"bars.html"    },
+  { t:"Glendale Weekly",     href:"bars.html"    },
   { t:"Headliners Monthly",   href:"majors.html"  },
-  { t:"DartyForLife Tempe",   href:"tempe.html"   },
+  { t:"Tempe Thursdays",     href:"tempe.html"   },
   { t:"Free Events Monthly",  href:"index.html#upcoming" },
   { t:"Phoenix AZ" },
   { t:"Tickets on Posh",      href:withTrk(CONFIG.posh), ext:true },
@@ -1107,7 +1071,7 @@ applyInterest();
   const VENUE_COORDS=[
     { match:"stratus", c:[33.4976074,-112.1528054] },
     { match:"the 44",  c:[33.5831282,-112.1552594] },
-    { match:"rack",    c:[33.4903260,-111.9264701] }
+    { match:"ocho",    c:[33.4231680,-111.9258239] }
   ];
   const coordOf = m => (VENUE_COORDS.find(k=>k.match===m)||{}).c;
   function coordsFor(ev){
@@ -1135,11 +1099,11 @@ applyInterest();
         out.push({ c, venue:ev.venue, city:ev.city||"", ev });
       });
       // Each weekly series keeps its home venue on the tour even before that
-      // week's night hits Posh: The 44 for Darty Bars, The Rack for Tempe.
+      // week's night hits Posh: The 44 for Glendale, Bar Ocho for Tempe.
       if(![...seenV].some(v=>v.includes("44")))
-        out.push({ c:coordOf("the 44"), venue:"The 44", city:"Glendale, AZ 85302", ev:null, label:"Darty Bars · every week" });
-      if(![...seenV].some(v=>v.includes("rack")))
-        out.push({ c:coordOf("rack"), venue:"Rack Scottsdale", city:"Scottsdale, AZ 85251", ev:null, label:"DartyForLife Tempe · Thursdays" });
+        out.push({ c:coordOf("the 44"), venue:"The 44", city:"Glendale, AZ 85302", ev:null, label:"Glendale · every week" });
+      if(![...seenV].some(v=>v.includes("ocho")))
+        out.push({ c:coordOf("ocho"), venue:"Bar Ocho", city:"Tempe, AZ 85281", ev:null, label:"Tempe · Thursdays" });
       if(!out.length) out.push({ c:coordOf("stratus"), venue:"Stratus Event Center", city:"Phoenix, AZ 85031", ev:null });
       return out;
     }

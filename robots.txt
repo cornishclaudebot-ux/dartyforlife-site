@@ -1,5 +1,8 @@
 # dartyforlife.com, AI SEARCH + CITATION welcome (text), media + scrapers blocked.
 # Updated 2026-07-17: opened text pages to AI assistants so they can READ and RECOMMEND us.
+# Updated 2026-08-18: Meta's crawlers moved from blocked to allowed. Meta AI writes the
+#   Instagram profile summary of @dartyforlife; while blocked here it could not read our
+#   freshest source and described the brand from stale third-party pages instead.
 # Images (/media/) stay closed. Training-only, dataset, and resale scrapers stay blocked.
 
 # --- AI assistants: allowed to read and cite our pages, but not our media ---
@@ -47,14 +50,26 @@ User-agent: Applebot-Extended
 Disallow: /media/
 Allow: /
 
+User-agent: meta-externalagent
+Disallow: /media/
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Disallow: /media/
+Allow: /
+
+User-agent: facebookexternalhit
+Disallow: /media/
+Allow: /
+
+User-agent: FacebookBot
+Disallow: /media/
+Allow: /
+
 # --- Training-only / dataset / resale scrapers: still blocked ---
 User-agent: CCBot
 Disallow: /
 User-agent: Bytespider
-Disallow: /
-User-agent: meta-externalagent
-Disallow: /
-User-agent: FacebookBot
 Disallow: /
 User-agent: Amazonbot
 Disallow: /

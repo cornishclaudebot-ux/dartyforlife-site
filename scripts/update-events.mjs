@@ -81,6 +81,18 @@ function to12h(hhmm) {
   const [h, m] = hhmm.split(':').map(Number);
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
 }
+
+/* Age policy, read from OUR OWN Posh copy — never assumed from the venue.
+   Aiden writes "Ages 18 & over" / "Ages 21 & over" into every event
+   description, so that text is the source of truth. It feeds the visible
+   "Ages N & over" line and the typicalAgeRange in each Event JSON-LD, which
+   is how a search engine learns an event is 18+. An event that states no
+   age policy gets NO age claim anywhere: silence beats a wrong number. */
+function readAge(e) {
+  const hay = `${e.description || ''} ${e.shortDescription || ''}`;
+  const m = hay.match(/\bages?\s*(18|21)\b/i) || hay.match(/\b(18|21)\s*\+/);
+  return m ? Number(m[1]) : null;
+}
 // Venue-scoped with a word boundary: a loose "rack" also matches "track".
 const TEMPE_VENUE = /\brack\b/;
 function classify(e) {
@@ -112,7 +124,16 @@ const events = data.events
       venue: venue.replace(/[<>]/g, ''),
       city: addr.split(',').slice(1, 3).join(',').replace(/[<>]/g, '').trim(),
       flyer: typeof e.flyer === 'string' && e.flyer.startsWith('https://images.posh.vip/') ? e.flyer : '',
+      // full street address, kept whole so the schema builder can split it into
+      // the streetAddress / locality / region / postalCode that Google wants
+      addr,
+      // Google lists endDate and description as recommended Event properties.
+      // Both come straight from the Posh record, same as everything else here.
+      end: typeof e.end === 'string' ? e.end.slice(0, 16) : '',
+      desc: String(e.shortDescription || '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim(),
     };
+    const age = readAge(e);
+    if (age) ev.age = age;
     ev.series = classify(ev);
     const sold = counts[ev.url];
     if (typeof sold === 'number' && sold > 0) ev.sold = sold;
