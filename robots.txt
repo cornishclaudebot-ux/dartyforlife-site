@@ -54,6 +54,10 @@ User-agent: meta-externalagent
 Disallow: /media/
 Allow: /
 
+User-agent: Meta-WebIndexer
+Disallow: /media/
+Allow: /
+
 User-agent: Meta-ExternalFetcher
 Disallow: /media/
 Allow: /
