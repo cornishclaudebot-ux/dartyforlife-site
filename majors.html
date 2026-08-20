@@ -103,12 +103,30 @@
 <div id="nav-mount"></div>
 
 <main>
-<section class="page-top">
-  <div class="pt-glow" aria-hidden="true"></div>
-  <span class="eyebrow">Once a month · Stratus Event Center</span>
-  <h1 class="sec-title">Major <em>Headliners</em></h1>
-  <p class="sec-sub">The big ones. Full production, thousands deep, once a month, and gone when they're gone.</p>
+<!-- full-bleed video hero, same treatment as the landing page hero:
+     portrait crowd footage under the title at the house opacity. -->
+<section class="hero hero--sub">
+  <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="media/hero/headliners-poster.jpg" aria-hidden="true">
+    <source src="media/hero/headliners.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-vignette" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <span class="eyebrow">Once a month · Stratus Event Center</span>
+    <h1 class="sec-title">Major <em>Headliners</em></h1>
+    <p class="sec-sub">The big ones. Full production, thousands deep, once a month, and gone when they're gone.</p>
+  </div>
 </section>
+<style>
+  /* sub-page hero: shorter than the landing hero, copy centered.
+     The video IS the visual here (his call), so it runs near-full
+     opacity with a stronger vignette carrying text legibility. */
+  .hero--sub{min-height:72svh}
+  .hero--sub .hero-video{opacity:.82}
+  .hero--sub .hero-vignette{background:linear-gradient(180deg,rgba(8,9,7,.62) 0%,rgba(8,9,7,.18) 30%,rgba(8,9,7,.18) 55%,rgba(8,9,7,.88) 92%,#080907 100%)}
+  .hero--sub .hero-inner{text-align:center;padding:0 22px}
+  .hero--sub .sec-sub{margin-inline:auto;text-shadow:0 1px 14px rgba(0,0,0,.7)}
+  .hero--sub .sec-title{text-shadow:0 2px 26px rgba(0,0,0,.65)}
+</style>
 
 <div class="marquee"><div class="marquee-track" id="mq1"></div></div>
 
