@@ -1,10 +1,10 @@
 {
- "updated": "2026-08-20T16:49:24.672Z",
+ "updated": "2026-08-20T16:54:28.917Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
    "date": "2026-08-20",
-   "time": "9:00 PM",
+   "time": "8:00 PM",
    "title": "BAR OCHO THURSDAY",
    "url": "rack-oldtown",
    "pid": "6a70d5305680fe48141212f0",
@@ -16,7 +16,7 @@
    "desc": "18+",
    "age": 18,
    "series": "tempe",
-   "sold": 767
+   "sold": 769
   },
   {
    "date": "2026-08-21",
