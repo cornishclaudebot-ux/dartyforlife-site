@@ -1199,10 +1199,11 @@ function beatEnv(tMs){ const phase=(tMs%BEAT_MS)/BEAT_MS; return Math.pow(1-phas
 (function(){
   const v=document.querySelector(".hero-video"); if(!v) return;
   if(matchMedia("(prefers-reduced-motion:reduce)").matches){ v.removeAttribute("autoplay"); v.pause(); v.style.display="none"; return; }
-  // desktop gets the HQ cut straight from the 4K master; phones keep the light file
+  // desktop gets the HQ cut straight from the 4K master; phones keep the light
+  // file. Scoped to the LANDING hero only: sub-pages carry their own footage.
   if(matchMedia("(min-width:860px)").matches){
     const s=v.querySelector("source");
-    if(s){
+    if(s&&/media\/hero\/hero\.mp4/.test(s.getAttribute("src")||"")){
       const tryPlay=()=>{ const p=v.play(); if(p&&p.catch)p.catch(()=>{}); };
       v.addEventListener("canplay",tryPlay,{once:true});   // play() can race load(); retry when decodable
       s.setAttribute("src","media/hero/hero-hq.mp4?v=3");

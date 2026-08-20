@@ -106,9 +106,19 @@
 <!-- full-bleed video hero, same treatment as the landing page hero:
      portrait crowd footage under the title at the house opacity. -->
 <section class="hero hero--sub">
-  <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="media/hero/headliners-poster.jpg" aria-hidden="true">
-    <source src="media/hero/headliners.mp4" type="video/mp4" />
+  <video class="hero-video" id="hlVideo" autoplay loop muted playsinline preload="metadata" poster="media/hero/headliners-poster.jpg?v=2" aria-hidden="true">
+    <source src="media/hero/headliners.mp4?v=2" type="video/mp4" />
   </video>
+  <script>
+    /* phones get the 9:16 crop of the same footage (subject framed), desktop
+       gets the full 1920 landscape master. Same breakpoint as the neon art. */
+    if(matchMedia("(max-width:640px)").matches){
+      var v=document.getElementById("hlVideo");
+      v.poster="media/hero/headliners-phone-poster.jpg?v=2";
+      v.querySelector("source").src="media/hero/headliners-phone.mp4?v=2";
+      v.load(); v.play&&v.play().catch(function(){});
+    }
+  </script>
   <div class="hero-vignette" aria-hidden="true"></div>
   <div class="hero-inner">
     <span class="eyebrow">Once a month · Stratus Event Center</span>
@@ -118,14 +128,11 @@
 </section>
 <style>
   /* sub-page hero: shorter than the landing hero, copy centered.
-     The video IS the visual here (his call), so it runs near-full
-     opacity with a stronger vignette carrying text legibility. */
+     Video treatment inherits the landing hero exactly (his call:
+     "like the Sidequest video behind DartyForLife on the main page"). */
   .hero--sub{min-height:72svh}
-  .hero--sub .hero-video{opacity:.82}
-  .hero--sub .hero-vignette{background:linear-gradient(180deg,rgba(8,9,7,.62) 0%,rgba(8,9,7,.18) 30%,rgba(8,9,7,.18) 55%,rgba(8,9,7,.88) 92%,#080907 100%)}
   .hero--sub .hero-inner{text-align:center;padding:0 22px}
-  .hero--sub .sec-sub{margin-inline:auto;text-shadow:0 1px 14px rgba(0,0,0,.7)}
-  .hero--sub .sec-title{text-shadow:0 2px 26px rgba(0,0,0,.65)}
+  .hero--sub .sec-sub{margin-inline:auto}
 </style>
 
 <div class="marquee"><div class="marquee-track" id="mq1"></div></div>
