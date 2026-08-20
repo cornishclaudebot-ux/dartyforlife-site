@@ -106,6 +106,13 @@ function classify(e) {
 // keep history light: only today onward (site hides past dates anyway)
 const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Phoenix' });
 
+// Hand-set overrides, keyed by Posh event id. They win over the feed so a
+// call he makes (like a sold-out flyer) survives every hourly rebuild.
+const LOCAL_OVERRIDES = {
+  // BAR OCHO THURSDAY 2026-08-20: sold out, custom flyer served from our media
+  '6a70d5305680fe48141212f0': { flyer: 'https://dartyforlife.com/media/flyers/bar-ocho-thursday-sold-out.jpg' },
+};
+
 const seen = new Set();
 const events = data.events
   .filter(e => e && e.status === 'live' && e.url && e.name && typeof e.start === 'string')
@@ -137,6 +144,7 @@ const events = data.events
     ev.series = classify(ev);
     const sold = counts[ev.url];
     if (typeof sold === 'number' && sold > 0) ev.sold = sold;
+    Object.assign(ev, LOCAL_OVERRIDES[ev.pid] || {});
     return ev;
   })
   .filter(e => e.date >= today)
