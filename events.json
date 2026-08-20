@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-19T10:47:54.046Z",
+ "updated": "2026-08-20T02:28:01.182Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "18+",
    "age": 18,
    "series": "tempe",
-   "sold": 335
+   "sold": 520
   },
   {
    "date": "2026-08-21",
@@ -32,7 +32,7 @@
    "desc": "18+",
    "age": 18,
    "series": "tempe",
-   "sold": 45
+   "sold": 62
   },
   {
    "date": "2026-09-01",
@@ -48,7 +48,7 @@
    "desc": "FIRST NIGHT BACK | AGES 18 AND UP",
    "age": 18,
    "series": "bar",
-   "sold": 113,
+   "sold": 117,
    "lat": 33.5831282,
    "lng": -112.1552594
   },
@@ -66,7 +66,7 @@
    "desc": "Karaoke Night | Ages 18 and over",
    "age": 18,
    "series": "bar",
-   "sold": 47
+   "sold": 48
   },
   {
    "date": "2026-09-05",
@@ -82,7 +82,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 244,
+   "sold": 254,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
