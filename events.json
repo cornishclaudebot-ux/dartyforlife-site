@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-22T02:51:26.660Z",
+ "updated": "2026-08-22T04:34:20.582Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "18+",
    "age": 18,
    "series": "tempe",
-   "sold": 1103
+   "sold": 1105
   },
   {
    "date": "2026-08-22",
@@ -32,7 +32,7 @@
    "desc": "WHITE LIES | 18+",
    "age": 18,
    "series": "tempe",
-   "sold": 67
+   "sold": 149
   },
   {
    "date": "2026-09-01",
@@ -48,7 +48,7 @@
    "desc": "FIRST NIGHT BACK | AGES 18 AND UP",
    "age": 18,
    "series": "bar",
-   "sold": 119,
+   "sold": 121,
    "lat": 33.5831282,
    "lng": -112.1552594
   },
@@ -82,7 +82,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 285,
+   "sold": 290,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
