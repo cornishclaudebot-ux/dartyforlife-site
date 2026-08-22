@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-22T01:43:00.406Z",
+ "updated": "2026-08-22T02:28:15.940Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -32,7 +32,7 @@
    "desc": "WHITE LIES | 18+",
    "age": 18,
    "series": "tempe",
-   "sold": 45
+   "sold": 47
   },
   {
    "date": "2026-09-01",
@@ -82,7 +82,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 281,
+   "sold": 284,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
