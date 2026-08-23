@@ -1,23 +1,7 @@
 {
- "updated": "2026-08-23T06:22:17.966Z",
+ "updated": "2026-08-23T07:02:39.645Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
-  {
-   "date": "2026-08-22",
-   "time": "1:15 PM",
-   "title": "BAR OCHO",
-   "url": "bar-ocho-white-party",
-   "pid": "6a88bb4bbe83c27816206c1e",
-   "venue": "Bar Ocho",
-   "city": "Tempe, AZ 85288",
-   "flyer": "https://images.posh.vip/originals/6a88f1a75e4bc56ffbb2349b",
-   "addr": "715 S Rural Rd, Tempe, AZ 85288, USA",
-   "end": "2026-08-22T13:30",
-   "desc": "WHITE LIES | 18+",
-   "age": 18,
-   "series": "tempe",
-   "sold": 159
-  },
   {
    "date": "2026-09-01",
    "time": "9:00 PM",
