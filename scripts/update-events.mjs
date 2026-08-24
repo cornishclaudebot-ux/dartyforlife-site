@@ -8,6 +8,9 @@
       venue/name contains "stratus" → major (monthly headliners)
       venue is The Rack → tempe (the ASU lane's home bar, Old Town Scottsdale)
       venue/city/name contains "tempe" → tempe (DFL Tempe)
+      description carries the "DartyForLife Tempe" brand line → tempe
+      (Aiden 2026-08-23: a flyer branded DartyForLife Tempe markets on the
+      Tempe side regardless of venue city, e.g. ALL WHITE AT THE 44 in Glendale)
       everything else → bar (Darty Bars weekly, home base The 44)
 
     Ticket counter: counts.json (repo root) maps posh-slug → number going.
@@ -100,6 +103,9 @@ function classify(e) {
   if (hay.includes('stratus')) return 'major';
   if (TEMPE_VENUE.test((e.venue || '').toLowerCase())) return 'tempe';
   if (hay.includes('tempe')) return 'tempe';
+  // Brand line beats venue city: a flyer/description that says "DartyForLife
+  // Tempe" is Tempe-side marketing even at a Glendale room (his 2026-08-23 call).
+  if (/dartyforlife\s+tempe/i.test(String(e.fullDesc || ''))) return 'tempe';
   return 'bar';
 }
 
@@ -111,6 +117,9 @@ const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Phoeni
 const LOCAL_OVERRIDES = {
   // BAR OCHO THURSDAY 2026-08-20: sold out, custom flyer served from our media
   '6a70d5305680fe48141212f0': { flyer: 'https://dartyforlife.com/media/flyers/bar-ocho-thursday-sold-out.jpg' },
+  // ALL WHITE AT THE 44 2026-08-25: flyer is branded DartyForLife Tempe, so it
+  // markets on the Tempe page even though The 44 is Glendale (Aiden 2026-08-23)
+  '6a8b8e6dd91cbc5b5d2b9813': { series: 'tempe' },
 };
 
 const seen = new Set();
@@ -141,7 +150,7 @@ const events = data.events
     };
     const age = readAge(e);
     if (age) ev.age = age;
-    ev.series = classify(ev);
+    ev.series = classify({ ...ev, fullDesc: e.description || '' });
     const sold = counts[ev.url];
     if (typeof sold === 'number' && sold > 0) ev.sold = sold;
     Object.assign(ev, LOCAL_OVERRIDES[ev.pid] || {});
