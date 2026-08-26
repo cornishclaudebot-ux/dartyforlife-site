@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-26T00:41:44.005Z",
+ "updated": "2026-08-26T00:46:47.615Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "WEAR WHITE | FREE ENTRY 8 TO 10 PM | AGES 18 & OVER",
    "age": 18,
    "series": "tempe",
-   "sold": 538
+   "sold": 542
   },
   {
    "date": "2026-09-01",
@@ -50,7 +50,7 @@
    "desc": "Karaoke Night | Ages 18 and over",
    "age": 18,
    "series": "bar",
-   "sold": 54
+   "sold": 55
   },
   {
    "date": "2026-09-05",
