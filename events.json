@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-26T04:44:35.623Z",
+ "updated": "2026-08-26T04:49:39.405Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "WEAR WHITE | FREE ENTRY 8 TO 10 PM | AGES 18 & OVER",
    "age": 18,
    "series": "tempe",
-   "sold": 631
+   "sold": 642
   },
   {
    "date": "2026-09-01",
@@ -66,7 +66,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 372,
+   "sold": 373,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
