@@ -22,6 +22,7 @@ const URLS = [
   `https://${HOST}/majors.html`,
   `https://${HOST}/bars.html`,
   `https://${HOST}/tempe.html`,
+  `https://${HOST}/best-places-to-go-out-tempe.html`,
   `https://${HOST}/rentals.html`,
 ];
 

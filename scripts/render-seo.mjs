@@ -34,6 +34,9 @@ const PAGES = [
   { file: 'majors.html', series: 'major' },
   { file: 'bars.html', series: 'bar' },
   { file: 'tempe.html', series: 'tempe' },
+  // the Tempe/ASU answer page: carries the live Tempe grid so its freshness
+  // date is real, plus its own static venue-guide JSON-LD outside our markers
+  { file: 'best-places-to-go-out-tempe.html', series: 'tempe' },
   // the 18+ landing page: same age rule app.js applies, so the baked copy a
   // crawler reads and the live copy a person sees can never disagree
   { file: '18-and-over-events-phoenix.html', series: 'all', maxAge: 18 },
@@ -172,6 +175,7 @@ for (const { file, series, maxAge } of PAGES) {
     ['majors.html', 'Headliner events'],
     ['bars.html', 'Darty Bars weekly nights'],
     ['tempe.html', 'DartyForLife Tempe'],
+    ['best-places-to-go-out-tempe.html', 'Best places to go out in Tempe'],
     ['18-and-over-events-phoenix.html', '18+ events in Phoenix'],
     ['rentals.html', 'Equipment rentals'],
     ['texts.html', 'Text alerts'],
@@ -244,6 +248,7 @@ const SITEMAP = [
   ['majors.html', 0.9, eventsDay],
   ['bars.html', 0.8, eventsDay],
   ['tempe.html', 0.8, eventsDay],
+  ['best-places-to-go-out-tempe.html', 0.9, eventsDay],
   ['rentals.html', 0.7, '2026-07-18'],
   ['texts.html', 0.5, '2026-08-03'],
   ['privacy.html', 0.2, '2026-08-03'],

@@ -279,6 +279,7 @@ function buildFooter(){
         <a href="majors.html">Monthly headliners</a>
         <a href="bars.html">Glendale · weekly</a>
         <a href="tempe.html">Tempe · Thursdays</a>
+        <a href="best-places-to-go-out-tempe.html">Best places to go out in Tempe</a>
         <a href="${home}#relive">Highlight reels</a>
       </div>
       <div class="foot-col">

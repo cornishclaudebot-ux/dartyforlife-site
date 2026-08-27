@@ -74,6 +74,13 @@ if ! node scripts/update-events.mjs; then
   node scripts/update-events.mjs || mark_failure "Posh pull failed twice (see log above)"
 fi
 
+# Re-bake the event cards, JSON-LD and sitemap from the fresh feed. Without
+# this the baked schema freezes at its last manual run and starts advertising
+# finished events to crawlers (a past-dated Event node sat on tempe.html for
+# a week in Aug 2026). Idempotent; non-fatal so a bake bug can't stop data.
+BAKED="sitemap.xml index.html majors.html bars.html tempe.html best-places-to-go-out-tempe.html 18-and-over-events-phoenix.html rentals.html texts.html"
+node scripts/render-seo.mjs || echo "[$(ts)] render-seo failed, pages keep their last bake"
+
 # Heartbeat: proof the whole pull->push->deploy chain works, committed at
 # most once a day. Lets the watchdog + cloud sentinel tell "quiet week, no
 # event changes" apart from "pipeline dead" without commit spam.
@@ -87,7 +94,7 @@ try:
 except Exception: sys.exit(1)"
 }
 
-if git diff --quiet events.json scripts/geocache.json counts.json 2>/dev/null; then
+if git diff --quiet events.json scripts/geocache.json counts.json $BAKED 2>/dev/null; then
   if hb_age_ok; then
     echo "[$(ts)] no change, nothing to deploy"
     mark_success
@@ -98,7 +105,7 @@ fi
 
 ts > heartbeat.txt
 # -A so new AND removed cal/*.ics both get staged as events roll on and off
-git add -A events.json scripts/geocache.json counts.json heartbeat.txt cal
+git add -A events.json scripts/geocache.json counts.json heartbeat.txt cal $BAKED
 git -c user.name="dartyforlife-events-bot" -c user.email="actions@users.noreply.github.com" \
     commit -q -m "Auto-update events + going counts from Posh ($(date -u +"%Y-%m-%d %H:%MZ"))"
 
