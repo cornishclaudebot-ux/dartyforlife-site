@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-29T04:21:24.222Z",
+ "updated": "2026-08-29T04:51:31.522Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "FIRST NIGHT BACK | AGES 18 AND UP",
    "age": 18,
    "series": "bar",
-   "sold": 171,
+   "sold": 173,
    "low": 17.01,
    "high": 55.9,
    "tiers": 6,
@@ -56,7 +56,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 441,
+   "sold": 443,
    "low": 20,
    "high": 100,
    "tiers": 7,
