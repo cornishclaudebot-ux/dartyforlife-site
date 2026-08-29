@@ -1,5 +1,5 @@
 {
- "updated": "2026-08-28T21:40:33.006Z",
+ "updated": "2026-08-29T00:53:51.616Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -50,7 +50,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 427,
+   "sold": 437,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
