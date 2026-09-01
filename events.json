@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-01T18:14:33.446Z",
+ "updated": "2026-09-01T19:29:24.067Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,10 +16,10 @@
    "desc": "FIRST NIGHT BACK | AGES 18 AND UP",
    "age": 18,
    "series": "bar",
-   "sold": 285,
+   "sold": 304,
    "low": 17.01,
-   "high": 55.9,
-   "tiers": 6,
+   "high": 25.01,
+   "tiers": 4,
    "lat": 33.5831282,
    "lng": -112.1552594
   },
@@ -37,7 +37,7 @@
    "desc": "Karaoke Night | Ages 18 and over",
    "age": 18,
    "series": "bar",
-   "sold": 96,
+   "sold": 98,
    "low": 17.49,
    "high": 30,
    "tiers": 4
@@ -56,7 +56,7 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 346,
+   "sold": 363,
    "low": 0,
    "high": 35.31,
    "tiers": 6
@@ -75,7 +75,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 540,
+   "sold": 545,
    "low": 20,
    "high": 100,
    "tiers": 7,
