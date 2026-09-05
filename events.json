@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-05T12:21:22.883Z",
+ "updated": "2026-09-05T13:53:01.865Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -17,9 +17,6 @@
    "age": 18,
    "series": "major",
    "sold": 924,
-   "low": 20,
-   "high": 100,
-   "tiers": 6,
    "lat": 33.4961217,
    "lng": -112.1541374
   },
@@ -38,9 +35,6 @@
    "age": 18,
    "series": "major",
    "sold": 52,
-   "low": 15,
-   "high": 150,
-   "tiers": 20,
    "lat": 33.4961217,
    "lng": -112.1541374
   }
