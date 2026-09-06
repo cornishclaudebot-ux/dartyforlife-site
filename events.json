@@ -1,28 +1,7 @@
 {
- "updated": "2026-09-06T05:39:26.528Z",
+ "updated": "2026-09-06T07:39:41.678Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
-  {
-   "date": "2026-09-05",
-   "time": "8:00 PM",
-   "title": "SOLAR SPUR",
-   "url": "solar-spur",
-   "pid": "6a54539de29866603493a256",
-   "venue": "Stratus Event Center",
-   "city": "Phoenix, AZ 85031",
-   "flyer": "https://images.posh.vip/originals/6a7b822a6d0ba1b761fbf001",
-   "addr": "4344 W Indian School Rd Apt 32, Phoenix, AZ 85031, USA",
-   "end": "2026-09-06T02:00",
-   "desc": "AGES 18 & OVER",
-   "age": 18,
-   "series": "major",
-   "sold": 1254,
-   "low": 20,
-   "high": 100,
-   "tiers": 6,
-   "lat": 33.4961217,
-   "lng": -112.1541374
-  },
   {
    "date": "2026-10-29",
    "time": "7:00 PM",
