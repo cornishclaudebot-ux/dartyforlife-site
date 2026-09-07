@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>DARTYFORLIFE — Desert Drinkers · Phoenix</title>
 <meta name="description" content="DartyForLife — Phoenix's biggest desert nights. Monthly headliners at Stratus, Darty Bars weekly, and DartyForLife Tempe. Tickets on Posh." />
 <meta name="theme-color" content="#080907" />
@@ -29,6 +29,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="stylesheet" href="styles.css?v=32" />
+<link rel="stylesheet" href="premium.css?v=20260907" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"DartyForLife",
  "alternateName":"Darty For Life · Desert Drinkers","url":"https://dartyforlife.com",
@@ -42,12 +43,13 @@
 <script>if(navigator.globalPrivacyControl===true){window.doNotTrack="1"}</script>
   <script defer src="https://site-stats-dartyforlife.vercel.app/script.js" data-website-id="b3256c0a-fb20-445a-bf64-9430fa7dd86a" data-domains="dartyforlife.com,www.dartyforlife.com" data-do-not-track="true"></script>
 <!--SEO:LD-->
-<script type="application/ld+json">
+<script type="application/ld+json" id="evschema">
 {
  "@context": "https://schema.org",
  "@graph": [
   {
    "@type": "Event",
+   "@id": "https://dartyforlife.com/#event-6a9de7a054358985fd6104ec",
    "name": "$2 TUESDAY AT THE 44",
    "startDate": "2026-09-08T21:00:00-07:00",
    "eventStatus": "https://schema.org/EventScheduled",
@@ -79,11 +81,9 @@
    "description": "AGES 18 AND UP",
    "image": "https://images.posh.vip/originals/6a9e0192db467ac36b7da32b",
    "offers": {
-    "@type": "AggregateOffer",
+    "@type": "Offer",
     "priceCurrency": "USD",
-    "lowPrice": 0,
-    "highPrice": 31.88,
-    "offerCount": 6,
+    "price": 14.72,
     "availability": "https://schema.org/InStock",
     "url": "https://posh.vip/e/2-tuesday-at-the-44-copy-2"
    },
@@ -91,6 +91,7 @@
   },
   {
    "@type": "Event",
+   "@id": "https://dartyforlife.com/#event-6a9deae059fa3305ad2115cc",
    "name": "Thirsty Thursday",
    "startDate": "2026-09-10T21:00:00-07:00",
    "eventStatus": "https://schema.org/EventScheduled",
@@ -117,11 +118,9 @@
    "description": "Karaoke Night | Ages 18 and over",
    "image": "https://images.posh.vip/originals/6a9e0072fe1ae73a9258f387",
    "offers": {
-    "@type": "AggregateOffer",
+    "@type": "Offer",
     "priceCurrency": "USD",
-    "lowPrice": 15,
-    "highPrice": 30,
-    "offerCount": 4,
+    "price": 15,
     "availability": "https://schema.org/InStock",
     "url": "https://posh.vip/e/thirsty-thursday-102"
    },
@@ -129,6 +128,7 @@
   },
   {
    "@type": "Event",
+   "@id": "https://dartyforlife.com/#event-6a46a605593de4e25f2a85f1",
    "name": "FEAR FOREST",
    "startDate": "2026-10-29T19:00:00-07:00",
    "eventStatus": "https://schema.org/EventScheduled",
@@ -160,11 +160,9 @@
    "description": "Ages 18 & over",
    "image": "https://images.posh.vip/originals/6a46a244325127a0ee52cb15",
    "offers": {
-    "@type": "AggregateOffer",
+    "@type": "Offer",
     "priceCurrency": "USD",
-    "lowPrice": 15,
-    "highPrice": 150,
-    "offerCount": 20,
+    "price": 20,
     "availability": "https://schema.org/InStock",
     "url": "https://posh.vip/e/fear-forest"
    },
@@ -178,9 +176,9 @@
 <script type="text/javascript">(function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function(){a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};a.queue=[];var s="script";r=t.createElement(s);r.async=!0;r.src=n;var u=t.getElementsByTagName(s)[0];u.parentNode.insertBefore(r,u)})(window,document,"https://sc-static.net/scevent.min.js");snaptr("init","d8a14a35-663c-415d-8cc0-175354c6a52e");snaptr("track","PAGE_VIEW");</script>
 <!-- End Snap Pixel -->
 </head>
-<body>
-<div class="grain" aria-hidden="true"></div>
-<div class="spotlight" aria-hidden="true"></div>
+<body class="premium-home">
+
+
 <div id="nav-mount"></div>
 
 <main id="top">
@@ -189,30 +187,20 @@
 <section class="hero">
   <div class="hero-bg" aria-hidden="true">
     <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="media/hero/hero-poster.jpg?v=3" aria-hidden="true">
-      <source src="media/hero/hero.mp4?v=3" type="video/mp4" />
+      <source src="media/hero/hero.mp4?v=3" media="(max-width: 760px)" type="video/mp4" /><source src="media/hero/hero-hq.mp4?v=3" type="video/mp4" />
     </video>
     <div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div>
   </div>
   <div class="hero-vignette" aria-hidden="true"></div>
   <div class="hero-inner">
     <img class="hero-logo" src="media/brand/logo_real_stack_dd.png" alt="DartyForLife · Desert Drinkers" />
-    <!-- his call 2026-08-13: no tagline at all — logo, headliner pill, tabs.
-         The pitch lives further down the page; the hero stays clean. -->
-    <div id="nextline" aria-live="polite"></div>
-    <!-- glass tab bar: the sliding pill follows the tab you pick, then it
-         takes you there. Replaces the old Get Tickets / See all events pair. -->
-    <nav class="gtabs" id="heroTabs" aria-label="Browse DartyForLife">
-      <span class="gtabs-pill" aria-hidden="true"></span>
-      <a class="gtab" href="majors.html">Headliners</a>
-      <a class="gtab" href="bars.html">Glendale</a>
-      <a class="gtab" href="tempe.html">Tempe</a>
-      <a class="gtab" href="rentals.html">Rentals</a>
-    </nav>
+    <h1 class="sr-only">DartyForLife events in Phoenix</h1>
+    <a class="hero-action" href="#upcoming">Find your next night <span aria-hidden="true">↗</span></a>
   </div>
 </section>
 
 <!-- ===================== MARQUEE ===================== -->
-<div class="marquee"><div class="marquee-track" id="mq1"></div></div>
+
 
 <!-- ===================== NEXT HEADLINER ===================== -->
 <section id="next">
@@ -232,9 +220,9 @@
         <span class="eyebrow">The calendar</span>
         <h2 class="sec-title">Coming <em>up</em></h2>
       </div>
-      <p class="sec-sub">Updates itself every day, straight from our box office on Posh.</p>
+      <p class="sec-sub">The latest dates. Tickets through Posh.</p>
     </div>
-    <div class="event-grid" data-events data-series="all" data-limit="6"><!--SEO:EVENTS-->
+    <div class="event-grid" data-events data-series="all"><!--SEO:EVENTS-->
 <article class="ev" data-series="bar">
       <h3><a href="https://posh.vip/e/2-tuesday-at-the-44-copy-2">$2 TUESDAY AT THE 44</a></h3>
       <p><time datetime="2026-09-08">Tuesday, September 8, 2026</time>, 9:00 PM</p>
@@ -257,7 +245,7 @@
   </div>
 </section>
 
-<div class="marquee alt"><div class="marquee-track" id="mq2"></div></div>
+
 
 <!-- ===================== THE THREE NIGHTS ===================== -->
 <section id="series">
@@ -265,9 +253,9 @@
     <div class="sec-head row reveal">
       <div>
         <span class="eyebrow">Pick your night</span>
-        <h2 class="sec-title">Every weekend is a<br><em>f*cking banger</em></h2>
+        <h2 class="sec-title">Find your<br><em>people.</em></h2>
       </div>
-      <p class="sec-sub">One brand, three nights. Each one has its own page, its own energy, and its own calendar.</p>
+      <p class="sec-sub">Headliners in Phoenix. Nights in Glendale and Tempe.</p>
     </div>
     <div class="series-grid">
       <a class="series s-major reveal" href="majors.html">
@@ -287,7 +275,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
       <a class="series s-tempe reveal d2" href="tempe.html">
-        <span class="s-kicker">Every week</span>
+        <span class="s-kicker">College nights</span>
         <h3>Tempe</h3>
         <p>The college side of Darty. Same energy, welcoming all Sun Devils.</p>
         <span class="s-cad"><span class="dot"></span>Thursdays · Bar Ocho</span>
@@ -306,7 +294,7 @@
         <span class="eyebrow">The proof</span>
         <h2 class="sec-title">Relive the <em>nights</em></h2>
       </div>
-      <p class="sec-sub">Real footage from real nights. Sound off, chaos on.</p>
+      <p class="sec-sub">You had to be there.</p>
     </div>
     <div class="reel-row reveal">
       <div class="reel"><video muted loop playsinline preload="none" data-src="media/highlights/halloween.mp4?v=2" poster="media/highlights/halloween-poster.jpg?v=2"></video><div class="reel-veil"></div><div class="reel-name">Halloween</div></div>
@@ -368,7 +356,7 @@
     <div class="list-card reveal">
       <div class="list-copy">
         <span class="eyebrow">The List</span>
-        <h2 class="sec-title">Get in before<br>everyone <em>else</em></h2>
+        <h2 class="sec-title">Be first<br><em>in line.</em></h2>
         <p>Exclusive drops, free-event locations, and themes hit the list <b>first</b>, before they ever touch the timeline. No spam. Just the next move.</p>
         <ul class="list-perks">
           <li>First crack at headliner presales</li>
@@ -472,7 +460,7 @@
       <a href="rentals.html">Equipment rentals</a>
       <a href="texts.html">Text alerts</a>
     </nav></div>
-<script src="app.js?v=30"></script>
+<script src="app.js?v=20260907"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>

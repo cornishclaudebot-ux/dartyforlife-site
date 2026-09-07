@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Major Headliners: DARTYFORLIFE · Phoenix</title>
 <meta name="description" content="DartyForLife's monthly major headliners at Stratus Event Center, Phoenix. Full production, thousands deep. Tickets on Posh." />
 <meta name="theme-color" content="#080907" />
@@ -17,15 +17,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css?v=32" />
+<link rel="stylesheet" href="premium.css?v=20260907" />
 <script>if(navigator.globalPrivacyControl===true){window.doNotTrack="1"}</script>
   <script defer src="https://site-stats-dartyforlife.vercel.app/script.js" data-website-id="b3256c0a-fb20-445a-bf64-9430fa7dd86a" data-domains="dartyforlife.com,www.dartyforlife.com" data-do-not-track="true"></script>
 <!--SEO:LD-->
-<script type="application/ld+json">
+<script type="application/ld+json" id="evschema">
 {
  "@context": "https://schema.org",
  "@graph": [
   {
    "@type": "Event",
+   "@id": "https://dartyforlife.com/#event-6a46a605593de4e25f2a85f1",
    "name": "FEAR FOREST",
    "startDate": "2026-10-29T19:00:00-07:00",
    "eventStatus": "https://schema.org/EventScheduled",
@@ -57,11 +59,9 @@
    "description": "Ages 18 & over",
    "image": "https://images.posh.vip/originals/6a46a244325127a0ee52cb15",
    "offers": {
-    "@type": "AggregateOffer",
+    "@type": "Offer",
     "priceCurrency": "USD",
-    "lowPrice": 15,
-    "highPrice": 150,
-    "offerCount": 20,
+    "price": 20,
     "availability": "https://schema.org/InStock",
     "url": "https://posh.vip/e/fear-forest"
    },
@@ -76,8 +76,8 @@
 <!-- End Snap Pixel -->
 </head>
 <body>
-<div class="grain" aria-hidden="true"></div>
-<div class="spotlight" aria-hidden="true"></div>
+
+
 <div id="nav-mount"></div>
 
 <main>
@@ -85,18 +85,9 @@
      portrait crowd footage under the title at the house opacity. -->
 <section class="hero hero--sub">
   <video class="hero-video" id="hlVideo" autoplay loop muted playsinline preload="metadata" poster="media/hero/headliners-poster.jpg?v=2" aria-hidden="true">
-    <source src="media/hero/headliners.mp4?v=2" type="video/mp4" />
+    <source src="media/hero/headliners-phone-lite.mp4" media="(max-width:640px)" type="video/mp4" /><source src="media/hero/headliners-lite.mp4" type="video/mp4" />
   </video>
-  <script>
-    /* phones get the 9:16 crop of the same footage (subject framed), desktop
-       gets the full 1920 landscape master. Same breakpoint as the neon art. */
-    if(matchMedia("(max-width:640px)").matches){
-      var v=document.getElementById("hlVideo");
-      v.poster="media/hero/headliners-phone-poster.jpg?v=2";
-      v.querySelector("source").src="media/hero/headliners-phone.mp4?v=2";
-      v.load(); v.play&&v.play().catch(function(){});
-    }
-  </script>
+
   <div class="hero-vignette" aria-hidden="true"></div>
   <div class="hero-inner">
     <span class="eyebrow">Once a month · Stratus Event Center</span>
@@ -124,7 +115,7 @@
         <span class="eyebrow">The calendar</span>
         <h2 class="sec-title">All <em>headliners</em></h2>
       </div>
-      <p class="sec-sub">Updates itself every day, straight from our box office on Posh.</p>
+      <p class="sec-sub">The latest dates. Tickets through Posh.</p>
     </div>
     <div class="event-grid" data-events data-series="major"><!--SEO:EVENTS-->
 <article class="ev" data-series="major">
@@ -272,6 +263,6 @@
       <a href="rentals.html">Equipment rentals</a>
       <a href="texts.html">Text alerts</a>
     </nav></div>
-<script src="app.js?v=30"></script>
+<script src="app.js?v=20260907"></script>
 </body>
 </html>

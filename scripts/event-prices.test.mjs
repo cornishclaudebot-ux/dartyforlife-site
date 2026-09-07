@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {purchasablePrices} from './event-prices.mjs';
+const now=Date.parse('2026-09-07T20:00:00Z');
+const open={closed:false,quantityAvailable:10,availableForSaleVia:['event_page'],totalPrice:20};
+const tiers=[open,{...open,closed:true,totalPrice:15},{...open,quantityAvailable:0,totalPrice:0},{...open,totalPrice:10,endSaleUtc:'2026-08-31T06:45:00Z'},{...open,priceHidden:true,totalPrice:5},{...open,totalPrice:150,waitlistMetadata:{enabled:true}}];
+assert.deepEqual(purchasablePrices([{tickets:tiers}],now),{low:20,high:150,count:2});
+for(const override of [{password:'code'},{approvalRequired:true},{disabled:true},{isHidden:true},{availableForSaleVia:[]},{onSaleUtc:'2027-01-01T00:00:00Z'},{endSaleUtc:'bad'},{totalPrice:null},{totalPrice:NaN},{quantityAvailable:null}])assert.equal(purchasablePrices([{tickets:[{...open,...override}]}],now),null);
+assert.equal(purchasablePrices(null,now),null);
+assert.equal(purchasablePrices([{tickets:[{...open,totalPrice:0}]}],now).low,0);
+console.log('PASS public price availability: expired, exhausted, hidden, private, future, invalid and free tiers');

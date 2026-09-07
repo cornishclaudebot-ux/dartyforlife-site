@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { purchasablePrices } from './event-prices.mjs';
 /*  DARTYFORLIFE — pulls the live event list from Posh (group: dartyforlife)
     and rewrites events.json. Runs daily via .github/workflows/update-events.yml;
     every page loads events.json at runtime and falls back to the list baked
@@ -61,7 +62,7 @@ try { counts = JSON.parse(readFileSync(COUNTS, 'utf8')); } catch {}
    the last committed number (same never-wipe rule as the events guard). */
 const GOING = 'https://social-command-center-lemon.vercel.app/api/public/going';
 try {
-  const g = await fetch(GOING, { headers: { Accept: 'application/json' } });
+  const g = await fetch(GOING, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(15000) });
   const live = g.ok ? await g.json() : null;
   if (live && Array.isArray(live.events)) {
     const norm = (s) => String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
@@ -122,6 +123,7 @@ const LOCAL_OVERRIDES = {
   '6a8b8e6dd91cbc5b5d2b9813': { series: 'tempe' },
 };
 
+const sleepMs = ms => new Promise(r => setTimeout(r, ms));
 const seen = new Set();
 const events = data.events
   .filter(e => e && e.status === 'live' && e.url && e.name && typeof e.start === 'string')
@@ -156,12 +158,44 @@ const events = data.events
     Object.assign(ev, LOCAL_OVERRIDES[ev.pid] || {});
     return ev;
   })
-  .filter(e => e.date >= today)
+  .filter(e => e.end ? Date.parse(e.end + ':00-07:00') > Date.now() : e.date >= today)
   .filter(e => (seen.has(e.url) ? false : seen.add(e.url)))
   .sort((a, b) => a.sort.localeCompare(b.sort))
   .map(({ sort, ...e }) => e);
 
 if (events.length < 1) { console.error('Zero upcoming events from Posh. Refusing to overwrite.'); process.exit(1); }
+
+/* ---- real ticket prices (for Event schema `offers`) ----
+   The group endpoint returns `ticketGroups: []` with no prices, which is why
+   schema shipped without offers. The per-event tRPC endpoint DOES carry them
+   and answers unauthenticated. `totalPrice` is the number Posh itself puts on
+   its own buy button ("Buy tickets from $15.00"), so using it keeps our schema
+   byte-identical to the landing page and out of Google price-mismatch trouble.
+   `price` is the organizer base and is NOT what a buyer pays — do not use it.
+   Any event whose tickets cannot be read simply gets no offers node, same as
+   before. A price is never inferred, defaulted, or carried over. */
+const TICKETS = id =>
+  `https://posh.vip/api/web/v2/trpc/events.getEventTickets?input=${encodeURIComponent(JSON.stringify({ eventId: id }))}`;
+
+async function priceFor(pid) {
+  if (!pid) return null;
+  let j;
+  try {
+    const r = await fetch(TICKETS(pid), { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(15000) });
+    if (!r.ok) return null;
+    j = await r.json();
+  } catch { return null; }
+  const groups = j?.result?.data?.ticketGroups;
+  if (!Array.isArray(groups)) return null;
+  return purchasablePrices(groups);
+}
+
+for (const ev of events) {
+  const p = await priceFor(ev.pid);
+  if (p) { ev.low = p.low; ev.high = p.high; ev.tiers = p.count; ev.pricesVerified = true; }
+  await sleepMs(250);   // be polite to Posh; a handful of upcoming events
+}
+console.log(`priced ${events.filter(e => typeof e.low === 'number').length}/${events.length} events`);
 
 /* ---- geocode venues (for the touring map) ----
    Nominatim, 1 req/sec, cached in scripts/geocache.json (committed) so each

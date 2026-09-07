@@ -72,7 +72,14 @@ function longDate(d) {
    everything into streetAddress, so a city-scoped query cannot place the
    event. Splitting it here is the whole point of hosting our own schema. */
 function postalAddress(addr, city) {
-  const parts = String(addr || '').split(',').map((s) => s.trim()).filter(Boolean);
+  /* Posh's venue record for Stratus carries a stray unit ("4344 W Indian School
+     Rd Apt 32") for a 2,250-cap concert hall. A unit number on a venue address
+     splits it from the venue's real NAP everywhere Google reconciles addresses,
+     so drop trailing unit designators before they reach schema. Display and
+     geocoding still use the untouched string. */
+  const parts = String(addr || '')
+    .replace(/\s+(?:apt|apartment|ste|suite|unit|rm|room|#)\s*[\w-]+(?=,|$)/i, '')
+    .split(',').map((s) => s.trim()).filter(Boolean);
   const out = { '@type': 'PostalAddress', addressCountry: 'US' };
   if (parts.length >= 3) {
     out.streetAddress = parts[0];
@@ -91,6 +98,7 @@ function postalAddress(addr, city) {
 function eventNode(ev) {
   const node = {
     '@type': 'Event',
+    '@id': `${SITE}/#event-${ev.pid || ev.url}`,
     name: ev.title,
     startDate: `${ev.date}T${to24(ev.time)}:00-07:00`, // Arizona does not observe DST
     eventStatus: 'https://schema.org/EventScheduled',
@@ -109,10 +117,15 @@ function eventNode(ev) {
   if (ev.end) node.endDate = `${ev.end}:00-07:00`;
   if (ev.desc) node.description = ev.desc;
   if (ev.flyer) node.image = ev.flyer;
-  /* No `offers` node. The Posh group endpoint returns ticket groups without
-     prices, and a made-up price in schema is worse than no price at all.
-     Real prices live on each Posh event page's own JSON-LD if this is ever
-     worth a per-event fetch. */
+  /* `offers` carries REAL prices only. update-events.mjs reads them from the
+     per-event Posh tickets endpoint and writes ev.low/ev.high/ev.tiers; the
+     value is Posh's own `totalPrice`, the number on its "Buy tickets from
+     $X" button, so our schema and the landing page always agree. No price on
+     the event means no offers node, never a guess. */
+  if (ev.pricesVerified && typeof ev.low === 'number' && Number.isFinite(ev.low)) {
+    node.offers = {'@type':'Offer',priceCurrency:'USD',price:ev.low,
+      availability:'https://schema.org/InStock',url:`https://posh.vip/e/${ev.url}`};
+  }
   // ONLY stated from our own Posh copy. No age on the event = no claim here.
   if (ev.age) node.typicalAgeRange = `${ev.age}+`;
   return node;
@@ -138,7 +151,7 @@ function card(ev) {
     </article>`;
 }
 
-const upcoming = events.filter((e) => e && e.date && e.url && e.title);
+const upcoming = events.filter((e) => e && e.date && e.url && e.title && (e.end ? Date.parse(e.end + ':00-07:00') > Date.now() : Date.parse(e.date + 'T23:59:59-07:00') >= Date.now()));
 
 let touched = 0;
 for (const { file, series, maxAge } of PAGES) {
@@ -226,7 +239,7 @@ for (const { file, series, maxAge } of PAGES) {
     }));
   if (faqs.length) graph.push({ '@type': 'FAQPage', mainEntity: faqs });
   const ld = graph.length
-    ? `<!--SEO:LD-->\n<script type="application/ld+json">\n${JSON.stringify(
+    ? `<!--SEO:LD-->\n<script type="application/ld+json" id="evschema">\n${JSON.stringify(
         { '@context': 'https://schema.org', '@graph': graph }, null, 1)}\n</script>\n<!--/SEO:LD-->\n`
     : '<!--SEO:LD--><!--/SEO:LD-->\n';
 

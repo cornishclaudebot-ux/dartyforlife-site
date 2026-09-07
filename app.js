@@ -200,9 +200,37 @@ let EVENTS = [
    ============================================================ */
 const MONTHS=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 const WK=["SUN","MON","TUE","WED","THU","FRI","SAT"];
-function startOfToday(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
+// All events are in Phoenix (UTC-07:00 year-round), regardless of visitor timezone.
+function phoenixTimestamp(s){
+  if(typeof s!=="string"||!s) return NaN;
+  const stamp=/^\d{4}-\d{2}-\d{2}$/.test(s)?s+"T00:00:00":s;
+  return Date.parse(stamp+(/(?:Z|[+-]\d{2}:?\d{2})$/i.test(stamp)?"":"-07:00"));
+}
+function startOfToday(){
+  const day=new Date(Date.now()-7*36e5).toISOString().slice(0,10);
+  return new Date(phoenixTimestamp(day));
+}
+function eventStart(ev){
+  const m=/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec((ev.time||"").trim());
+  if(!m||Number(m[1])<1||Number(m[1])>12||Number(m[2])>59) return NaN;
+  const hour=Number(m[1])%12+(m[3].toUpperCase()==="PM"?12:0);
+  return phoenixTimestamp(`${ev.date}T${String(hour).padStart(2,"0")}:${m[2]}:00`);
+}
 function parseDate(s){ if(!s) return null; const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); }
-function isUpcoming(ev){ const d=parseDate(ev.date); return d && d>=startOfToday(); }
+function isUpcoming(ev){
+  const end=phoenixTimestamp(ev.end);
+  if(Number.isFinite(end)) return end>Date.now();
+  // Without an end time, retain the event through its stated Phoenix calendar day.
+  const day=phoenixTimestamp(ev.date);
+  return Number.isFinite(day)&&day>=startOfToday().getTime();
+}
+function eventDateLabel(ev){
+  const start=ev.date;
+  const end=phoenixTimestamp(ev.end);
+  const last=Number.isFinite(end)?new Date(end-7*36e5-12*36e5).toISOString().slice(0,10):start;
+  const fmt=d=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',timeZone:'UTC'}).format(new Date(d+'T12:00:00Z'));
+  return last>start?`${fmt(start)} – ${fmt(last)}`:new Intl.DateTimeFormat('en-US',{weekday:'short',month:'short',day:'numeric',timeZone:'UTC'}).format(new Date(start+'T12:00:00Z'));
+}
 function esc(s){ return String(s==null?"":s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function fmtGoing(n){ return Number(n).toLocaleString("en-US"); }  // big and drawn out, never a K
 
@@ -215,47 +243,28 @@ const home = isHome ? '' : 'index.html';
 
 function buildNav(){
   const mount=document.getElementById('nav-mount'); if(!mount) return;
-  const act=h=>(h===path)?' class="active"':'';
-  mount.outerHTML = `
-  <header class="site" id="header">
-    <nav class="nav">
-      <a href="index.html" class="brand" aria-label="DartyForLife home">
-        <img src="media/brand/logo_real_h.png" alt="DartyForLife">
-      </a>
-      <div class="nav-links">
-        <a href="majors.html"${act('majors.html')}>Headliners</a>
-        <a href="bars.html" class="nl-bars"${act('bars.html')}>Glendale</a>
-        <a href="tempe.html" class="nl-tempe"${act('tempe.html')}>Tempe</a>
-        <a href="${home}#relive">Highlights</a>
-        <a href="rentals.html"${act('rentals.html')}>Rentals</a>
-      </div>
-      <div class="nav-right">
-        <div class="nav-social">
-          <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
-          <a href="${CONFIG.tt}" target="_blank" rel="noopener" aria-label="TikTok">${IC.tt}</a>
-          <a href="${CONFIG.snap}" target="_blank" rel="noopener" aria-label="Snapchat">${IC.snap}</a>
-        </div>
-        <a class="btn btn-primary btn-sm" data-tickets="org" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Get Tickets</a>
-        <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-      </div>
+  const current=h=>h===path?' aria-current="page" class="active"':'';
+  mount.outerHTML=`
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site" id="header"><nav class="nav" aria-label="Primary">
+    <a href="index.html" class="brand" aria-label="DartyForLife home"><img src="media/brand/logo_real_h.png" alt="DartyForLife" width="430" height="40"></a>
+    <div class="nav-links"><a href="index.html#upcoming">Events</a><a href="index.html#series">Locations</a><a href="${home}#relive">Highlights</a><a href="rentals.html"${current('rentals.html')}>Rentals</a></div>
+    <div class="nav-right"><a class="btn btn-primary btn-sm nav-tickets" href="index.html#upcoming">Tickets</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button></div>
+  </nav></header>
+  <dialog class="mobile-menu" id="mobileMenu" aria-label="Site navigation">
+    <div class="menu-top"><span>DartyForLife</span><button class="menu-close" aria-label="Close menu">Close ${IC.close||'×'}</button></div>
+    <nav class="menu-links" aria-label="Explore DartyForLife">
+      <a href="index.html#upcoming">All events</a>
+      <a href="majors.html"${current('majors.html')}>Headliners</a>
+      <a href="bars.html"${current('bars.html')}>Glendale</a>
+      <a href="tempe.html"${current('tempe.html')}>Tempe</a>
+      <a href="${home}#relive">Highlights</a>
+      <a href="rentals.html"${current('rentals.html')}>Rentals</a>
     </nav>
-  </header>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html">Home</a>
-    <a href="majors.html" class="mm-majors">Headliners</a>
-    <a href="bars.html" class="mm-bars">Glendale</a>
-    <a href="tempe.html" class="mm-tempe">Tempe</a>
-    <a href="${home}#relive">Highlights</a>
-    <a href="rentals.html">Equipment Rentals</a>
-    <a href="${CONFIG.bus}" target="_blank" rel="noopener">Party Bus</a>
-    <a class="btn btn-primary" data-tickets="org" href="${withTrk(CONFIG.posh)}" target="_blank" rel="noopener">Get Tickets</a>
-    <div class="mm-social">
-      <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
-      <a href="${CONFIG.tt}" target="_blank" rel="noopener" aria-label="TikTok">${IC.tt}</a>
-      <a href="${CONFIG.snap}" target="_blank" rel="noopener" aria-label="Snapchat">${IC.snap}</a>
-      <a href="${CONFIG.fb}" target="_blank" rel="noopener" aria-label="Facebook">${IC.fb}</a>
-    </div>
-  </div>`;
+    <div class="menu-secondary"><a href="texts.html">Text alerts</a><a href="${CONFIG.ig}" target="_blank" rel="noopener">Instagram</a><a href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener">Party bus</a></div>
+  </dialog>`;
+  const main=document.querySelector('main');if(main){ main.id=main.id||'main-content';document.querySelector('.skip-link').href='#'+main.id; }
 }
 
 function buildFooter(){
@@ -278,7 +287,7 @@ function buildFooter(){
         <h5>The Nights</h5>
         <a href="majors.html">Monthly headliners</a>
         <a href="bars.html">Glendale · weekly</a>
-        <a href="tempe.html">Tempe · Thursdays</a>
+        <a href="tempe.html">Tempe nights</a>
         <a href="best-places-to-go-out-tempe.html">Best places to go out in Tempe</a>
         <a href="${home}#relive">Highlight reels</a>
       </div>
@@ -353,10 +362,12 @@ function eventCard(ev){
     </div>
     <div class="ev-info">
       <h3>${esc(ev.title)}</h3>
-      <div class="ev-meta">
+      <div class="ev-meta"><span class="event-date">${esc(eventDateLabel(ev))}</span>
         <span class="loc">${IC.pin} ${esc(ev.venue||"")}</span>
         ${ev.time?`<span>Doors ${esc(ev.time)}</span>`:""}
       </div>
+      ${typeof ev.age==="number"?`<span class="event-age">Ages ${ev.age} &amp; over</span>`:""}
+      ${ev.pricesVerified&&typeof ev.low==="number"?`<span class="event-price">${ev.low===0?"Free entry available":`From $${ev.low.toFixed(2).replace(/\.00$/,"")}`}</span>`:""}
       ${going}
       <div>${cta}</div>
     </div>
@@ -378,8 +389,7 @@ function renderGrids(){
     list.sort((a,b)=>(a.date||"").localeCompare(b.date||""));
     // returning buyers see their own series first; sort is stable, so date
     // order holds within each group. Mixed "all" grids only — never filters.
-    const seg=getSeg();
-    if(want==="all"&&seg) list.sort((a,b)=>(classify(b)===seg)-(classify(a)===seg));
+    // Event discovery remains chronological for every visitor.
     if(limit) list=list.slice(0,limit);
     // no mockups, ever: an empty calendar gets an honest note + a Get Notified path
     const label=want==="bar"?"Glendale":want==="tempe"?"Tempe":"DartyForLife";
@@ -387,7 +397,7 @@ function renderGrids(){
       :document.body.classList.contains("theme-tempe")?"btn btn-asu":"btn btn-primary";
     grid.innerHTML=list.length?list.map(eventCard).join("")
       :`<div class="empty-note"><p style="margin:0 0 16px">Nothing on the calendar yet.</p>
-         <button class="${btnClass}" data-notify="${label}">Get Notified when it drops</button></div>`;
+         <button class="${btnClass}" data-notify="${label}">Get notified</button>${want!=="all"?`<a class="empty-alternative" href="index.html#upcoming">Explore upcoming events ${IC.arrow}</a>`:""}</div>`;
     observeReveals();
   });
 }
@@ -432,7 +442,7 @@ function renderNext(){
     return;
   }
   const d=parseDate(ev.date);
-  if(line) line.innerHTML=`<a class="nl-tag" href="#next"><span class="k">Next headliner</span><span class="sep">·</span><b>${esc(ev.title)}</b><span class="sep">·</span><span class="nl-date">${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</span></a>`;
+  if(line) line.innerHTML=`<a class="nl-tag" href="#next"><span class="k">Next headliner</span><span class="sep">·</span><b>${esc(ev.title)}</b><span class="sep">·</span><span class="nl-date">${esc(eventDateLabel(ev))}</span></a>`;
   if(card){
     const going=""; // his call: the countdown card doesn't need the head count (it lives on the event cards)
     const cdCells=["Days","Hours","Mins","Secs"].map(l=>`<div class="cds-cell"><div class="num" data-k="${l}">--</div><div class="cds-lab">${l}</div></div>`).join("");
@@ -466,32 +476,36 @@ function renderNext(){
         <div class="nm-name">${esc(ev.title)}</div>
         <p class="sr-only">${esc(ev.title)}, ${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}${ev.time?`, doors ${esc(ev.time)}`:""}${ev.venue?`, at ${esc(ev.venue)}`:""}.</p>
         <div class="nm-meta">
-          <span class="mrow">${IC.cal}<b>${WK[d.getDay()]} ${MONTHS[d.getMonth()]} ${d.getDate()}</b></span>
+          <span class="mrow">${IC.cal}<b>${esc(eventDateLabel(ev))}</b></span>
           ${ev.venue?`<span class="mrow">${IC.pin}${esc(ev.venue)}</span>`:""}
-          ${ev.time?`<span class="mrow"><b>Doors ${esc(ev.time)}</b></span>`:""}
+          ${ev.time?`<span class="mrow">Doors ${esc(ev.time)}</span>`:""}${typeof ev.age==="number"?`<span class="mrow">Ages ${ev.age} &amp; over</span>`:""}
         </div>
         ${strip?"":`<div class="countdown" aria-hidden="true">${["Days","Hours","Mins","Secs"].map(l=>`<div class="cd-cell"><div class="num" data-k="${l}">--</div><div class="lab">${l}</div></div>`).join("")}</div>`}
+        <span class="feature-action">${ev.url?"Get tickets":"Get notified"} ${IC.arrow}</span>
         ${going}
       </div>`;
-    const target=new Date(d.getFullYear(),d.getMonth(),d.getDate(),21,0,0).getTime();
+    const target=eventStart(ev);
     const cells=(strip||card).querySelectorAll(".num");
     const set=(k,v)=>cells.forEach(c=>{ if(c.dataset.k===k) c.textContent=String(v).padStart(2,"0"); });
     function tick(){
       let diff=Math.max(0,target-Date.now());
+      if(diff===0&&strip){strip.innerHTML='<span class="cds-k">Happening now</span>';clearInterval(cdTimer);return;}
       const day=864e5,hr=36e5,mn=6e4;
       const dd=Math.floor(diff/day);diff-=dd*day;
       const hh=Math.floor(diff/hr);diff-=hh*hr;
       const mm=Math.floor(diff/mn);diff-=mm*mn;
       set("Days",dd);set("Hours",hh);set("Mins",mm);set("Secs",Math.floor(diff/1e3));
     }
-    tick();clearInterval(cdTimer);cdTimer=setInterval(tick,1000);
+    clearInterval(cdTimer);cdTimer=null;
+    if(Number.isFinite(target)){ tick();if(target>Date.now())cdTimer=setInterval(tick,1000); }
+    else if(strip) strip.hidden=true; // no invented countdown when start time is missing
     card.querySelectorAll("[data-count]").forEach(countUp);
     card.classList.add("in");
   }
 }
 
 /* ============================================================
-   LIVE DATA — events.json refreshed daily from Posh by GH Action
+   LIVE DATA — events.json refreshed from Posh by the local updater
    ============================================================ */
 fetch("events.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{
   if(!j||!Array.isArray(j.events)||!j.events.length) return;
@@ -502,7 +516,7 @@ fetch("events.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{
   const keep=EVENTS.filter(e=>!liveKeys.has((e.url||e.title).toLowerCase())
     && !fresh.some(f=>f.title.toLowerCase()===e.title.toLowerCase()));
   EVENTS=fresh.concat(keep);
-  renderGrids(); renderNext(); injectEventSchema();
+  renderGrids(); renderNext();
   document.dispatchEvent(new CustomEvent("dfl:events"));  // map rebuilds its tour
   maybeXsell();   // live data may add the pitched series' first on-sale event
 }).catch(()=>{});
@@ -587,8 +601,16 @@ const header=document.getElementById("header");
 if(header) addEventListener("scroll",()=>header.classList.toggle("scrolled",scrollY>40),{passive:true});
 
 const ham=document.getElementById("hamburger"),mm=document.getElementById("mobileMenu");
-if(ham){ ham.addEventListener("click",()=>mm.classList.toggle("open"));
-  mm.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>mm.classList.remove("open"))); }
+if(ham&&mm){
+  let scrollStyle="";
+  ham.addEventListener("click",()=>{
+    scrollStyle=document.body.style.overflow;mm.showModal();
+    document.body.style.overflow="hidden";ham.setAttribute("aria-expanded","true");
+  });
+  mm.querySelector('.menu-close').addEventListener('click',()=>mm.close());
+  mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mm.close()));
+  mm.addEventListener('close',()=>{document.body.style.overflow=scrollStyle;ham.setAttribute('aria-expanded','false');ham.focus();});
+}
 
 const spot=document.querySelector(".spotlight");
 if(spot&&matchMedia("(pointer:fine)").matches){
@@ -824,8 +846,8 @@ const GEAR=[
 
 function gearCard(g){
   const media = g.img
-    ? `<div class="g-media"><span class="g-qty">${g.qty} available</span><img src="${g.img}" alt="${esc(g.model||g.name)}" /></div>`
-    : `<div class="g-media g-soon"><span class="g-qty">${g.qty} available</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 5 13h5l-1 9 8-11h-5z"/></svg><span>Photo coming soon</span></div>`;
+    ? `<div class="g-media"><span class="g-qty">${g.qty} in inventory</span><img src="${g.img}" alt="${esc(g.model||g.name)}" /></div>`
+    : `<div class="g-media g-soon"><span class="g-qty">${g.qty} in inventory</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 5 13h5l-1 9 8-11h-5z"/></svg><span>Photo coming soon</span></div>`;
   return `<button class="gear gear-btn" data-gear="${g.id}" aria-label="Details and specs for ${esc(g.name)}">
     ${media}
     <h3>${esc(g.name)}</h3>
@@ -845,12 +867,21 @@ function renderGear(){
 function buildGearModal(){
   if(document.getElementById("gmModal")) return;
   const d=document.createElement("div");
-  d.innerHTML=`<div class="gm" id="gmModal" aria-hidden="true" role="dialog" aria-modal="true">
+  d.innerHTML=`<dialog class="gm" id="gmModal" aria-labelledby="gmTitle">
     <div class="gm-backdrop" data-gm-close></div>
     <div class="gm-dialog"><button class="gm-close" data-gm-close aria-label="Close">✕</button><div class="gm-body" id="gmBody"></div></div>
-  </div>`;
+  </dialog>`;
   document.body.appendChild(d.firstElementChild);
+  document.getElementById('gmModal').addEventListener('close',()=>{
+    document.body.style.overflow=gearScrollStyle;
+    if(gearRequestPending){
+      gearRequestPending=false;
+      const form=document.getElementById("rentForm");
+      if(form){form.scrollIntoView({behavior:"smooth",block:"start"});form.querySelector('input[name="name"]').focus({preventScroll:true});}
+    }else if(gearReturnTo&&gearReturnTo.isConnected) gearReturnTo.focus();
+  });
 }
+let gearReturnTo=null,gearScrollStyle="",gearRequestPending=false;
 function gearImgs(g){ return g.imgs || (g.img ? [g.img] : []); }
 function openGear(id){
   const g=GEAR.find(x=>x.id===id); if(!g) return;
@@ -858,11 +889,11 @@ function openGear(id){
   const imgs=gearImgs(g);
   const gallery = imgs.length
     ? `<div class="gm-photo"><img id="gmMain" src="${imgs[0]}" alt="${esc(g.model||g.name)}" /></div>`+
-      (imgs.length>1?`<div class="gm-thumbs">${imgs.map((s,i)=>`<img src="${s}" data-gm-thumb="${i}" class="${i===0?"on":""}" alt="${esc(g.name)} view ${i+1}" />`).join("")}</div>`:"")
+      (imgs.length>1?`<div class="gm-thumbs">${imgs.map((s,i)=>`<button type="button" data-gm-thumb="${i}" aria-label="View ${i+1} of ${esc(g.name)}" aria-pressed="${i===0}" class="${i===0?"on":""}"><img src="${s}" alt="" /></button>`).join("")}</div>`:"")
     : "";
   b.innerHTML=`
     ${gallery}
-    <div class="gm-head"><h3>${esc(g.name)}</h3>${g.model?`<div class="g-model">${esc(g.model)}</div>`:""}<span class="g-qty gm-qty">${g.qty} available</span></div>
+    <div class="gm-head"><h3 id="gmTitle">${esc(g.name)}</h3>${g.model?`<div class="g-model">${esc(g.model)}</div>`:""}<span class="g-qty gm-qty">${g.qty} in inventory</span></div>
     ${g.from?`<p class="gm-from">${esc(g.from)}</p>`:""}
     <p class="gm-desc">${esc(g.desc)}</p>
     <h4>How it works</h4><p>${esc(g.works)}</p>
@@ -871,11 +902,12 @@ function openGear(id){
     ${g.rev?`<div class="gm-rev">${g.rev.stars?`<span class="gm-stars">${esc(g.rev.stars)}</span><span class="gm-count">${esc(g.rev.count)} · ${esc(g.rev.src)}</span><p>${esc(g.rev.line)}</p>`:`<p>${esc(g.rev.line)} <span class="gm-count">· ${esc(g.rev.src)}</span></p>`}</div>`:""}
     ${g.note?`<span class="g-note">${esc(g.note)}</span>`:""}
     <button class="btn btn-primary gm-request" data-gm-request="${esc(g.name)}">Request this item</button>`;
-  m.classList.add("open");m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  gearReturnTo=document.activeElement;gearScrollStyle=document.body.style.overflow;
+  m.showModal();document.body.style.overflow="hidden";m.querySelector(".gm-close").focus();
 }
 function closeGear(){
   const m=document.getElementById("gmModal"); if(!m) return;
-  m.classList.remove("open");m.setAttribute("aria-hidden","true");document.body.style.overflow="";
+  if(m.open) m.close();
 }
 renderGear();buildGearModal();
 document.addEventListener("click",e=>{
@@ -884,8 +916,8 @@ document.addEventListener("click",e=>{
   const th=e.target.closest("[data-gm-thumb]");
   if(th){
     const main=document.getElementById("gmMain");
-    if(main){ main.src=th.src;
-      document.querySelectorAll(".gm-thumbs img").forEach(t=>t.classList.toggle("on",t===th)); }
+    if(main){ main.src=th.querySelector("img").src;
+      document.querySelectorAll(".gm-thumbs button").forEach(t=>{t.classList.toggle("on",t===th);t.setAttribute("aria-pressed",String(t===th));}); }
     return;
   }
   const req=e.target.closest("[data-gm-request]");
@@ -893,9 +925,8 @@ document.addEventListener("click",e=>{
     const val=req.getAttribute("data-gm-request");
     const box=document.querySelector(`#gearChecks input[value="${CSS.escape(val)}"]`);
     if(box) box.checked=true;
+    gearRequestPending=true;
     closeGear();
-    const f=document.getElementById("rentForm");
-    if(f) f.scrollIntoView({behavior:"smooth",block:"center"});
   }
 });
 addEventListener("keydown",e=>{ if(e.key==="Escape") closeGear(); });
@@ -917,8 +948,11 @@ function sendLead(kind,form,arrayFields){
   data.first_campaign = TRACK.first.campaign || "";
   data.first_landing  = TRACK.first.landing || "";
   data.first_seen     = TRACK.first.ts || "";
-  track("Lead",{content_category:kind});
-  return fetch(LEADS_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),15000);
+  return fetch(LEADS_URL,{method:"POST",signal:controller.signal,headers:{"Content-Type":"application/json"},body:JSON.stringify(data)})
+    .then(r=>{if(r.ok) track("Lead",{content_category:kind});return r;})
+    .finally(()=>clearTimeout(timeout));
 }
 /* Honest submits: only show "you're in" when the request actually landed.
    If the endpoint is down, keep the form on screen and give the visitor a
@@ -961,8 +995,17 @@ if(rentForm){
   });
 }
 
+let interestMemory="";
+function getInterest(){
+  try{ return sessionStorage.getItem("dfl-interest")||interestMemory; }
+  catch(_){ return interestMemory; }
+}
+function setInterest(value){
+  interestMemory=value;
+  try{ sessionStorage.setItem("dfl-interest",value); }catch(_){}
+}
 function applyInterest(){
-  const t=sessionStorage.getItem("dfl-interest");
+  const t=getInterest();
   const f=document.getElementById("interestField"), n=document.getElementById("listInterest");
   if(!t||!f) return;
   f.value=t;
@@ -971,7 +1014,7 @@ function applyInterest(){
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-notify]"); if(!t) return;
   e.preventDefault();
-  sessionStorage.setItem("dfl-interest",t.getAttribute("data-notify")||"");
+  setInterest(t.getAttribute("data-notify")||"");
   if(document.getElementById("listForm")){ applyInterest(); document.getElementById("list").scrollIntoView({behavior:"smooth"}); }
   else location.href="index.html#list";
 });
@@ -1104,7 +1147,7 @@ applyInterest();
       if(![...seenV].some(v=>v.includes("44")))
         out.push({ c:coordOf("the 44"), venue:"The 44", city:"Glendale, AZ 85302", ev:null, label:"Glendale · every week" });
       if(![...seenV].some(v=>v.includes("ocho")))
-        out.push({ c:coordOf("ocho"), venue:"Bar Ocho", city:"Tempe, AZ 85281", ev:null, label:"Tempe · Thursdays" });
+        out.push({ c:coordOf("ocho"), venue:"Bar Ocho", city:"Tempe, AZ 85281", ev:null, label:"Tempe nights" });
       if(!out.length) out.push({ c:coordOf("stratus"), venue:"Stratus Event Center", city:"Phoenix, AZ 85031", ev:null });
       return out;
     }
@@ -1197,21 +1240,9 @@ applyInterest();
    ============================================================ */
 const BEAT_MS=600;
 function beatEnv(tMs){ const phase=(tMs%BEAT_MS)/BEAT_MS; return Math.pow(1-phase,2.2); }
-(function(){
-  const v=document.querySelector(".hero-video"); if(!v) return;
-  if(matchMedia("(prefers-reduced-motion:reduce)").matches){ v.removeAttribute("autoplay"); v.pause(); v.style.display="none"; return; }
-  // desktop gets the HQ cut straight from the 4K master; phones keep the light
-  // file. Scoped to the LANDING hero only: sub-pages carry their own footage.
-  if(matchMedia("(min-width:860px)").matches){
-    const s=v.querySelector("source");
-    if(s&&/media\/hero\/hero\.mp4/.test(s.getAttribute("src")||"")){
-      const tryPlay=()=>{ const p=v.play(); if(p&&p.catch)p.catch(()=>{}); };
-      v.addEventListener("canplay",tryPlay,{once:true});   // play() can race load(); retry when decodable
-      s.setAttribute("src","media/hero/hero-hq.mp4?v=3");
-      v.load(); tryPlay();
-    }
-  }
-})();
+document.querySelectorAll('.hero-video').forEach(v=>{
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches||navigator.connection?.saveData){v.pause();v.removeAttribute('autoplay');v.style.display='none';}
+});
 window.DFL={CONFIG,get EVENTS(){return EVENTS;},IC,beatEnv,BEAT_MS};
 
 /* ============================================================
@@ -1219,35 +1250,7 @@ window.DFL={CONFIG,get EVENTS(){return EVENTS;},IC,beatEnv,BEAT_MS};
    Google Search / "things to do in Phoenix". Rebuilt from the
    live EVENTS list (real data only; skips undated entries).
    ============================================================ */
-function injectEventSchema(){
-  const old=document.getElementById("evschema"); if(old) old.remove();
-  const VENUES={
-    "stratus event center":{address:"4344 W Indian School Rd, Phoenix, AZ 85031",city:"Phoenix"},
-    "the 44":{address:"4494 W Peoria Ave, Glendale, AZ 85302",city:"Glendale"},
-    "the 44 live music bar":{address:"4494 W Peoria Ave, Glendale, AZ 85302",city:"Glendale"},
-    "rack scottsdale":{address:"3636 N Scottsdale Rd, Scottsdale, AZ 85251",city:"Scottsdale"}
-  };
-  const items=EVENTS.filter(isUpcoming).filter(e=>e.date).map(ev=>{
-    const v=VENUES[(ev.venue||"").toLowerCase()];
-    const o={
-      "@type":"Event","name":ev.title,
-      "startDate":ev.date+(ev.time?("T"+(function(t){const m=t.match(/(\d+):(\d+)\s*(AM|PM)/i);if(!m)return"21:00";let h=+m[1]%12;if(/pm/i.test(m[3]))h+=12;return String(h).padStart(2,"0")+":"+m[2];})(ev.time)+":00-07:00"):""),
-      "eventStatus":"https://schema.org/EventScheduled",
-      "eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
-      "organizer":{"@type":"Organization","name":"DartyForLife","url":"https://dartyforlife.com"},
-      "offers":{"@type":"Offer","url":withTrk(ev.url?("https://posh.vip/e/"+ev.url):CONFIG.posh),"availability":"https://schema.org/InStock"}
-    };
-    if(ev.flyer) o.image=[ev.flyer];
-    if(v) o.location={"@type":"Place","name":ev.venue,"address":{"@type":"PostalAddress","streetAddress":v.address.split(",")[0],"addressLocality":v.city,"addressRegion":"AZ","addressCountry":"US"}};
-    else if(ev.venue) o.location={"@type":"Place","name":ev.venue,"address":{"@type":"PostalAddress","addressLocality":(ev.city||"Phoenix").split(",")[0],"addressRegion":"AZ","addressCountry":"US"}};
-    return o;
-  });
-  if(!items.length) return;
-  const s=document.createElement("script");
-  s.type="application/ld+json"; s.id="evschema";
-  s.textContent=JSON.stringify({"@context":"https://schema.org","@graph":items});
-  document.head.appendChild(s);
-}
+// Event JSON-LD is generated once by scripts/render-seo.mjs on relevant pages.
 
 /* ============================================================
    CROSS-SELL — one popup, majors crowd <-> bar nights crowd.
@@ -1374,6 +1377,6 @@ const SHOW_CONCIERGE = false;
 /* boot */
 renderGrids();
 renderNext();
-injectEventSchema();
+
 observeReveals();
 maybeXsell();
