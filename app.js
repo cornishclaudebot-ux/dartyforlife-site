@@ -347,7 +347,7 @@ function eventCard(ev){
     ? `<span class="ev-going"><span class="dot"></span>${fmtGoing(ev.sold)} going</span>` : "";
   // Announced but not on sale yet (no Posh slug) → capture intent instead of a dead ticket link
   const cta = ev.url
-    ? `<button class="ev-cta" data-tickets="ev" data-ev-url="${esc(ev.url)}" data-ev-title="${esc(ev.title)}" aria-label="Get tickets for ${esc(ev.title)}">${ev.free?"Free · RSVP":"Get Tickets"} ${IC.arrow}</button>`
+    ? `<a class="ev-cta" href="${esc(withTrk(`https://posh.vip/e/${encodeURIComponent(ev.url)}`))}" data-tickets="ev" data-ev-url="${esc(ev.url)}" data-ev-title="${esc(ev.title)}" aria-label="Get tickets for ${esc(ev.title)}">${ev.free?"Free · RSVP":"Get Tickets"} ${IC.arrow}</a>`
     : `<button class="ev-cta" data-notify="${esc(ev.title)}" aria-label="Get notified about ${esc(ev.title)}">Get Notified ${IC.arrow}</button>`;
   // announced but not on sale -> a soft Coming Soon watermark in the middle of the card
   const soon = ev.url ? "" : `<div class="ev-soon" aria-hidden="true">Coming Soon</div>`;
@@ -689,9 +689,14 @@ tkModal.addEventListener("click",e=>{ if(e.target.hasAttribute("data-close")) cl
 addEventListener("keydown",e=>{ if(e.key==="Escape"&&tkModal.classList.contains("open")) closeTickets(); });
 
 // one handler powers every ticket trigger.
-// Slugged event → inline checkout modal. Storefront / unslugged → new tab.
+// Native event links and direct navigation avoid blocked checkout popups.
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-tickets]"); if(!t) return;
+  // Keep native link navigation, including long-press and open-in-new-tab.
+  if(t.tagName==="A"&&t.href){
+    track("InitiateCheckout",{content_name:t.getAttribute("data-ev-title")||"storefront",content_category:"tickets"});
+    return;
+  }
   e.preventDefault();
   const slug=t.getAttribute("data-ev-url")||"";
   // Posh checkout can't be iframed — its CloudFront/WAF blocks embedding and
@@ -713,7 +718,7 @@ document.addEventListener("click",e=>{
   // observe. Fire it as the conversion signal Meta optimises against.
   track("InitiateCheckout",{content_name:t.getAttribute("data-ev-title")||"storefront",
                             content_category:"tickets"});
-  window.open(withTrk(url),"_blank","noopener");   // ?t=website for conversion tracking
+  location.assign(withTrk(url));   // direct navigation works without popup permission
 });
 
 // the whole event card is one big tap target — anywhere on it acts like its CTA
