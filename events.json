@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-06T23:30:48.965Z",
+ "updated": "2026-09-07T00:30:55.269Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -10,13 +10,13 @@
    "pid": "6a9de7a054358985fd6104ec",
    "venue": "The 44 Live Music Bar",
    "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6a9de7c2db467ac36b5dd157",
+   "flyer": "https://images.posh.vip/originals/6a9e0192db467ac36b7da32b",
    "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
    "end": "2026-09-09T02:00",
    "desc": "AGES 18 AND UP",
    "age": 18,
    "series": "bar",
-   "sold": 12,
+   "sold": 40,
    "low": 0,
    "high": 31.88,
    "tiers": 6,
@@ -31,12 +31,13 @@
    "pid": "6a9deae059fa3305ad2115cc",
    "venue": "The 44 Live",
    "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6a9deb1cfe1ae73a9245f1f3",
+   "flyer": "https://images.posh.vip/originals/6a9e0072fe1ae73a9258f387",
    "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
    "end": "2026-09-11T02:00",
    "desc": "Karaoke Night | Ages 18 and over",
    "age": 18,
    "series": "bar",
+   "sold": 1,
    "low": 15,
    "high": 30,
    "tiers": 4
