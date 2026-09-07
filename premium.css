@@ -45,3 +45,5 @@ footer.site{background:#0b0b0b;border-top:1px solid #262626}.foot-inner{gap:38px
 .pt-glow{display:none!important}.gear h3{font:600 22px/1.15 Inter,sans-serif;letter-spacing:-.035em;text-transform:none}.gear{border:1px solid #333!important;background:#141414!important;box-shadow:none!important}.display{font-family:Inter,sans-serif;font-weight:600;line-height:1.05;letter-spacing:-.05em;text-transform:none}.tx-form{background:#141414!important;border-color:#333!important;box-shadow:none!important;border-radius:20px}.tx-consent input{min-width:20px;min-height:20px}.chip{background:#171717!important;color:#bbb!important;border-color:#333!important;box-shadow:none!important}
 
 .sec-title,.sec-title em{text-shadow:none!important}.sec-title em{-webkit-text-stroke:0!important}
+/* Keep the contact/map columns inside even the narrowest phone viewport. */
+.visit-grid > *,.visit-info .row > div{min-width:0}.visit-info .val{overflow-wrap:anywhere}

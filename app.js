@@ -1050,44 +1050,6 @@ applyInterest();
 })();
 
 /* ============================================================
-   GLASS TAB BAR — the hero navigator. The pill tracks whichever
-   tab you are on (hover on desktop, press on touch), springs over
-   to it, then the link takes you there. Rest position is the tab
-   matching the current page, else the first one.
-   ============================================================ */
-(function(){
-  const bar=document.getElementById("heroTabs"); if(!bar) return;
-  const pill=bar.querySelector(".gtabs-pill");
-  const tabs=[...bar.querySelectorAll(".gtab")];
-  if(!pill||!tabs.length) return;
-  const here=location.pathname.split("/").pop()||"index.html";
-  let restIdx=Math.max(0,tabs.findIndex(a=>a.getAttribute("href")===here));
-
-  function moveTo(i){
-    const t=tabs[i]; if(!t) return;
-    pill.style.width=t.offsetWidth+"px";
-    pill.style.transform="translateX("+t.offsetLeft+"px)";
-    tabs.forEach((a,n)=>a.classList.toggle("is-active",n===i));
-  }
-  function rest(){ moveTo(restIdx); }
-
-  // size it before the spring is armed so it doesn't fly in from the left
-  rest();
-  requestAnimationFrame(()=>bar.classList.add("ready"));
-
-  tabs.forEach((t,i)=>{
-    t.addEventListener("mouseenter",()=>moveTo(i));
-    t.addEventListener("focus",()=>moveTo(i));
-    // land the pill on the pressed tab before the page changes
-    t.addEventListener("pointerdown",()=>{ restIdx=i; moveTo(i); });
-  });
-  bar.addEventListener("mouseleave",rest);
-  addEventListener("resize",rest);
-  // fonts land after first paint and change tab widths
-  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(rest);
-})();
-
-/* ============================================================
    HOME VENUE CARD — the whole card taps through to directions in
    whatever maps app fits the device. Same rule as the tour map:
    auto-pick the destination, never offer a choice of buttons.

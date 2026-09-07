@@ -43,8 +43,9 @@
 <!-- Snap Pixel -->
 <script type="text/javascript">(function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function(){a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};a.queue=[];var s="script";r=t.createElement(s);r.async=!0;r.src=n;var u=t.getElementsByTagName(s)[0];u.parentNode.insertBefore(r,u)})(window,document,"https://sc-static.net/scevent.min.js");snaptr("init","d8a14a35-663c-415d-8cc0-175354c6a52e");snaptr("track","PAGE_VIEW");</script>
 <!-- End Snap Pixel -->
+<link rel="stylesheet" href="glass-nav.css?v=draft-1">
 </head>
-<body>
+<body data-glass-dock>
 
 
 <div id="nav-mount"></div>
@@ -106,7 +107,7 @@
       <a href="18-and-over-events-phoenix.html">18+ events in Phoenix</a>
       <a href="rentals.html">Equipment rentals</a>
     </nav></div>
-<script src="app.js?v=20260907-2"></script>
+<script src="app.js?v=draft-glass-1"></script>
 <script>
 /* Posts to the SCC public lane on Vercel, same as the leads form. The endpoint
    re-validates everything and stores its OWN copy of the disclosure wording, so
@@ -176,5 +177,15 @@
   });
 })();
 </script>
+
+<!-- Persistent glass navigation. Same destinations as the original hero. -->
+<nav class="gtabs glass-dock" id="heroTabs" aria-label="Browse DartyForLife">
+  <span class="gtabs-pill" aria-hidden="true"></span>
+  <a class="gtab" href="majors.html">Headliners</a>
+  <a class="gtab" href="bars.html">Glendale</a>
+  <a class="gtab" href="tempe.html">Tempe</a>
+  <a class="gtab" href="rentals.html">Rentals</a>
+</nav>
+<script src="glass-nav.js?v=draft-1" defer></script>
 </body>
 </html>
