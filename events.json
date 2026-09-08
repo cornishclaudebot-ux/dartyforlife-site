@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-08T22:02:49.469Z",
+ "updated": "2026-09-08T22:32:57.257Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,10 +16,10 @@
    "desc": "AGES 18 AND UP",
    "age": 18,
    "series": "bar",
-   "sold": 632,
+   "sold": 649,
    "low": 0,
-   "high": 20,
-   "tiers": 3,
+   "high": 15,
+   "tiers": 2,
    "pricesVerified": true,
    "lat": 33.5831282,
    "lng": -112.1552594
@@ -42,6 +42,26 @@
    "low": 15,
    "high": 30,
    "tiers": 4,
+   "pricesVerified": true
+  },
+  {
+   "date": "2026-09-12",
+   "time": "12:00 PM",
+   "title": "Verve Rooftop Party",
+   "url": "verve-rooftop-party",
+   "pid": "6aa07a3ffdf50cb99b753d5d",
+   "venue": "Verve Rooftop",
+   "city": "Tempe, AZ 85281",
+   "flyer": "https://images.posh.vip/originals/6aa07d19971a10112d7da747",
+   "addr": "1047 S Terrace Rd, Tempe, AZ 85281, USA",
+   "end": "2026-09-12T16:00",
+   "desc": "Dry Event",
+   "age": 18,
+   "series": "tempe",
+   "sold": 2,
+   "low": 0,
+   "high": 0,
+   "tiers": 1,
    "pricesVerified": true
   },
   {
