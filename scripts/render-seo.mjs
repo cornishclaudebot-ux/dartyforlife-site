@@ -107,7 +107,8 @@ const EVENT_META = {
   '6a9b2ab6f855209bf6f4cd48': {
     type: 'MusicEvent',
     page: 'halloween.html',
-    description: 'Ty Dolla $ign performs live in Phoenix on Halloween night, Saturday, October 31, 2026, at Stratus Event Center, presented by DartyForLife. Ages 18 and over. Presale waitlist open on Posh.',
+    description: 'Ty Dolla $ign performs live in Phoenix on Halloween night, Saturday, October 31, 2026, at Stratus Event Center, doors 8:00 PM, presented by DartyForLife. Ages 18 and over. Presale waitlist open on Posh.',
+    doorTime: '2026-10-31T20:00:00-07:00',
     performer: {
       '@type': 'Person',
       name: 'Ty Dolla $ign',
@@ -154,6 +155,7 @@ function eventNode(ev) {
   else if (ev.desc) node.description = ev.desc;
   if (ev.flyer) node.image = ev.flyer;
   if (meta.performer) node.performer = meta.performer;
+  if (meta.doorTime) node.doorTime = meta.doorTime;
   /* `offers` carries REAL prices only. update-events.mjs reads them from the
      per-event Posh tickets endpoint and writes ev.low/ev.high/ev.tiers; the
      value is Posh's own `totalPrice`, the number on its "Buy tickets from
