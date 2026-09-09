@@ -40,9 +40,6 @@ const PAGES = [
   // the 18+ landing page: same age rule app.js applies, so the baked copy a
   // crawler reads and the live copy a person sees can never disagree
   { file: '18-and-over-events-phoenix.html', series: 'all', maxAge: 18 },
-  // the Ty Dolla $ign Halloween page: one event, the one whose pid it names,
-  // so its MusicEvent node and offers stay in step with the Posh feed
-  { file: 'halloween.html', series: 'major', pid: '6a9b2ab6f855209bf6f4cd48' },
   // no event grid on these, they are here purely for the crawlable link block
   { file: 'rentals.html', series: 'none' },
   { file: 'texts.html', series: 'none' },
@@ -103,32 +100,7 @@ function postalAddress(addr, city) {
    the schema type, the performer with its canonical ids, the page on THIS
    domain that owns the event, and a real description. Facts here come from
    the signed deal memo and the public Posh listing only. */
-const EVENT_META = {
-  '6a9b2ab6f855209bf6f4cd48': {
-    type: 'MusicEvent',
-    page: 'halloween.html',
-    description: 'Ty Dolla $ign performs live in Phoenix on Halloween night, Saturday, October 31, 2026, at Stratus Event Center, doors 8:00 PM, presented by DartyForLife. Ages 18 and over. Presale waitlist open on Posh.',
-    doorTime: '2026-10-31T20:00:00-07:00',
-    performer: {
-      '@type': 'Person',
-      name: 'Ty Dolla $ign',
-      alternateName: ['Ty Dolla Sign', 'Ty$'],
-      sameAs: [
-        'https://open.spotify.com/artist/7c0XG5cIJTrrAgEC3ULPiq',
-        'https://en.wikipedia.org/wiki/Ty_Dolla_Sign',
-        'https://www.instagram.com/tydollasign/',
-        'https://music.apple.com/us/artist/ty-dolla-%24ign/602917745',
-        'https://www.songkick.com/artists/6012829',
-        'https://x.com/tydollasign',
-        'https://www.wikidata.org/wiki/Q7859785',
-      ],
-    },
-    /* No offers node until Posh reports a live priced tier: Google defines
-       PreOrder as tickets purchasable in advance, and a waitlist is not that.
-       The InStock offer with the real lowest price appears automatically the
-       hour the first tier goes on sale. */
-  },
-};
+const EVENT_META = {};
 
 function eventNode(ev) {
   const meta = EVENT_META[ev.pid] || {};
@@ -230,7 +202,6 @@ for (const { file, series, maxAge, pid } of PAGES) {
     ['tempe.html', 'DartyForLife Tempe'],
     ['best-places-to-go-out-tempe.html', 'Best places to go out in Tempe'],
     ['18-and-over-events-phoenix.html', '18+ events in Phoenix'],
-    ['halloween.html', 'Ty Dolla $ign, Halloween night 2026'],
     ['rentals.html', 'Equipment rentals'],
     ['texts.html', 'Text alerts'],
   ];
@@ -303,7 +274,6 @@ const SITEMAP = [
   ['bars.html', 0.8, eventsDay],
   ['tempe.html', 0.8, eventsDay],
   ['best-places-to-go-out-tempe.html', 0.9, eventsDay],
-  ['halloween.html', 0.9, eventsDay],
   ['rentals.html', 0.7, '2026-07-18'],
   ['texts.html', 0.5, '2026-08-03'],
   ['privacy.html', 0.2, '2026-08-03'],
