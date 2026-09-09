@@ -40,6 +40,9 @@ const PAGES = [
   // the 18+ landing page: same age rule app.js applies, so the baked copy a
   // crawler reads and the live copy a person sees can never disagree
   { file: '18-and-over-events-phoenix.html', series: 'all', maxAge: 18 },
+  // the Ty Dolla $ign Halloween page: one event, the one whose pid it names,
+  // so its MusicEvent node and offers stay in step with the Posh feed
+  { file: 'halloween.html', series: 'major', pid: '6a9b2ab6f855209bf6f4cd48' },
   // no event grid on these, they are here purely for the crawlable link block
   { file: 'rentals.html', series: 'none' },
   { file: 'texts.html', series: 'none' },
@@ -95,15 +98,47 @@ function postalAddress(addr, city) {
   return out;
 }
 
+/* Per-event enrichment keyed by Posh event id. Everything the Posh feed
+   cannot tell us but an engine needs to tie the event to the ARTIST entity:
+   the schema type, the performer with its canonical ids, the page on THIS
+   domain that owns the event, and a real description. Facts here come from
+   the signed deal memo and the public Posh listing only. */
+const EVENT_META = {
+  '6a9b2ab6f855209bf6f4cd48': {
+    type: 'MusicEvent',
+    page: 'halloween.html',
+    description: 'Ty Dolla $ign performs live in Phoenix on Halloween night, Saturday, October 31, 2026, at Stratus Event Center, presented by DartyForLife. Ages 18 and over. Presale waitlist open on Posh.',
+    performer: {
+      '@type': 'Person',
+      name: 'Ty Dolla $ign',
+      alternateName: ['Ty Dolla Sign', 'Ty$'],
+      sameAs: [
+        'https://open.spotify.com/artist/7c0XG5cIJTrrAgEC3ULPiq',
+        'https://en.wikipedia.org/wiki/Ty_Dolla_Sign',
+        'https://www.instagram.com/tydollasign/',
+        'https://music.apple.com/us/artist/ty-dolla-%24ign/602917745',
+        'https://www.songkick.com/artists/6012829',
+        'https://x.com/tydollasign',
+        'https://www.wikidata.org/wiki/Q7859785',
+      ],
+    },
+    /* No offers node until Posh reports a live priced tier: Google defines
+       PreOrder as tickets purchasable in advance, and a waitlist is not that.
+       The InStock offer with the real lowest price appears automatically the
+       hour the first tier goes on sale. */
+  },
+};
+
 function eventNode(ev) {
+  const meta = EVENT_META[ev.pid] || {};
   const node = {
-    '@type': 'Event',
+    '@type': meta.type || 'Event',
     '@id': `${SITE}/#event-${ev.pid || ev.url}`,
     name: ev.title,
     startDate: `${ev.date}T${to24(ev.time)}:00-07:00`, // Arizona does not observe DST
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    url: `https://posh.vip/e/${ev.url}`,
+    url: meta.page ? `${SITE}/${meta.page}` : `https://posh.vip/e/${ev.url}`,
     location: {
       '@type': 'Place',
       name: ev.venue || undefined,
@@ -115,8 +150,10 @@ function eventNode(ev) {
     node.location.geo = { '@type': 'GeoCoordinates', latitude: ev.lat, longitude: ev.lng };
   }
   if (ev.end) node.endDate = `${ev.end}:00-07:00`;
-  if (ev.desc) node.description = ev.desc;
+  if (meta.description) node.description = meta.description;
+  else if (ev.desc) node.description = ev.desc;
   if (ev.flyer) node.image = ev.flyer;
+  if (meta.performer) node.performer = meta.performer;
   /* `offers` carries REAL prices only. update-events.mjs reads them from the
      per-event Posh tickets endpoint and writes ev.low/ev.high/ev.tiers; the
      value is Posh's own `totalPrice`, the number on its "Buy tickets from
@@ -144,7 +181,7 @@ function card(ev) {
   const age = ev.age ? `<span class="seo-ev-age">Ages ${ev.age} &amp; over</span>` : '';
   const where = [ev.venue, ev.city].filter(Boolean).map(esc).join(', ');
   return `<article class="ev" data-series="${esc(ev.series)}">
-      <h3><a href="https://posh.vip/e/${esc(ev.url)}">${esc(ev.title)}</a></h3>
+      <h3><a href="${(EVENT_META[ev.pid] || {}).page ? `${SITE}/${(EVENT_META[ev.pid] || {}).page}` : `https://posh.vip/e/${esc(ev.url)}`}">${esc(ev.title)}</a></h3>
       <p><time datetime="${esc(ev.date)}">${esc(longDate(ev.date))}</time>${ev.time ? `, ${esc(ev.time)}` : ''}</p>
       <p>${where}</p>
       ${age ? `<p>${age}</p>` : ''}
@@ -154,7 +191,7 @@ function card(ev) {
 const upcoming = events.filter((e) => e && e.date && e.url && e.title && (e.end ? Date.parse(e.end + ':00-07:00') > Date.now() : Date.parse(e.date + 'T23:59:59-07:00') >= Date.now()));
 
 let touched = 0;
-for (const { file, series, maxAge } of PAGES) {
+for (const { file, series, maxAge, pid } of PAGES) {
   const path = new URL(file, ROOT);
   let html;
   try { html = readFileSync(path, 'utf8'); } catch { console.warn(`skip ${file} (missing)`); continue; }
@@ -163,6 +200,7 @@ for (const { file, series, maxAge } of PAGES) {
     : series === 'none' ? []
       : upcoming.filter((e) => e.series === series);
   if (maxAge) list = list.filter((e) => typeof e.age === 'number' && e.age <= maxAge);
+  if (pid) list = list.filter((e) => e.pid === pid);
 
   /* ---- 1. bake the cards into every [data-events] grid on the page ---- */
   const body = list.length
@@ -190,6 +228,7 @@ for (const { file, series, maxAge } of PAGES) {
     ['tempe.html', 'DartyForLife Tempe'],
     ['best-places-to-go-out-tempe.html', 'Best places to go out in Tempe'],
     ['18-and-over-events-phoenix.html', '18+ events in Phoenix'],
+    ['halloween.html', 'Ty Dolla $ign, Halloween night 2026'],
     ['rentals.html', 'Equipment rentals'],
     ['texts.html', 'Text alerts'],
   ];
@@ -262,6 +301,7 @@ const SITEMAP = [
   ['bars.html', 0.8, eventsDay],
   ['tempe.html', 0.8, eventsDay],
   ['best-places-to-go-out-tempe.html', 0.9, eventsDay],
+  ['halloween.html', 0.9, eventsDay],
   ['rentals.html', 0.7, '2026-07-18'],
   ['texts.html', 0.5, '2026-08-03'],
   ['privacy.html', 0.2, '2026-08-03'],

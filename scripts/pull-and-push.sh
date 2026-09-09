@@ -78,7 +78,7 @@ fi
 # this the baked schema freezes at its last manual run and starts advertising
 # finished events to crawlers (a past-dated Event node sat on tempe.html for
 # a week in Aug 2026). Idempotent; non-fatal so a bake bug can't stop data.
-BAKED="sitemap.xml index.html majors.html bars.html tempe.html best-places-to-go-out-tempe.html 18-and-over-events-phoenix.html rentals.html texts.html"
+BAKED="sitemap.xml index.html majors.html bars.html tempe.html best-places-to-go-out-tempe.html 18-and-over-events-phoenix.html halloween.html rentals.html texts.html"
 node scripts/render-seo.mjs || echo "[$(ts)] render-seo failed, pages keep their last bake"
 
 # Heartbeat: proof the whole pull->push->deploy chain works, committed at
