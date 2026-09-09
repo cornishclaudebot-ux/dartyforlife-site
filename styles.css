@@ -1085,7 +1085,7 @@ body.theme-tempe{
 .theme-tempe .date-chip{border-color:rgba(255,198,39,.35)}
 .theme-tempe .empty-note{border-color:rgba(255,198,39,.45);color:#e8d5c6}
 .theme-tempe .nav-links a:hover,.theme-tempe .nav-links a.active{color:#fff}
-.theme-tempe footer.site{border-top-color:rgba(140,29,64,.6);background:#190510}
+.theme-tempe footer.site{border-top-color:rgba(255,255,255,.35);background:#0b0b0b}
 .theme-tempe .foot-col a:hover{color:var(--asu-gold)}
 .theme-tempe .foot-brand .motto b{color:var(--asu-gold)}
 .theme-tempe .foot-brand .socials a:hover{background:var(--asu-gold);border-color:var(--asu-gold)}
