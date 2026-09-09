@@ -88,3 +88,8 @@ Then open <http://localhost:4317>.
 ---
 *Built from your Summer 2026 calendar + brand notes. No invented event details or ticket
 slugs — anything not yet confirmed is left as an editable placeholder.*
+
+
+## Google Search Console
+
+`google7b61c438c5a2dad6.html` at the site root verifies https://dartyforlife.com/ for cornishclaudebot@gmail.com. Never delete it; Google re-checks it.
