@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-09T16:02:21.504Z",
+ "updated": "2026-09-09T16:33:15.665Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -36,7 +36,7 @@
    "desc": "Dry Event",
    "age": 18,
    "series": "tempe",
-   "sold": 88,
+   "sold": 89,
    "low": 0,
    "high": 0,
    "tiers": 1,
