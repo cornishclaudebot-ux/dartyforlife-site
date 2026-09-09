@@ -947,8 +947,6 @@ body.theme-bars{
 .theme-bars .ev:hover{border-color:rgba(245,48,30,.65);box-shadow:0 26px 60px -30px rgba(245,48,30,.55)}
 .theme-bars .ev .ev-veil{background:linear-gradient(180deg,rgba(20,4,2,.05) 30%,rgba(26,5,3,.62) 68%,rgba(20,4,2,.92) 100%)}
 .theme-bars .date-chip{border-color:rgba(245,48,30,.35)}
-.theme-bars .photo-grid img{border-color:rgba(245,48,30,.3)}
-.theme-bars .photo-grid img:hover{border-color:rgba(245,48,30,.6)}
 .theme-bars .empty-note{border-color:rgba(245,48,30,.4);color:#cdbfb4}
 .theme-bars .sec-head.row{position:relative}
 .theme-bars footer.site{border-top-color:rgba(245,48,30,.35);background:#0d0605}
