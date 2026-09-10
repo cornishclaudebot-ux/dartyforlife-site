@@ -90,10 +90,12 @@ body[data-glass-dock] .ev:not(.noart) .ev-cta:focus-visible {
 
 /* Restore the original brick texture through both location pages. */
 body.theme-bars,body.theme-tempe {
-  background:#0b0705 url('media/brand/brick-tile.jpg') repeat top center;
+  background:#090909 url('media/brand/brick-tile.jpg') repeat top center;
+  /* Neutralize color baked into the wall, without filtering signs or flyers. */
+  background-blend-mode:luminosity;
   background-size:min(100vw,1300px) auto;
 }
-:is(.theme-bars,.theme-tempe) footer.site { background:rgba(11,7,5,.38); }
+:is(.theme-bars,.theme-tempe) footer.site { background:rgba(9,9,9,.38); }
 :is(.theme-bars,.theme-tempe) .pt-bars::after {
   background:linear-gradient(180deg,#0b070533,transparent 30%,transparent 85%,#0b070533);
 }
