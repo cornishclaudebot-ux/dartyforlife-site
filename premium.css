@@ -161,3 +161,5 @@ body.theme-bars,body.theme-tempe {
     background:linear-gradient(180deg,#310606 0%,#310606 12%,#290405 42%,#180203 75%,#080101 100%);
   }
 }
+
+.mobile-menu .menu-top a { font:inherit; letter-spacing:inherit; text-transform:none; padding:0; color:inherit; }

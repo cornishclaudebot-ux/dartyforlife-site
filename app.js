@@ -253,7 +253,7 @@ function buildNav(){
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button></div>
   </nav></header>
   <dialog class="mobile-menu" id="mobileMenu" aria-label="Site navigation">
-    <div class="menu-top"><span>DartyForLife</span><button class="menu-close" aria-label="Close menu">Close ${IC.close||'×'}</button></div>
+    <div class="menu-top"><a href="index.html" aria-label="DartyForLife home">DartyForLife</a></div>
     <nav class="menu-links" aria-label="Explore DartyForLife">
       <a href="index.html#upcoming">All events</a>
       <a href="majors.html"${current('majors.html')}>Headliners</a>
@@ -262,7 +262,6 @@ function buildNav(){
       <a href="${home}#relive">Highlights</a>
       <a href="rentals.html"${current('rentals.html')}>Rentals</a>
     </nav>
-    <div class="menu-secondary"><a href="texts.html">Text alerts</a><a href="${CONFIG.ig}" target="_blank" rel="noopener">Instagram</a><a href="https://www.wildwestpartybus.com/" target="_blank" rel="noopener">Party bus</a></div>
   </dialog>`;
   const main=document.querySelector('main');if(main){ main.id=main.id||'main-content';document.querySelector('.skip-link').href='#'+main.id; }
 }
@@ -606,7 +605,10 @@ if(ham&&mm){
     scrollStyle=document.body.style.overflow;mm.showModal();
     document.body.style.overflow="hidden";ham.setAttribute("aria-expanded","true");
   });
-  mm.querySelector('.menu-close').addEventListener('click',()=>mm.close());
+  mm.addEventListener('click',event=>{
+    if(event.target.closest('a, .menu-links')) return;
+    window.location.assign('index.html');
+  });
   mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mm.close()));
   mm.addEventListener('close',()=>{document.body.style.overflow=scrollStyle;ham.setAttribute('aria-expanded','false');ham.focus();});
 }
