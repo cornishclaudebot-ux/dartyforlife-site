@@ -29,7 +29,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="stylesheet" href="styles.css?v=32" />
-<link rel="stylesheet" href="premium.css?v=20260907" />
+<link rel="stylesheet" href="premium.css?v=20260909-countdown-3" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"DartyForLife",
  "alternateName":"Darty For Life · Desert Drinkers","url":"https://dartyforlife.com",
@@ -158,7 +158,7 @@
    },
    "endDate": "2026-11-02T02:00:00-07:00",
    "description": "Ages 18 & over",
-   "image": "https://images.posh.vip/originals/6a46a244325127a0ee52cb15",
+   "image": "https://images.posh.vip/originals/6aa0adfa649d861d22d1528c",
    "offers": {
     "@type": "Offer",
     "priceCurrency": "USD",
@@ -175,7 +175,8 @@
 <!-- Snap Pixel -->
 <script type="text/javascript">(function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function(){a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};a.queue=[];var s="script";r=t.createElement(s);r.async=!0;r.src=n;var u=t.getElementsByTagName(s)[0];u.parentNode.insertBefore(r,u)})(window,document,"https://sc-static.net/scevent.min.js");snaptr("init","d8a14a35-663c-415d-8cc0-175354c6a52e");snaptr("track","PAGE_VIEW");</script>
 <!-- End Snap Pixel -->
-<link rel="stylesheet" href="glass-nav.css?v=draft-1">
+<link rel="stylesheet" href="glass-nav.css?v=draft-3">
+<script src="hero-video.js?v=2" defer></script>
 </head>
 <body data-glass-dock class="premium-home">
 
@@ -187,6 +188,7 @@
 <!-- ===================== HERO ===================== -->
 <section class="hero">
   <div class="hero-bg" aria-hidden="true">
+    <img class="hero-poster" src="media/hero/hero-poster.jpg?v=3" alt="" aria-hidden="true" fetchpriority="high" />
     <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="media/hero/hero-poster.jpg?v=3" aria-hidden="true">
       <source src="media/hero/hero.mp4?v=3" media="(max-width: 760px)" type="video/mp4" /><source src="media/hero/hero-hq.mp4?v=3" type="video/mp4" />
     </video>
@@ -196,7 +198,6 @@
   <div class="hero-inner">
     <img class="hero-logo" src="media/brand/logo_real_stack_dd.png" alt="DartyForLife · Desert Drinkers" />
     <h1 class="sr-only">DartyForLife events in Phoenix</h1>
-    <a class="hero-action" href="#upcoming">Find your next night <span aria-hidden="true">↗</span></a>
   </div>
 </section>
 
@@ -359,12 +360,6 @@
         <span class="eyebrow">The List</span>
         <h2 class="sec-title">Be first<br><em>in line.</em></h2>
         <p>Exclusive drops, free-event locations, and themes hit the list <b>first</b>, before they ever touch the timeline. No spam. Just the next move.</p>
-        <ul class="list-perks">
-          <li>First crack at headliner presales</li>
-          <li>First dibs on exclusive drops</li>
-          <li>Secret free-event locations, early</li>
-          <li>This week's Darty Bars theme, texted to you</li>
-        </ul>
       </div>
       <form class="list-form" method="POST" id="listForm">
         <input type="hidden" name="interested_event" id="interestField" />
@@ -385,20 +380,7 @@
 <section id="visit">
   <div class="wrap">
     <div class="sec-head reveal"><span class="eyebrow">Find Us</span><h2 class="sec-title">Where the <em>desert</em> meets the dancefloor</h2></div>
-    <div class="visit-grid reveal">
-      <div class="visit-info">
-        <div class="row"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg></div><div><div class="lbl">Major headliners</div><div class="val"><a href="#" data-cfg="mapStratus" target="_blank" rel="noopener">Stratus Event Center<small>4344 W Indian School Rd, Phoenix, AZ</small></a></div></div></div>
-        <div class="row"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg></div><div><div class="lbl">Glendale</div><div class="val"><a href="#" data-cfg="map44" target="_blank" rel="noopener">The 44<small>4494 W Peoria Ave, Glendale, AZ</small></a></div></div></div>
-        <div class="row"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg></div><div><div class="lbl">Tempe</div><div class="val"><a href="#" data-cfg="mapOcho" target="_blank" rel="noopener">Bar Ocho<small>715 S Rural Rd, Tempe, AZ</small></a></div></div></div>
-        <div class="row"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg></div><div><div class="lbl">Free desert raves</div><div class="val">Location revealed to the list first<small>Get on The List above</small></div></div></div>
-        <div class="row"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zm2 4 6 4 6-4"/></svg></div><div><div class="lbl">Contact</div><div class="val"><a href="mailto:contact@dartyforlife.com">contact@dartyforlife.com</a></div></div></div>
-        <div class="visit-socials">
-          <a href="#" data-cfg="ig" target="_blank" rel="noopener" aria-label="Instagram"></a>
-          <a href="#" data-cfg="tt" target="_blank" rel="noopener" aria-label="TikTok"></a>
-          <a href="#" data-cfg="snap" target="_blank" rel="noopener" aria-label="Snapchat"></a>
-          <a href="#" data-cfg="fb" target="_blank" rel="noopener" aria-label="Facebook"></a>
-        </div>
-      </div>
+    <div class="visit-grid visit-grid-map-only reveal">
       <div class="visit-map" id="visit-map" role="button" tabindex="0" aria-label="Open directions in your maps app">
         <div id="themap"></div>
         <div class="map-card">

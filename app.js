@@ -1105,16 +1105,13 @@ applyInterest();
       const out=[], seenV=new Set();
       ups.forEach(ev=>{
         const c=coordsFor(ev); if(!c) return;
-        const key=(ev.venue||"").toLowerCase(); if(!key||seenV.has(key)) return;
+        const key=(ev.venue||"").toLowerCase(); if(!key||key.includes("ocho")||seenV.has(key)) return;
         seenV.add(key);
         out.push({ c, venue:ev.venue, city:ev.city||"", ev });
       });
-      // Each weekly series keeps its home venue on the tour even before that
-      // week's night hits Posh: The 44 for Glendale, Bar Ocho for Tempe.
+      // Keep Glendale on the tour even before the next weekly event is listed.
       if(![...seenV].some(v=>v.includes("44")))
         out.push({ c:coordOf("the 44"), venue:"The 44", city:"Glendale, AZ 85302", ev:null, label:"Glendale · every week" });
-      if(![...seenV].some(v=>v.includes("ocho")))
-        out.push({ c:coordOf("ocho"), venue:"Bar Ocho", city:"Tempe, AZ 85281", ev:null, label:"Tempe nights" });
       if(!out.length) out.push({ c:coordOf("stratus"), venue:"Stratus Event Center", city:"Phoenix, AZ 85031", ev:null });
       return out;
     }

@@ -47,3 +47,71 @@ footer.site{background:#0b0b0b;border-top:1px solid #262626}.foot-inner{gap:38px
 .sec-title,.sec-title em{text-shadow:none!important}.sec-title em{-webkit-text-stroke:0!important}
 /* Keep the contact/map columns inside even the narrowest phone viewport. */
 .visit-grid > *,.visit-info .row > div{min-width:0}.visit-info .val{overflow-wrap:anywhere}
+
+/* Flyer-first cards: original date badge, complete artwork, one tap to tickets. */
+.event-grid > .ev:not(.noart) {
+  display:block; position:relative; aspect-ratio:4/5;
+  border-radius:18px; overflow:hidden; background:#111 !important;
+}
+.ev:not(.noart) .ev-art {
+  position:absolute; inset:0; width:100%; height:100%; aspect-ratio:auto;
+  background-size:contain; background-position:center; border-radius:0;
+}
+.ev:not(.noart) .ev-top {
+  position:absolute; inset:12px 12px auto; padding:0;
+  justify-content:flex-end; z-index:2; pointer-events:none;
+}
+.ev:not(.noart) .ev-top > .pill { display:none; }
+.ev .date-chip {
+  display:inline-flex; gap:3px; min-width:48px; padding:9px 10px;
+  color:#fff; background:rgba(12,14,18,.72);
+  border:1px solid #ffffff40; border-radius:12px;
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.ev .date-chip .mo,.ev .date-chip .wd { color:#eee !important; }
+.ev .date-chip .dy { font:600 24px/1 Inter,sans-serif; color:#fff; }
+.ev:not(.noart) .ev-info { position:absolute; inset:0; padding:0; }
+.ev:not(.noart) .ev-info > :not(:last-child) {
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip-path:inset(50%); white-space:nowrap;
+}
+.ev:not(.noart) .ev-info > :last-child { position:absolute; inset:0; }
+body[data-glass-dock] .ev:not(.noart) .ev-cta {
+  position:absolute; inset:0; width:100%; height:100%; margin:0; padding:0;
+  background:transparent !important; border:0 !important; border-radius:18px;
+  box-shadow:none !important; backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important; font-size:0 !important; text-shadow:none;
+}
+.ev:not(.noart) .ev-cta svg { display:none; }
+body[data-glass-dock] .ev:not(.noart) .ev-cta:focus-visible {
+  outline:3px solid #fff; outline-offset:-5px;
+}
+.ev:not(.noart) .ev-soon { z-index:3; pointer-events:none; }
+
+/* Restore the original brick texture through both location pages. */
+body.theme-bars,body.theme-tempe {
+  background:#0b0705 url('media/brand/brick-tile.jpg') repeat top center;
+  background-size:min(100vw,1300px) auto;
+}
+:is(.theme-bars,.theme-tempe) footer.site { background:rgba(11,7,5,.38); }
+:is(.theme-bars,.theme-tempe) .pt-bars::after {
+  background:linear-gradient(180deg,#0b070533,transparent 30%,transparent 85%,#0b070533);
+}
+@media(max-width:560px) {
+  body.theme-bars,body.theme-tempe { background-size:167vw auto; }
+}
+
+/* A paused iPhone video can draw its own play overlay: reveal only during playback. */
+.hero-poster { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.62; pointer-events:none; }
+.hero-bg .hero-video { visibility:hidden; }
+.hero-bg.hero-is-playing .hero-video { visibility:visible; }
+.hero-bg.hero-is-playing .hero-poster { visibility:hidden; }
+.hero-video::-webkit-media-controls,
+.hero-video::-webkit-media-controls-start-playback-button { display:none !important; -webkit-appearance:none; }
+@media(prefers-reduced-motion:reduce) { .hero-bg.hero-is-playing .hero-poster { visibility:visible; } }
+
+.visit-grid.visit-grid-map-only { grid-template-columns:minmax(0,1fr); }
+
+/* Center the three visible countdown units; no empty seconds column. */
+#cdStrip .cds-row { grid-template-columns:repeat(3,max-content); justify-content:center; }
+#cdStrip .cds-cell { justify-content:center; }
