@@ -144,12 +144,12 @@ body.theme-bars,body.theme-tempe {
 /* Fear Forest carries the deep red of its illuminated trees. */
 .nextmajor[data-ev-title="Fear Forest" i] { background:#310606 !important; }
 .nextmajor[data-ev-title="Fear Forest" i] .nm-body { background:#310606; }
-.nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(90deg,transparent 55%,#310606 100%); }
+.nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(90deg,transparent 25%,#31060618 42%,#31060666 60%,#310606bb 78%,#310606ee 93%,#310606 100%); }
 .nextmajor[data-ev-title="Fear Forest" i] :is(.eyebrow,.nm-meta,.feature-action) { color:#fff1ef; }
 .nextmajor[data-ev-title="Fear Forest" i] .nm-meta svg { fill:#fff1ef; stroke:#fff1ef; }
 .nextmajor[data-ev-title="Fear Forest" i] .feature-action { border-top-color:rgba(255,241,239,.35); }
 @media(max-width:640px) {
-  .nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(180deg,transparent 55%,#310606 100%); }
+  .nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(180deg,transparent 25%,#31060618 42%,#31060666 60%,#310606bb 78%,#310606ee 93%,#310606 100%); }
 }
 
 /* Dark red fades smoothly from the forest into the event details. */
@@ -158,6 +158,6 @@ body.theme-bars,body.theme-tempe {
 }
 @media(max-width:640px) {
   .nextmajor[data-ev-title="Fear Forest" i] .nm-body {
-    background:linear-gradient(180deg,#310606 0%,#280405 40%,#100203 100%);
+    background:linear-gradient(180deg,#310606 0%,#310606 12%,#290405 42%,#180203 75%,#080101 100%);
   }
 }
