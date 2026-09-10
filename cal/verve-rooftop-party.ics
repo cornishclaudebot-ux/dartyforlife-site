@@ -14,16 +14,16 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:6aa07a3ffdf50cb99b753d5d@dartyforlife.com
-DTSTAMP:20260908T223257Z
-DTSTART;TZID=America/Phoenix:20260912T120000
+DTSTAMP:20260910T234336Z
+DTSTART;TZID=America/Phoenix:20260910T163000
 DURATION:PT1H
 SUMMARY:Verve Rooftop Party
 LOCATION:Verve Rooftop\, Tempe\, AZ 85281
-DESCRIPTION:Doors 12:00 PM. Tickets: https://posh.vip/e/verve-rooftop-party
+DESCRIPTION:Doors 4:30 PM. Tickets: https://posh.vip/e/verve-rooftop-party
 URL:https://posh.vip/e/verve-rooftop-party
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:Verve Rooftop Party tonight. Doors 12:00 PM.
+DESCRIPTION:Verve Rooftop Party tonight. Doors 4:30 PM.
 TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
