@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-10T04:11:43.941Z",
+ "updated": "2026-09-10T04:44:31.235Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -10,13 +10,13 @@
    "pid": "6a9deae059fa3305ad2115cc",
    "venue": "The 44 Live",
    "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6a9e0072fe1ae73a9258f387",
+   "flyer": "https://images.posh.vip/originals/6aa22df713f43a4fa7cf279f",
    "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
    "end": "2026-09-11T02:00",
    "desc": "Karaoke Night | Ages 21 & over",
    "age": 21,
    "series": "bar",
-   "sold": 88,
+   "sold": 93,
    "low": 15,
    "high": 30,
    "tiers": 4,
@@ -25,21 +25,21 @@
   {
    "date": "2026-09-11",
    "time": "9:00 PM",
-   "title": "THE CUBE",
+   "title": "THE CUBES",
    "url": "the-cube",
    "pid": "6aa20984649d861d224eb4bc",
    "venue": "4344 W Indian School Rd ste 32",
    "city": "Phoenix, AZ 85031",
-   "flyer": "https://images.posh.vip/originals/6aa22b645afaade6fdfc1440",
+   "flyer": "https://images.posh.vip/originals/6aa22f10bd301a25c58eef98",
    "addr": "4344 W Indian School Rd ste 32, Phoenix, AZ 85031, USA",
    "end": "2026-09-13T02:00",
    "desc": "2 DAY FREE EVENT",
    "age": 18,
    "series": "bar",
-   "sold": 46,
+   "sold": 448,
    "low": 0,
    "high": 0,
-   "tiers": 1,
+   "tiers": 2,
    "pricesVerified": true
   },
   {
@@ -56,10 +56,10 @@
    "desc": "Dry Event",
    "age": 18,
    "series": "tempe",
-   "sold": 127,
+   "sold": 141,
    "low": 0,
-   "high": 0,
-   "tiers": 1,
+   "high": 18.15,
+   "tiers": 2,
    "pricesVerified": true
   },
   {
