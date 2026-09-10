@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-10T15:55:39.787Z",
+ "updated": "2026-09-10T16:55:49.776Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,9 +16,9 @@
    "desc": "Karaoke Night | Ages 21 & over",
    "age": 21,
    "series": "bar",
-   "sold": 105,
-   "low": 20,
-   "high": 30,
+   "sold": 110,
+   "low": 9.99,
+   "high": 15,
    "tiers": 3,
    "pricesVerified": true
   },
@@ -36,7 +36,7 @@
    "desc": "2 DAY FREE EVENT",
    "age": 18,
    "series": "bar",
-   "sold": 1256,
+   "sold": 1292,
    "low": 0,
    "high": 0,
    "tiers": 2,
