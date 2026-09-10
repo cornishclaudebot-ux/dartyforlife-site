@@ -131,3 +131,10 @@ body.theme-bars,body.theme-tempe {
     background-position:center;
   }
 }
+
+/* Let each complete flyer define its card height and rounded edges. */
+.event-grid > .ev:not(.noart) { aspect-ratio:auto; align-self:start; }
+.ev:not(.noart) img.ev-art.ev-flyer {
+  display:block; position:relative; inset:auto; width:100%; height:auto;
+  aspect-ratio:auto; object-fit:contain; border-radius:0;
+}

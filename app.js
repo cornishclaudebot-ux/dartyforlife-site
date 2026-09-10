@@ -337,7 +337,7 @@ function buildModal(){
 function eventCard(ev){
   const d=parseDate(ev.date);
   const s=classify(ev);
-  const art=ev.flyer?`style="background-image:url('${esc(ev.flyer)}')"`:"";
+  const art=ev.flyer?`<img class="ev-art ev-flyer" src="${esc(ev.flyer)}" alt="${esc(ev.title)} flyer" loading="lazy" decoding="async" />`:`<div class="ev-art"></div>`;
   // bar-nights tab stays clean: no green free-entry pill there (his call)
   const pill = (ev.free && !document.body.classList.contains("theme-bars"))
     ? `<span class="pill pill-free">Free entry</span>`
@@ -352,7 +352,7 @@ function eventCard(ev){
   const soon = ev.url ? "" : `<div class="ev-soon" aria-hidden="true">Coming Soon</div>`;
   return `
   <article class="ev reveal${ev.flyer?"":" noart"}" data-series="${s}">
-    <div class="ev-art" ${art}></div>
+    ${art}
     <div class="ev-veil"></div>
     ${soon}
     <div class="ev-top">
