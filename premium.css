@@ -115,3 +115,19 @@ body.theme-bars,body.theme-tempe {
 /* Center the three visible countdown units; no empty seconds column. */
 #cdStrip .cds-row { grid-template-columns:repeat(3,max-content); justify-content:center; }
 #cdStrip .cds-cell { justify-content:center; }
+
+/* The hero dissolves into the same wall that continues through the page. */
+:is(.theme-bars,.theme-tempe) .pt-bars { background:transparent !important; }
+:is(.theme-bars,.theme-tempe) .pt-bars::before {
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:1;
+  background:url('media/brand/darty-bars-neon.jpg') center 44%/cover no-repeat;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 48%,#000c 62%,#0005 80%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 48%,#000c 62%,#0005 80%,transparent 100%);
+}
+:is(.theme-bars,.theme-tempe) .pt-bars::after { display:none; }
+@media(max-width:640px) {
+  :is(.theme-bars,.theme-tempe) .pt-bars::before {
+    background-image:url('media/brand/darty-bars-neon-phone.jpg');
+    background-position:center;
+  }
+}
