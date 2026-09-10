@@ -122,7 +122,7 @@ body.theme-bars,body.theme-tempe {
 :is(.theme-bars,.theme-tempe) .pt-bars { background:transparent !important; }
 :is(.theme-bars,.theme-tempe) .pt-bars::before {
   content:""; position:absolute; inset:0; pointer-events:none; opacity:1;
-  background:url('media/brand/darty-bars-neon.jpg') center 44%/cover no-repeat;
+  background:url('media/brand/darty-bars-neon.jpg') center calc(44% + 8svh)/cover no-repeat;
   -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 48%,#000c 62%,#0005 80%,transparent 100%);
   mask-image:linear-gradient(to bottom,#000 0%,#000 48%,#000c 62%,#0005 80%,transparent 100%);
 }
@@ -130,7 +130,7 @@ body.theme-bars,body.theme-tempe {
 @media(max-width:640px) {
   :is(.theme-bars,.theme-tempe) .pt-bars::before {
     background-image:url('media/brand/darty-bars-neon-phone.jpg');
-    background-position:center;
+    background-position:center calc(50% + 15svh);
   }
 }
 
