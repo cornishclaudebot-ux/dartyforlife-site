@@ -140,3 +140,14 @@ body.theme-bars,body.theme-tempe {
   display:block; position:relative; inset:auto; width:100%; height:auto;
   aspect-ratio:auto; object-fit:contain; border-radius:0;
 }
+
+/* Fear Forest carries the deep red of its illuminated trees. */
+.nextmajor[data-ev-title="Fear Forest" i] { background:#780b0b !important; }
+.nextmajor[data-ev-title="Fear Forest" i] .nm-body { background:#780b0b; }
+.nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(90deg,transparent 55%,#780b0b 100%); }
+.nextmajor[data-ev-title="Fear Forest" i] :is(.eyebrow,.nm-meta,.feature-action) { color:#fff1ef; }
+.nextmajor[data-ev-title="Fear Forest" i] .nm-meta svg { fill:#fff1ef; stroke:#fff1ef; }
+.nextmajor[data-ev-title="Fear Forest" i] .feature-action { border-top-color:rgba(255,241,239,.35); }
+@media(max-width:640px) {
+  .nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(180deg,transparent 55%,#780b0b 100%); }
+}
