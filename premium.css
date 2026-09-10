@@ -152,15 +152,12 @@ body.theme-bars,body.theme-tempe {
   .nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(180deg,transparent 55%,#310606 100%); }
 }
 
-/* Low red light and translucent branches at the edges of the feature. */
+/* Dark red fades smoothly from the forest into the event details. */
 .nextmajor[data-ev-title="Fear Forest" i] .nm-body {
-  isolation:isolate; overflow:hidden;
-  background:radial-gradient(ellipse at 92% 42%,#610a0d 0%,transparent 63%),linear-gradient(165deg,#310606 0%,#240406 65%,#100203 100%);
+  background:linear-gradient(90deg,#310606 0%,#280405 45%,#100203 100%);
 }
-.nextmajor[data-ev-title="Fear Forest" i] .nm-body::after {
-  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
-  background:url('media/legendary/fear-forest.jpg') right top/auto 145% no-repeat;
-  opacity:.27; mix-blend-mode:screen;
-  -webkit-mask-image:linear-gradient(90deg,transparent 42%,#000 100%);
-  mask-image:linear-gradient(90deg,transparent 42%,#000 100%);
+@media(max-width:640px) {
+  .nextmajor[data-ev-title="Fear Forest" i] .nm-body {
+    background:linear-gradient(180deg,#310606 0%,#280405 40%,#100203 100%);
+  }
 }
