@@ -274,7 +274,6 @@ function buildFooter(){
     <div class="foot-inner">
       <div class="foot-brand">
         <img src="media/brand/logo_real_stack_dd.png" alt="DartyForLife · Desert Drinkers">
-        <p>Phoenix's biggest desert nights. Monthly headliners at Stratus, Darty Bars weekly, and DartyForLife Tempe.</p>
         <p class="motto">YOU WILL ALWAYS FEEL GOOD IF YOUR <b>INTENTIONS ARE GOOD</b>.</p>
         <div class="socials">
           <a href="${CONFIG.ig}" target="_blank" rel="noopener" aria-label="Instagram">${IC.ig}</a>
