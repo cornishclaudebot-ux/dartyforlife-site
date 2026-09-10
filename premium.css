@@ -142,12 +142,25 @@ body.theme-bars,body.theme-tempe {
 }
 
 /* Fear Forest carries the deep red of its illuminated trees. */
-.nextmajor[data-ev-title="Fear Forest" i] { background:#780b0b !important; }
-.nextmajor[data-ev-title="Fear Forest" i] .nm-body { background:#780b0b; }
-.nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(90deg,transparent 55%,#780b0b 100%); }
+.nextmajor[data-ev-title="Fear Forest" i] { background:#310606 !important; }
+.nextmajor[data-ev-title="Fear Forest" i] .nm-body { background:#310606; }
+.nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(90deg,transparent 55%,#310606 100%); }
 .nextmajor[data-ev-title="Fear Forest" i] :is(.eyebrow,.nm-meta,.feature-action) { color:#fff1ef; }
 .nextmajor[data-ev-title="Fear Forest" i] .nm-meta svg { fill:#fff1ef; stroke:#fff1ef; }
 .nextmajor[data-ev-title="Fear Forest" i] .feature-action { border-top-color:rgba(255,241,239,.35); }
 @media(max-width:640px) {
-  .nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(180deg,transparent 55%,#780b0b 100%); }
+  .nextmajor[data-ev-title="Fear Forest" i] .nm-flyer::after { background:linear-gradient(180deg,transparent 55%,#310606 100%); }
+}
+
+/* Low red light and translucent branches at the edges of the feature. */
+.nextmajor[data-ev-title="Fear Forest" i] .nm-body {
+  isolation:isolate; overflow:hidden;
+  background:radial-gradient(ellipse at 92% 42%,#610a0d 0%,transparent 63%),linear-gradient(165deg,#310606 0%,#240406 65%,#100203 100%);
+}
+.nextmajor[data-ev-title="Fear Forest" i] .nm-body::after {
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:url('media/legendary/fear-forest.jpg') right top/auto 145% no-repeat;
+  opacity:.27; mix-blend-mode:screen;
+  -webkit-mask-image:linear-gradient(90deg,transparent 42%,#000 100%);
+  mask-image:linear-gradient(90deg,transparent 42%,#000 100%);
 }
