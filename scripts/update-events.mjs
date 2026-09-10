@@ -30,6 +30,15 @@ const API = 'https://posh.vip/api/web/v2/util/group_url/dartyforlife';
 const OUT = new URL('../events.json', import.meta.url);
 const COUNTS = new URL('../counts.json', import.meta.url);
 
+// Events that are live on Posh but must NOT appear anywhere on this site yet,
+// keyed by Posh event id. Dropped before counts.json, events.json, the ICS
+// files, the baked cards and the JSON-LD are written, so nothing downstream
+// can leak them. Delete the id here the day the announcement is cleared.
+const HIDDEN = new Set([
+  // Oct 31, 2026 Stratus show: embargoed until Aiden clears the announcement (2026-09-09)
+  '6a9b2ab6f855209bf6f4cd48',
+]);
+
 // Full browser fingerprint — Posh sits behind Cloudflare, which 403s bare
 // datacenter requests (GitHub runners). A complete header set clears the
 // basic managed check on this JSON endpoint without any third-party proxy.
@@ -69,7 +78,7 @@ try {
     const byPid = new Map(live.events.filter((e) => e.pid).map((e) => [String(e.pid), Number(e.going) || 0]));
     const byName = new Map(live.events.map((e) => [norm(e.name), Number(e.going) || 0]));
     for (const e of data.events) {
-      if (!e || !e.url || !e.name) continue;
+      if (!e || !e.url || !e.name || HIDDEN.has(String(e.id || ''))) continue;
       const going = byPid.get(String(e.id || '')) ?? byName.get(norm(e.name));
       if (typeof going === 'number' && going > 0) counts[e.url] = going;
     }
@@ -127,6 +136,7 @@ const sleepMs = ms => new Promise(r => setTimeout(r, ms));
 const seen = new Set();
 const events = data.events
   .filter(e => e && e.status === 'live' && e.url && e.name && typeof e.start === 'string')
+  .filter(e => !HIDDEN.has(String(e.id || '')))
   // `start` is venue-local wall clock with a fake Z suffix. Slice it, never Date-parse it.
   .map(e => {
     const venue = (e.venue && e.venue.name) ? String(e.venue.name) : '';

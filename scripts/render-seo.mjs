@@ -95,15 +95,23 @@ function postalAddress(addr, city) {
   return out;
 }
 
+/* Per-event enrichment keyed by Posh event id. Everything the Posh feed
+   cannot tell us but an engine needs to tie the event to the ARTIST entity:
+   the schema type, the performer with its canonical ids, the page on THIS
+   domain that owns the event, and a real description. Facts here come from
+   the signed deal memo and the public Posh listing only. */
+const EVENT_META = {};
+
 function eventNode(ev) {
+  const meta = EVENT_META[ev.pid] || {};
   const node = {
-    '@type': 'Event',
+    '@type': meta.type || 'Event',
     '@id': `${SITE}/#event-${ev.pid || ev.url}`,
     name: ev.title,
     startDate: `${ev.date}T${to24(ev.time)}:00-07:00`, // Arizona does not observe DST
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    url: `https://posh.vip/e/${ev.url}`,
+    url: meta.page ? `${SITE}/${meta.page}` : `https://posh.vip/e/${ev.url}`,
     location: {
       '@type': 'Place',
       name: ev.venue || undefined,
@@ -115,8 +123,11 @@ function eventNode(ev) {
     node.location.geo = { '@type': 'GeoCoordinates', latitude: ev.lat, longitude: ev.lng };
   }
   if (ev.end) node.endDate = `${ev.end}:00-07:00`;
-  if (ev.desc) node.description = ev.desc;
+  if (meta.description) node.description = meta.description;
+  else if (ev.desc) node.description = ev.desc;
   if (ev.flyer) node.image = ev.flyer;
+  if (meta.performer) node.performer = meta.performer;
+  if (meta.doorTime) node.doorTime = meta.doorTime;
   /* `offers` carries REAL prices only. update-events.mjs reads them from the
      per-event Posh tickets endpoint and writes ev.low/ev.high/ev.tiers; the
      value is Posh's own `totalPrice`, the number on its "Buy tickets from
@@ -144,7 +155,7 @@ function card(ev) {
   const age = ev.age ? `<span class="seo-ev-age">Ages ${ev.age} &amp; over</span>` : '';
   const where = [ev.venue, ev.city].filter(Boolean).map(esc).join(', ');
   return `<article class="ev" data-series="${esc(ev.series)}">
-      <h3><a href="https://posh.vip/e/${esc(ev.url)}">${esc(ev.title)}</a></h3>
+      <h3><a href="${(EVENT_META[ev.pid] || {}).page ? `${SITE}/${(EVENT_META[ev.pid] || {}).page}` : `https://posh.vip/e/${esc(ev.url)}`}">${esc(ev.title)}</a></h3>
       <p><time datetime="${esc(ev.date)}">${esc(longDate(ev.date))}</time>${ev.time ? `, ${esc(ev.time)}` : ''}</p>
       <p>${where}</p>
       ${age ? `<p>${age}</p>` : ''}
@@ -154,7 +165,7 @@ function card(ev) {
 const upcoming = events.filter((e) => e && e.date && e.url && e.title && (e.end ? Date.parse(e.end + ':00-07:00') > Date.now() : Date.parse(e.date + 'T23:59:59-07:00') >= Date.now()));
 
 let touched = 0;
-for (const { file, series, maxAge } of PAGES) {
+for (const { file, series, maxAge, pid } of PAGES) {
   const path = new URL(file, ROOT);
   let html;
   try { html = readFileSync(path, 'utf8'); } catch { console.warn(`skip ${file} (missing)`); continue; }
@@ -163,6 +174,7 @@ for (const { file, series, maxAge } of PAGES) {
     : series === 'none' ? []
       : upcoming.filter((e) => e.series === series);
   if (maxAge) list = list.filter((e) => typeof e.age === 'number' && e.age <= maxAge);
+  if (pid) list = list.filter((e) => e.pid === pid);
 
   /* ---- 1. bake the cards into every [data-events] grid on the page ---- */
   const body = list.length
