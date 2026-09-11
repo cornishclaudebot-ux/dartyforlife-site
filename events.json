@@ -1,23 +1,7 @@
 {
- "updated": "2026-09-10T23:43:36.514Z",
+ "updated": "2026-09-11T00:13:42.873Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
-  {
-   "date": "2026-09-10",
-   "time": "4:30 PM",
-   "title": "Verve Rooftop Party",
-   "url": "verve-rooftop-party",
-   "pid": "6aa07a3ffdf50cb99b753d5d",
-   "venue": "Verve Rooftop",
-   "city": "Tempe, AZ 85281",
-   "flyer": "https://images.posh.vip/originals/6aa271b24bd173263d45ddfd",
-   "addr": "1047 S Terrace Rd, Tempe, AZ 85281, USA",
-   "end": "2026-09-10T16:45",
-   "desc": "Dry Event",
-   "age": 18,
-   "series": "tempe",
-   "sold": 172
-  },
   {
    "date": "2026-09-10",
    "time": "9:00 PM",
@@ -32,7 +16,7 @@
    "desc": "Karaoke Night | Ages 21 & over",
    "age": 21,
    "series": "bar",
-   "sold": 177,
+   "sold": 183,
    "low": 10,
    "high": 15,
    "tiers": 3,
@@ -52,7 +36,7 @@
    "desc": "2 DAY FREE EVENT",
    "age": 18,
    "series": "bar",
-   "sold": 1895,
+   "sold": 1995,
    "low": 0,
    "high": 0,
    "tiers": 2,
