@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-16T09:14:28.099Z",
+ "updated": "2026-09-16T09:44:35.968Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,11 +16,32 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 506,
+   "sold": 508,
    "low": 0,
    "high": 21.58,
    "tiers": 4,
    "pricesVerified": true
+  },
+  {
+   "date": "2026-09-19",
+   "time": "9:00 PM",
+   "title": "EUROPEAN SUMMER | THE DUCE",
+   "url": "european-summer-the-duce",
+   "pid": "6aaa5ed9794e3f4257b0e783",
+   "venue": "The Duce",
+   "city": "Phoenix, AZ 85004",
+   "flyer": "https://images.posh.vip/originals/6aaa5ed2746cfa89153fde04",
+   "addr": "525 S Central Ave, Phoenix, AZ 85004, USA",
+   "end": "2026-09-20T01:00",
+   "desc": "European summer takeover of The Duce. House music all night, live saxophone, two floors indoor and outdoor. Ages 21 and over.",
+   "age": 21,
+   "series": "bar",
+   "low": 0,
+   "high": 35,
+   "tiers": 5,
+   "pricesVerified": true,
+   "lat": 33.4423306,
+   "lng": -112.0736119
   },
   {
    "date": "2026-10-29",
