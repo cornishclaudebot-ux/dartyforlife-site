@@ -163,3 +163,20 @@ body.theme-bars,body.theme-tempe {
 }
 
 .mobile-menu .menu-top a { font:inherit; letter-spacing:inherit; text-transform:none; padding:0; color:inherit; }
+
+/* ============================================================
+   CTA BAND HEADLINE — back on the DFL display face.
+   premium.css flattened every .sec-title to Inter sentence-case;
+   this band is the one place that reads as a poster line, so it
+   keeps Anton and all caps. Anton is a single 400 weight with
+   tight uppercase metrics, hence the reset letter-spacing and
+   line-height rather than the Inter -.055em tracking.
+   ============================================================ */
+.band .sec-title {
+  font-family:'Anton','Impact',sans-serif;
+  font-weight:400;
+  text-transform:uppercase;
+  letter-spacing:.01em;
+  line-height:.94;
+}
+.band .sec-title em { font-family:inherit; font-weight:inherit; font-style:normal; }
