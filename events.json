@@ -1,7 +1,26 @@
 {
- "updated": "2026-09-18T16:19:40.465Z",
+ "updated": "2026-09-19T04:02:57.773Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
+  {
+   "date": "2026-09-18",
+   "time": "9:00 PM",
+   "title": "THE 44 | FREE FRIDAY",
+   "url": "the-44-free-friday",
+   "pid": "6aadd16909f816baa78641ba",
+   "venue": "The 44 Live",
+   "city": "Glendale, AZ 85302",
+   "flyer": "https://images.posh.vip/originals/6aadd0dd7a206b76baf150b0",
+   "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
+   "end": "2026-09-19T02:00",
+   "desc": "AGES 21 AND OVER",
+   "age": 21,
+   "series": "bar",
+   "low": 0,
+   "high": 0,
+   "tiers": 1,
+   "pricesVerified": true
+  },
   {
    "date": "2026-09-19",
    "time": "9:00 PM",
@@ -16,7 +35,7 @@
    "desc": "Ages 21 & over",
    "age": 21,
    "series": "bar",
-   "sold": 526,
+   "sold": 527,
    "low": 15,
    "high": 35,
    "tiers": 4,
