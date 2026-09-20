@@ -1,29 +1,7 @@
 {
- "updated": "2026-09-20T07:19:18.151Z",
+ "updated": "2026-09-20T08:19:29.143Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
-  {
-   "date": "2026-09-19",
-   "time": "9:00 PM",
-   "title": "EUROPEAN SUMMER | THE DUCE",
-   "url": "european-summer-the-duce",
-   "pid": "6aaa5ed9794e3f4257b0e783",
-   "venue": "The Duce",
-   "city": "Phoenix, AZ 85004",
-   "flyer": "https://images.posh.vip/originals/6aaa5ed2746cfa89153fde04",
-   "addr": "525 S Central Ave, Phoenix, AZ 85004, USA",
-   "end": "2026-09-20T01:00",
-   "desc": "Ages 21 & over",
-   "age": 21,
-   "series": "bar",
-   "sold": 729,
-   "low": 10,
-   "high": 35,
-   "tiers": 3,
-   "pricesVerified": true,
-   "lat": 33.4423306,
-   "lng": -112.0736119
-  },
   {
    "date": "2026-10-29",
    "time": "7:00 PM",
