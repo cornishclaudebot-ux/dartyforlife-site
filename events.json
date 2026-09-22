@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-22T04:46:17.041Z",
+ "updated": "2026-09-22T05:16:23.377Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 112,
+   "sold": 120,
    "low": 12.43,
    "high": 12.43,
    "tiers": 1,
@@ -36,11 +36,32 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 409,
+   "sold": 432,
    "low": 0,
    "high": 18.15,
    "tiers": 4,
    "pricesVerified": true
+  },
+  {
+   "date": "2026-09-26",
+   "time": "9:00 PM",
+   "title": "CLUB DUCE: YACHT CLUB EDITION",
+   "url": "club-duce-yacht-club-edition",
+   "pid": "6ab20d84e1660803dc1f5221",
+   "venue": "The Duce",
+   "city": "Phoenix, AZ 85004",
+   "flyer": "https://images.posh.vip/originals/6ab20cbfba5e781652ab7d01",
+   "addr": "525 S Central Ave, Phoenix, AZ 85004, USA",
+   "end": "2026-09-27T01:00",
+   "desc": "AGES 21 AND OVER",
+   "age": 21,
+   "series": "bar",
+   "low": 0,
+   "high": 20,
+   "tiers": 4,
+   "pricesVerified": true,
+   "lat": 33.4423306,
+   "lng": -112.0736119
   },
   {
    "date": "2026-10-29",
@@ -56,7 +77,7 @@
    "desc": "Ages 18 & over",
    "age": 18,
    "series": "major",
-   "sold": 615,
+   "sold": 632,
    "low": 20,
    "high": 90,
    "tiers": 15,
