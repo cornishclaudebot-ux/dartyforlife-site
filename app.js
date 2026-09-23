@@ -184,15 +184,50 @@ function getSeg(){ const s=store.get(SEG_KEY); return s&&SERIES[s]?s:null; }
    ticket buttons open the storefront. Don't guess slugs.
    ============================================================ */
 let EVENTS = [
-  { date:"2026-07-25", time:"8:00 PM", title:"GOLDEN TEACHER", url:"golden-teacher",
-    venue:"Stratus Event Center", city:"Phoenix, AZ", series:"major",
-    flyer:"https://images.posh.vip/originals/6a3c81d0955f42fa57977681" },
-  /* Posh drafts (visible in the dashboard) — Get Notified until they go live.
-     Real events only, ever. Nothing goes in this list that isn't in Posh. */
-  { date:"2026-09-05", time:"8:00 PM", title:"SOLAR SPUR", url:"",
-    venue:"Stratus Event Center", city:"Phoenix, AZ", series:"major" },
-  { date:"2026-10-29", time:"7:00 PM", title:"FEAR FOREST", url:"",
-    venue:"Stratus Event Center", city:"Phoenix, AZ", series:"major" }
+  {
+    "date": "2026-10-29",
+    "time": "7:00 PM",
+    "title": "FEAR FOREST",
+    "url": "fear-forest",
+    "pid": "6a46a605593de4e25f2a85f1",
+    "venue": "Stratus Event Center",
+    "city": "Phoenix, AZ 85031",
+    "flyer": "https://images.posh.vip/originals/6aa2714bc0f389b8611c6757",
+    "addr": "4344 W Indian School Rd Apt 32, Phoenix, AZ 85031, USA",
+    "end": "2026-11-02T02:00",
+    "desc": "Ages 18 & over",
+    "age": 18,
+    "series": "major",
+    "sold": 740,
+    "low": 20,
+    "high": 90,
+    "tiers": 14,
+    "pricesVerified": true,
+    "lat": 33.4961217,
+    "lng": -112.1541374
+  },
+  {
+    "date": "2026-10-31",
+    "time": "8:00 PM",
+    "title": "TY DOLLA $IGN HALLOWEEN",
+    "url": "halloween-2026-2",
+    "pid": "6a9b2ab6f855209bf6f4cd48",
+    "venue": "Stratus Event Center",
+    "city": "Phoenix, AZ 85031",
+    "flyer": "https://images.posh.vip/originals/6ab2d32d93674e4d780e945b",
+    "addr": "4344 W Indian School Rd Apt 32, Phoenix, AZ 85031, USA",
+    "end": "2026-11-01T02:00",
+    "desc": "AGES 18 & OVER",
+    "age": 18,
+    "series": "major",
+    "sold": 349,
+    "low": 49.99,
+    "high": 1991.55,
+    "tiers": 8,
+    "pricesVerified": true,
+    "lat": 33.4961217,
+    "lng": -112.1541374
+  }
 ];
 
 /* ============================================================
@@ -403,9 +438,12 @@ function renderGrids(){
 /* ============================================================
    NEXT MAJOR — hero line + countdown card + going counter
    ============================================================ */
+// Featured by Aiden on 2026-09-22. Expiration restores chronological selection.
+const FEATURED_HEADLINER_PID = "6a9b2ab6f855209bf6f4cd48";
 function nextMajor(){
-  return EVENTS.filter(e=>classify(e)==="major"&&isUpcoming(e))
-               .sort((a,b)=>(a.date||"").localeCompare(b.date||""))[0]||null;
+  const upcoming = EVENTS.filter(e=>classify(e)==="major"&&isUpcoming(e));
+  return upcoming.find(e=>e.pid===FEATURED_HEADLINER_PID)
+    || upcoming.sort((a,b)=>(a.date||"").localeCompare(b.date||""))[0] || null;
 }
 let cdTimer=null;
 function renderNext(){

@@ -35,8 +35,6 @@ const COUNTS = new URL('../counts.json', import.meta.url);
 // files, the baked cards and the JSON-LD are written, so nothing downstream
 // can leak them. Delete the id here the day the announcement is cleared.
 const HIDDEN = new Set([
-  // Oct 31, 2026 Stratus show: embargoed until Aiden clears the announcement (2026-09-09)
-  '6a9b2ab6f855209bf6f4cd48',
 ]);
 
 // Full browser fingerprint — Posh sits behind Cloudflare, which 403s bare
