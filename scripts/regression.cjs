@@ -33,7 +33,7 @@ assert.equal(scope.isUpcoming({date:'2026-10-29'}),true,'no-end event stays thro
 now=Date.parse('2026-10-30T00:00:00-07:00');
 assert.equal(scope.isUpcoming({date:'2026-10-29'}),false);
 assert.equal(scope.isUpcoming({date:'invalid'}),false);
-for(const page of ['bars.html','tempe.html','majors.html','rentals.html']){
+for(const page of ['bars.html','tempe.html','scottsdale.html','majors.html','rentals.html']){
   const mount={}; const nav={path:page,home:'index.html',CONFIG:{},IC:{},withTrk:()=>'',document:{getElementById:()=>mount,querySelector:()=>null}};
   vm.createContext(nav); vm.runInContext(src.slice(src.indexOf('function buildNav'),src.indexOf('function buildFooter')),nav);nav.buildNav();
   const tag=mount.outerHTML.match(new RegExp('<a href="'+page.replace('.','\\.')+'"[^>]*>'))[0];

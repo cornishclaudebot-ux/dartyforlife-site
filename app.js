@@ -140,11 +140,13 @@ const IC = {
 /* ============================================================
    SERIES — the three lines of the brand
    major = monthly headliners · bar = Darty Bars weekly · tempe = DFL Tempe
+   scottsdale = Scottsdale Darty Bars
    ============================================================ */
 const SERIES = {
   major:{ label:"Headliner",  page:"majors.html" },
   bar:  { label:"Glendale",   page:"bars.html"   },
-  tempe:{ label:"Tempe",      page:"tempe.html"  }
+  tempe:{ label:"Tempe",      page:"tempe.html"  },
+  scottsdale:{ label:"Scottsdale", page:"scottsdale.html" }
 };
 /* Bar Ocho is the ASU lane's home bar; "rack" stays so past Rack nights keep
    classifying. Matched on the VENUE field with a word boundary: a loose
@@ -155,6 +157,8 @@ function classify(ev){
   if(ev.series) return ev.series;                    // explicit wins
   if(hay.includes("stratus")) return "major";
   if(TEMPE_VENUE.test((ev.venue||"").toLowerCase())) return "tempe";
+  // after the venue check, so past Rack (Old Town Scottsdale) nights stay Tempe
+  if(hay.includes("scottsdale")) return "scottsdale";
   if(hay.includes("tempe"))   return "tempe";
   return "bar";
 }
@@ -294,6 +298,7 @@ function buildNav(){
       <a href="majors.html"${current('majors.html')}>Headliners</a>
       <a href="bars.html"${current('bars.html')}>Glendale</a>
       <a href="tempe.html"${current('tempe.html')}>Tempe</a>
+      <a href="scottsdale.html"${current('scottsdale.html')}>Scottsdale</a>
       <a href="${home}#relive">Highlights</a>
       <a href="rentals.html"${current('rentals.html')}>Rentals</a>
     </nav>
@@ -321,6 +326,7 @@ function buildFooter(){
         <a href="majors.html">Monthly headliners</a>
         <a href="bars.html">Glendale · weekly</a>
         <a href="tempe.html">Tempe nights</a>
+        <a href="scottsdale.html">Scottsdale nights</a>
         <a href="best-places-to-go-out-tempe.html">Best places to go out in Tempe</a>
         <a href="${home}#relive">Highlight reels</a>
       </div>
@@ -407,7 +413,7 @@ function eventCard(ev){
   </article>`;
 }
 
-/* render any [data-events] grid: data-series="major|bar|tempe|all" data-limit="N" */
+/* render any [data-events] grid: data-series="major|bar|tempe|scottsdale|all" data-limit="N" */
 function renderGrids(){
   document.querySelectorAll("[data-events]").forEach(grid=>{
     const want=grid.dataset.series||"all";
@@ -425,7 +431,7 @@ function renderGrids(){
     // Event discovery remains chronological for every visitor.
     if(limit) list=list.slice(0,limit);
     // no mockups, ever: an empty calendar gets an honest note + a Get Notified path
-    const label=want==="bar"?"Glendale":want==="tempe"?"Tempe":"DartyForLife";
+    const label=want==="bar"?"Glendale":want==="tempe"?"Tempe":want==="scottsdale"?"Scottsdale":"DartyForLife";
     const btnClass=document.body.classList.contains("theme-bars")?"btn btn-bars"
       :document.body.classList.contains("theme-tempe")?"btn btn-asu":"btn btn-primary";
     grid.innerHTML=list.length?list.map(eventCard).join("")
@@ -1273,6 +1279,10 @@ const XS={
     body:"You know the weekly bar nights. The headliners are the full-production big ones at Stratus, and they are gone when they are gone.",
     cta:"See headliners", btn:"btn-primary" },
   tempe:{ pitch:"major", eyebrow:"Tempe knows the vibe",
+    h:'Once a month, <em>thousands</em> deep',
+    body:"The headliners are the full-production big ones at Stratus. One night, and gone when they are gone.",
+    cta:"See headliners", btn:"btn-primary" },
+  scottsdale:{ pitch:"major", eyebrow:"Scottsdale knows the vibe",
     h:'Once a month, <em>thousands</em> deep',
     body:"The headliners are the full-production big ones at Stratus. One night, and gone when they are gone.",
     cta:"See headliners", btn:"btn-primary" }

@@ -34,6 +34,7 @@ const PAGES = [
   { file: 'majors.html', series: 'major' },
   { file: 'bars.html', series: 'bar' },
   { file: 'tempe.html', series: 'tempe' },
+  { file: 'scottsdale.html', series: 'scottsdale' },
   // the Tempe/ASU answer page: carries the live Tempe grid so its freshness
   // date is real, plus its own static venue-guide JSON-LD outside our markers
   { file: 'best-places-to-go-out-tempe.html', series: 'tempe' },
@@ -200,6 +201,7 @@ for (const { file, series, maxAge, pid } of PAGES) {
     ['majors.html', 'Headliner events'],
     ['bars.html', 'Darty Bars weekly nights'],
     ['tempe.html', 'DartyForLife Tempe'],
+    ['scottsdale.html', 'Scottsdale Darty Bars'],
     ['best-places-to-go-out-tempe.html', 'Best places to go out in Tempe'],
     ['18-and-over-events-phoenix.html', '18+ events in Phoenix'],
     ['rentals.html', 'Equipment rentals'],
@@ -273,6 +275,7 @@ const SITEMAP = [
   ['majors.html', 0.9, eventsDay],
   ['bars.html', 0.8, eventsDay],
   ['tempe.html', 0.8, eventsDay],
+  ['scottsdale.html', 0.8, eventsDay],
   ['best-places-to-go-out-tempe.html', 0.9, eventsDay],
   ['rentals.html', 0.7, '2026-07-18'],
   ['texts.html', 0.5, '2026-08-03'],

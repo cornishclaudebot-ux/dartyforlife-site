@@ -110,6 +110,8 @@ function classify(e) {
   const hay = `${e.venue || ''} ${e.city || ''} ${e.title || ''}`.toLowerCase();
   if (hay.includes('stratus')) return 'major';
   if (TEMPE_VENUE.test((e.venue || '').toLowerCase())) return 'tempe';
+  // after the venue check, so past Rack (Old Town Scottsdale) nights stay Tempe
+  if (hay.includes('scottsdale')) return 'scottsdale';
   if (hay.includes('tempe')) return 'tempe';
   // Brand line beats venue city: a flyer/description that says "DartyForLife
   // Tempe" is Tempe-side marketing even at a Glendale room (his 2026-08-23 call).
