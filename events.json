@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-01T22:52:48.527Z",
+ "updated": "2026-10-01T23:22:58.419Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -25,6 +25,25 @@
   {
    "date": "2026-10-03",
    "time": "9:00 PM",
+   "title": "MIAMI VICE | THE 44",
+   "url": "miami-vice-the-44",
+   "pid": "6abec4a4bb740a0b9fbe3fba",
+   "venue": "The 44 Live",
+   "city": "Glendale, AZ 85302",
+   "flyer": "https://images.posh.vip/originals/6abec4840fc2737b92cf4b55",
+   "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
+   "end": "2026-10-04T02:00",
+   "desc": "",
+   "age": 18,
+   "series": "bar",
+   "low": 0,
+   "high": 18.15,
+   "tiers": 5,
+   "pricesVerified": true
+  },
+  {
+   "date": "2026-10-03",
+   "time": "9:00 PM",
    "title": "THE DUCE",
    "url": "darty-bars-the-duce",
    "pid": "6abed2ea1992227432701a00",
@@ -42,25 +61,6 @@
    "pricesVerified": true,
    "lat": 33.4423306,
    "lng": -112.0736119
-  },
-  {
-   "date": "2026-10-03",
-   "time": "9:00 PM",
-   "title": "MIAMI VICE | THE 44",
-   "url": "miami-vice-the-44",
-   "pid": "6abec4a4bb740a0b9fbe3fba",
-   "venue": "The 44 Live",
-   "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6abec4840fc2737b92cf4b55",
-   "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
-   "end": "2026-10-04T02:00",
-   "desc": "",
-   "age": 18,
-   "series": "bar",
-   "low": 0,
-   "high": 18.15,
-   "tiers": 5,
-   "pricesVerified": true
   },
   {
    "date": "2026-10-25",
