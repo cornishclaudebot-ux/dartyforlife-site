@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-30T20:47:59.154Z",
+ "updated": "2026-10-01T00:01:37.726Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -21,6 +21,27 @@
    "high": 21.58,
    "tiers": 4,
    "pricesVerified": true
+  },
+  {
+   "date": "2026-10-25",
+   "time": "9:00 PM",
+   "title": "MURDER ON THE DANCE FLOOR",
+   "url": "dartyforlife-at-wasted-grain",
+   "pid": "6abd97f21e818f70f84d5a41",
+   "venue": "Wasted Grain",
+   "city": "Scottsdale, AZ 85251",
+   "flyer": "https://images.posh.vip/originals/6abd9f2f0ed46202da406a2f",
+   "addr": "7295 E Stetson Dr, Scottsdale, AZ 85251, USA",
+   "end": "2026-10-26T02:00",
+   "desc": "SCOTTSDALE'S BIGGEST HALLOWEEN PARTY. 1 NIGHT, 1 VENUE, 20+ DJS. FREE ENTRY 9PM TO 10PM. AGES 21 & OVER.",
+   "age": 21,
+   "series": "scottsdale",
+   "low": 0,
+   "high": 20,
+   "tiers": 4,
+   "pricesVerified": true,
+   "lat": 33.4993616,
+   "lng": -111.9241306
   },
   {
    "date": "2026-10-29",
