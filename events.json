@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-01T21:22:25.759Z",
+ "updated": "2026-10-01T21:52:33.892Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -21,6 +21,27 @@
    "high": 21.58,
    "tiers": 3,
    "pricesVerified": true
+  },
+  {
+   "date": "2026-10-03",
+   "time": "9:00 PM",
+   "title": "DARTY BARS | THE DUCE",
+   "url": "darty-bars-the-duce",
+   "pid": "6abed2ea1992227432701a00",
+   "venue": "The Duce",
+   "city": "Phoenix, AZ 85004",
+   "flyer": "https://images.posh.vip/originals/6abed2e8536e485b75577b9b",
+   "addr": "525 S Central Ave, Phoenix, AZ 85004, USA",
+   "end": "2026-10-04T01:00",
+   "desc": "Ages 21 & over",
+   "age": 21,
+   "series": "bar",
+   "low": 9.99,
+   "high": 20,
+   "tiers": 3,
+   "pricesVerified": true,
+   "lat": 33.4423306,
+   "lng": -112.0736119
   },
   {
    "date": "2026-10-03",
