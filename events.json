@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-02T04:49:54.545Z",
+ "updated": "2026-10-02T04:58:38.690Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -35,7 +35,7 @@
    "end": "2026-10-04T01:00",
    "desc": "Ages 21 & over",
    "age": 21,
-   "series": "bar",
+   "series": "tempe",
    "low": 9.99,
    "high": 20,
    "tiers": 3,

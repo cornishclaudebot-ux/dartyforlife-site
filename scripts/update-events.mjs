@@ -130,6 +130,9 @@ const LOCAL_OVERRIDES = {
   // ALL WHITE AT THE 44 2026-08-25: flyer is branded DartyForLife Tempe, so it
   // markets on the Tempe page even though The 44 is Glendale (Aiden 2026-08-23)
   '6a8b8e6dd91cbc5b5d2b9813': { series: 'tempe' },
+  // CLUB DUCE 2026-10-03: The Duce is downtown Phoenix, but it markets on the
+  // Tempe page (Aiden 2026-10-01)
+  '6abed2ea1992227432701a00': { series: 'tempe' },
 };
 
 const sleepMs = ms => new Promise(r => setTimeout(r, ms));
