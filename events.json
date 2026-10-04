@@ -1,10 +1,10 @@
 {
- "updated": "2026-10-04T01:46:08.725Z",
+ "updated": "2026-10-04T02:16:17.494Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
    "date": "2026-10-03",
-   "time": "9:00 PM",
+   "time": "7:00 PM",
    "title": "CLUB DUCE",
    "url": "darty-bars-the-duce",
    "pid": "6abed2ea1992227432701a00",
@@ -12,7 +12,7 @@
    "city": "Phoenix, AZ 85004",
    "flyer": "https://images.posh.vip/originals/6abf058087734580d8163e8d",
    "addr": "525 S Central Ave, Phoenix, AZ 85004, USA",
-   "end": "2026-10-04T01:00",
+   "end": "2026-10-04T19:15",
    "desc": "Ages 21 & over",
    "age": 21,
    "series": "tempe",
