@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-06T14:57:55.109Z",
+ "updated": "2026-10-06T17:28:31.374Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -37,7 +37,7 @@
    "series": "tempe",
    "low": 19.52,
    "high": 19.52,
-   "tiers": 2,
+   "tiers": 1,
    "pricesVerified": true
   },
   {
@@ -61,13 +61,13 @@
   },
   {
    "date": "2026-10-09",
-   "time": "8:00 PM",
-   "title": "MURDER ON THE DANCE FLOOR",
+   "time": "9:00 PM",
+   "title": "CASINO NIGHT | THE 44",
    "url": "murder-on-the-dance-floor-3",
    "pid": "6ac41a329b2eacfbffa6b52b",
    "venue": "Stratus Event Center",
    "city": "Phoenix, AZ 85031",
-   "flyer": "https://images.posh.vip/originals/6ac41a0e52842ca826b08459",
+   "flyer": "https://images.posh.vip/originals/6ac52a9862a01b6b54365947",
    "addr": "4344 W Indian School Rd Apt 32, Phoenix, AZ 85031, USA",
    "end": "2026-10-10T02:00",
    "desc": "AGES 18 AND OVER",
