@@ -1,26 +1,7 @@
 {
- "updated": "2026-10-06T20:15:35.209Z",
+ "updated": "2026-10-06T22:11:50.101Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
-  {
-   "date": "2026-10-06",
-   "time": "9:00 PM",
-   "title": "THE 44 | $2 TUESDAY",
-   "url": "the-44-country-night",
-   "pid": "6ac352234e8e3a0b6fd8d8ce",
-   "venue": "The 44 Live",
-   "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6ac35eff4b9b6e997b34a3c9",
-   "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
-   "end": "2026-10-07T02:00",
-   "desc": "AGES 18 AND OVER",
-   "age": 18,
-   "series": "bar",
-   "low": 6.49,
-   "high": 18.15,
-   "tiers": 4,
-   "pricesVerified": true
-  },
   {
    "date": "2026-10-06",
    "time": "9:00 PM",
@@ -38,6 +19,25 @@
    "low": 19.52,
    "high": 19.52,
    "tiers": 1,
+   "pricesVerified": true
+  },
+  {
+   "date": "2026-10-06",
+   "time": "9:00 PM",
+   "title": "THE 44 | $2 TUESDAY",
+   "url": "the-44-country-night",
+   "pid": "6ac352234e8e3a0b6fd8d8ce",
+   "venue": "The 44 Live",
+   "city": "Glendale, AZ 85302",
+   "flyer": "https://images.posh.vip/originals/6ac35eff4b9b6e997b34a3c9",
+   "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
+   "end": "2026-10-07T02:00",
+   "desc": "AGES 18 AND OVER",
+   "age": 18,
+   "series": "bar",
+   "low": 6.71,
+   "high": 18.15,
+   "tiers": 4,
    "pricesVerified": true
   },
   {
@@ -109,7 +109,7 @@
    "pid": "6a46a605593de4e25f2a85f1",
    "venue": "Stratus Event Center",
    "city": "Phoenix, AZ 85031",
-   "flyer": "https://images.posh.vip/originals/6aa2714bc0f389b8611c6757",
+   "flyer": "https://images.posh.vip/originals/6ac56bd7716ed5093c5db5ce",
    "addr": "4344 W Indian School Rd Apt 32, Phoenix, AZ 85031, USA",
    "end": "2026-11-02T02:00",
    "desc": "Ages 18 & over",
