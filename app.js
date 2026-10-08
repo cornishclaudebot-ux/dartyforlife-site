@@ -31,8 +31,30 @@ CONFIG.mapOcho         = "https://www.google.com/maps/search/?api=1&query=" + en
    visible per event at Team & tracking → Tracking links (page visits, tickets
    sold, conversion rate, revenue). Pure URL param: no webhook, no stored
    credentials, no third-party integration — it just rides the ticket URL. */
-const TRK = "website";
+/* Source-aware: a landing URL with ?src=tiktok (the TikTok bio link points at
+   dartyforlife.com/tiktok, which redirects here with that param) makes every
+   Posh link carry t=site-tiktok instead of t=website, so Posh reports TikTok
+   bio traffic and sales as their own tracking-link row. The source sticks for
+   the session so later page views still tag correctly. Same for any ?src=. */
+const TRK = (() => {
+  const clean = (v) => (v || "").toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 24);
+  let src = "";
+  try { src = clean(new URLSearchParams(location.search).get("src")); } catch (e) {}
+  try {
+    if (src) sessionStorage.setItem("dfl_src", src);
+    else src = clean(sessionStorage.getItem("dfl_src"));
+  } catch (e) {}
+  return src ? "site-" + src : "website";
+})();
 const withTrk = (u) => u + (u.includes("?") ? "&" : "?") + "t=" + TRK;
+/* Static Posh links baked into the HTML carry t=website; retag them to the live source. */
+if (TRK !== "website") {
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('a[href*="posh.vip"]').forEach((a) => {
+      a.href = a.href.replace(/([?&])t=website(?=&|$)/, "$1t=" + TRK);
+    });
+  });
+}
 
 /* ============================================================
    TRACKING — cookies, first-party attribution, Meta pixel.
