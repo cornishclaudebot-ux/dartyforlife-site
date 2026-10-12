@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-12T06:23:24.220Z",
+ "updated": "2026-10-12T06:53:34.508Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 39,
+   "sold": 41,
    "low": 6.71,
    "high": 15,
    "tiers": 4,
@@ -25,12 +25,12 @@
   {
    "date": "2026-10-15",
    "time": "9:00 PM",
-   "title": "THIRSTY THURSDAY | THE 44",
+   "title": "WHITE LIES | THE 44",
    "url": "thirsty-thursday-the-44-1",
    "pid": "6acbfaba0a78a5200eb180bd",
    "venue": "The 44 Live",
    "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6ac3556ac3b7502d710292ab",
+   "flyer": "https://images.posh.vip/originals/6acc7d4c614409245069ca13",
    "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
    "end": "2026-10-16T02:00",
    "desc": "AGES 18 AND OVER",
@@ -78,7 +78,7 @@
    "desc": "Ages 18 & over",
    "age": 18,
    "series": "major",
-   "sold": 1219,
+   "sold": 1220,
    "low": 23.87,
    "high": 90,
    "tiers": 16,
