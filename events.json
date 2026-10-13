@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-13T19:40:12.553Z",
+ "updated": "2026-10-13T20:10:21.460Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "Party Bus to the 44 | Ages 18 and over",
    "age": 18,
    "series": "tempe",
-   "sold": 7,
+   "sold": 9,
    "low": 19.52,
    "high": 19.52,
    "tiers": 1,
@@ -36,7 +36,7 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 115,
+   "sold": 116,
    "low": 10,
    "high": 12.01,
    "tiers": 2,
@@ -98,7 +98,7 @@
    "desc": "Ages 18 & over",
    "age": 18,
    "series": "major",
-   "sold": 1271,
+   "sold": 1272,
    "low": 23.87,
    "high": 90,
    "tiers": 16,
@@ -120,7 +120,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 1073,
+   "sold": 1075,
    "low": 70,
    "high": 1991.55,
    "tiers": 5,
