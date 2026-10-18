@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-17T22:49:59.048Z",
+ "updated": "2026-10-18T00:27:59.383Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,10 +16,29 @@
    "desc": "AGES 18 AND OVER",
    "age": 21,
    "series": "bar",
-   "sold": 188,
+   "sold": 243,
    "low": 12.01,
    "high": 20,
-   "tiers": 4,
+   "tiers": 3,
+   "pricesVerified": true
+  },
+  {
+   "date": "2026-10-23",
+   "time": "9:00 PM",
+   "title": "BARSTOOL SCOTTSDALE",
+   "url": "barstool-scottsdale",
+   "pid": "6ad40d1656cbae80d3aea6e8",
+   "venue": "Barstool Scottsdale",
+   "city": "Scottsdale, AZ 85251",
+   "flyer": "https://images.posh.vip/originals/6ad40cce6d0e67cbd443ee6f",
+   "addr": "4321 N Scottsdale Rd, Scottsdale, AZ 85251, USA",
+   "end": "2026-10-24T02:00",
+   "desc": "AGES 12 AND OVER",
+   "age": 21,
+   "series": "scottsdale",
+   "low": 6.71,
+   "high": 20,
+   "tiers": 5,
    "pricesVerified": true
   },
   {
@@ -58,7 +77,7 @@
    "desc": "Ages 18 & over",
    "age": 18,
    "series": "major",
-   "sold": 1549,
+   "sold": 1556,
    "low": 25,
    "high": 90,
    "tiers": 15,
@@ -80,7 +99,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 1290,
+   "sold": 1292,
    "low": 70,
    "high": 1991.55,
    "tiers": 5,
