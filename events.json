@@ -1,27 +1,7 @@
 {
- "updated": "2026-10-23T08:33:08.085Z",
+ "updated": "2026-10-23T09:03:16.698Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
-  {
-   "date": "2026-10-22",
-   "time": "9:00 PM",
-   "title": "LUAU NIGHT | THE 44",
-   "url": "luau-night-the-44",
-   "pid": "6ad93b24e4df0361658f3708",
-   "venue": "The 44 Live",
-   "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6ad9b4b966b8045a41b9748e",
-   "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
-   "end": "2026-10-23T02:00",
-   "desc": "AGES 18 AND OVER",
-   "age": 18,
-   "series": "bar",
-   "sold": 457,
-   "low": 20,
-   "high": 20,
-   "tiers": 1,
-   "pricesVerified": true
-  },
   {
    "date": "2026-10-23",
    "time": "9:00 PM",
@@ -120,7 +100,7 @@
    "desc": "Ages 18 & over",
    "age": 18,
    "series": "major",
-   "sold": 1812,
+   "sold": 1813,
    "low": 25,
    "high": 996.27,
    "tiers": 24,
