@@ -1,7 +1,23 @@
 {
- "updated": "2026-10-27T17:37:52.182Z",
+ "updated": "2026-10-27T18:07:59.726Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
+  {
+   "date": "2026-10-27",
+   "time": "9:00 PM",
+   "title": "PARTY BUS | TUESDAY TERRORS",
+   "url": "party-bus-the-44-2",
+   "pid": "6adfb24e40beeaf714aceb40",
+   "venue": "ASU Greek Leadership Village",
+   "city": "Tempe, AZ 85281",
+   "flyer": "https://images.posh.vip/originals/6adfb93236add0b92295440d",
+   "addr": "975 S Rural Rd, Tempe, AZ 85281, USA",
+   "end": "2026-10-28T02:00",
+   "desc": "Party Bus to the 44 | Ages 18 and over",
+   "age": 18,
+   "series": "tempe",
+   "sold": 80
+  },
   {
    "date": "2026-10-27",
    "time": "9:00 PM",
@@ -23,22 +39,6 @@
    "pricesVerified": true
   },
   {
-   "date": "2026-10-27",
-   "time": "9:00 PM",
-   "title": "PARTY BUS | TUESDAY TERRORS",
-   "url": "party-bus-the-44-2",
-   "pid": "6adfb24e40beeaf714aceb40",
-   "venue": "ASU Greek Leadership Village",
-   "city": "Tempe, AZ 85281",
-   "flyer": "https://images.posh.vip/originals/6adfb93236add0b92295440d",
-   "addr": "975 S Rural Rd, Tempe, AZ 85281, USA",
-   "end": "2026-10-28T02:00",
-   "desc": "Party Bus to the 44 | Ages 18 and over",
-   "age": 18,
-   "series": "tempe",
-   "sold": 80
-  },
-  {
    "date": "2026-10-29",
    "time": "7:00 PM",
    "title": "FEAR FOREST",
@@ -52,7 +52,7 @@
    "desc": "Ages 18 & over",
    "age": 18,
    "series": "major",
-   "sold": 2128,
+   "sold": 2133,
    "low": 30,
    "high": 996.27,
    "tiers": 21,
@@ -74,7 +74,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 1667,
+   "sold": 1671,
    "low": 79.99,
    "high": 996.27,
    "tiers": 5,
