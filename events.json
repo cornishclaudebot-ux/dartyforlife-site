@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-31T22:03:14.584Z",
+ "updated": "2026-10-31T22:33:21.374Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "Ages 18 & over",
    "age": 18,
    "series": "major",
-   "sold": 3779,
+   "sold": 3782,
    "low": 35,
    "high": 996.27,
    "tiers": 6,
@@ -38,7 +38,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 2319,
+   "sold": 2332,
    "low": 91.43,
    "high": 3000,
    "tiers": 5,
