@@ -13,18 +13,18 @@ TZNAME:MST
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:6aecfabd3c507d2d8abbe9ed@dartyforlife.com
-DTSTAMP:20261105T222151Z
-DTSTART;TZID=America/Phoenix:20261105T210000
+UID:6aeea7df47ff0cbad9f8db06@dartyforlife.com
+DTSTAMP:20261107T050150Z
+DTSTART;TZID=America/Phoenix:20261112T210000
 DURATION:PT1H
-SUMMARY:THIRSTY THURSDAY | PARTY BUS
+SUMMARY:THIRSTY THURSDAY | THE 44
 LOCATION:The 44 Live\, Glendale\, AZ 85302
-DESCRIPTION:Doors 9:00 PM. Tickets: https://posh.vip/e/thirsty-thursday-par
- ty-bus
-URL:https://posh.vip/e/thirsty-thursday-party-bus
+DESCRIPTION:Doors 9:00 PM. Tickets: https://posh.vip/e/thirsty-thursday-the
+ -44-3
+URL:https://posh.vip/e/thirsty-thursday-the-44-3
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:THIRSTY THURSDAY | PARTY BUS tonight. Doors 9:00 PM.
+DESCRIPTION:THIRSTY THURSDAY | THE 44 tonight. Doors 9:00 PM.
 TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
