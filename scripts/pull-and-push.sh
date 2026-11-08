@@ -65,7 +65,11 @@ mark_success() {
 
 echo "[$(ts)] pull-and-push start"
 
-git pull --rebase --autostash origin main >/dev/null 2>&1 || mark_failure "git pull --rebase failed"
+# keep git's last line of stderr: 12 silent "git pull --rebase failed" strikes
+# on 2026-11-05 left no way to tell a dead network from a real conflict
+if ! gerr=$(git pull --rebase --autostash origin main 2>&1 >/dev/null); then
+  mark_failure "git pull --rebase failed: $(printf '%s' "$gerr" | tail -n 1 | cut -c1-200)"
+fi
 
 # Posh pull with one retry (transient Cloudflare hiccups happen)
 if ! node scripts/update-events.mjs; then

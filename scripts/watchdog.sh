@@ -19,6 +19,20 @@ FAILS=""
 
 add_fail() { FAILS="${FAILS}- $1"$'\n'; }
 
+# 0. is THIS Mac online? On 2026-11-07 the laptop woke with no network yet and
+#    every probe returned 000, which emailed "site down, forms broken, Resend
+#    broken" for a site that was fine. Two independent hosts; both dark = we are
+#    offline, log it and stay silent (the pipeline alerts cover a real outage).
+online=0
+for probe in "https://www.google.com/generate_204" "https://1.1.1.1/"; do
+  c=$(curl -s -o /dev/null -w "%{http_code}" -m 10 "$probe")
+  [ "$c" != "000" ] && online=1 && break
+done
+if [ "$online" = "0" ]; then
+  echo "$(date -u +"%Y-%m-%dT%H:%M:%SZ") this Mac is offline, checks skipped (no alert sent)"
+  exit 0
+fi
+
 # 1. site up
 code=$(curl -s -o /dev/null -w "%{http_code}" -m 20 "https://dartyforlife.com/")
 [ "$code" = "200" ] || add_fail "dartyforlife.com returned $code (site down or TLS/DNS broken)"

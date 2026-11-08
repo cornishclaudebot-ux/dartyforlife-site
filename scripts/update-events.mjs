@@ -176,7 +176,18 @@ const events = data.events
   .sort((a, b) => a.sort.localeCompare(b.sort))
   .map(({ sort, ...e }) => e);
 
-if (events.length < 1) { console.error('Zero upcoming events from Posh. Refusing to overwrite.'); process.exit(1); }
+/* An empty calendar is a real state, not a failure. Posh's group feed carries the
+   whole history (148 events, all status 'live', on 2026-11-08), so a healthy
+   answer with zero UPCOMING dates means the week's events have rolled off and
+   the next ones are not posted yet. That happened 2026-11-02, 11-05 and 11-06
+   and each time this exit fired three "auto-update is DOWN" emails for a site
+   that was fine, while the baked pages kept advertising finished dates. Only a
+   feed with NO events at all is suspicious (shape change, wrong group) and
+   still refuses to overwrite. */
+if (events.length < 1) {
+  if (data.events.length < 1) { console.error('Posh feed has no events at all. Refusing to overwrite.'); process.exit(1); }
+  console.log(`Calendar is empty: ${data.events.length} events in the feed, none upcoming. Writing an empty list.`);
+}
 
 /* ---- real ticket prices (for Event schema `offers`) ----
    The group endpoint returns `ticketGroups: []` with no prices, which is why
