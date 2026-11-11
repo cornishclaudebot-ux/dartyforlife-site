@@ -181,11 +181,11 @@
   var sent = false;
   try{
     if (navigator.sendBeacon)
-      sent = navigator.sendBeacon(CLICK, new Blob([payload], {type:"application/json"}));
+      sent = navigator.sendBeacon(CLICK, payload);   // string body = text/plain, so NO CORS preflight (a JSON
+                                                     // blob needs one, and the instant redirect cancels it)
   }catch(_){}
   if (!sent) {
-    try{ fetch(CLICK, {method:"POST", headers:{"Content-Type":"application/json"},
-                       body:payload, keepalive:true, mode:"cors"}); }catch(_){}
+    try{ fetch(CLICK, {method:"POST", body:payload, keepalive:true, mode:"no-cors"}); }catch(_){}
   }
 
   /* --- send them on --------------------------------------------------------
