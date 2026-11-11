@@ -76,11 +76,32 @@
 
   function go(url){ try{ location.replace(url); }catch(_){ location.href = url; } }
 
+  /* Click ids the ad platforms appended to this URL. They are passed on to Posh
+     so the pixel on the Posh page still sees the click (routing through here
+     would otherwise strip them), and stored with the click for the server-side
+     Purchase: fbclid -> Meta fbc, ScCid -> Snapchat sc_click_id, ttclid -> TikTok. */
+  function clean(v){ return (v || "").replace(/[^A-Za-z0-9_.\-]/g, "").slice(0, 500); }
+  var fbclidRaw = clean(q.get("fbclid"));
+  var scCid     = clean(q.get("ScCid") || q.get("sccid"));
+  var ttclid    = clean(q.get("ttclid"));
+  function passThrough(url){
+    var extra = "";
+    if (fbclidRaw) extra += "&fbclid=" + encodeURIComponent(fbclidRaw);
+    if (scCid)     extra += "&ScCid="  + encodeURIComponent(scCid);
+    if (ttclid)    extra += "&ttclid=" + encodeURIComponent(ttclid);
+    ["utm_source","utm_medium","utm_campaign","utm_content"].forEach(function(k){
+      var v = (q.get(k) || "").replace(/[^A-Za-z0-9_.\-]/g, "").slice(0, 100);
+      if (v) extra += "&" + k + "=" + encodeURIComponent(v);
+    });
+    if (!extra) return url;
+    return url + (url.indexOf("?") === -1 ? "?" + extra.slice(1) : extra);
+  }
+
   var optOut = (navigator.globalPrivacyControl === true) ||
                navigator.doNotTrack === "1" || window.doNotTrack === "1";
 
   if (optOut) {                                     // no tracking at all, still a working link
-    go(camp ? dest + "?t=" + camp : dest);
+    go(camp ? dest + "?t=" + camp : dest);         // opt-out: nothing stored, nothing forwarded
     return;
   }
 
@@ -114,7 +135,7 @@
 
   /* _fbc: the click id, derived from fbclid on the landing URL. This is the
      single strongest signal here because it ties the purchase to one ad click. */
-  var fbclid = q.get("fbclid") || "";
+  var fbclid = fbclidRaw;
   var fbc = fbclid ? "fb.1." + now + "." + fbclid : getC("_fbc");
   if (fbclid) setC("_fbc", fbc, 90);
 
@@ -153,6 +174,8 @@
   var payload = JSON.stringify({
     cid: cid, campaign: camp || null, posh_slug: slug || null,
     fbp: fbp || null, fbc: fbc || null, event_id: eventId,
+    sc_click_id: scCid || null, sc_cookie1: getC("_scid") || null, ttclid: ttclid || null,
+    referrer: (document.referrer || "").slice(0, 500) || null,
     landing_url: location.href
   });
   var sent = false;
@@ -169,7 +192,7 @@
      `--` separates the campaign tag from the cid so existing reporting can keep
      grouping by the tag simply by splitting on it. */
   var tag = (camp ? camp : "site") + "--" + cid;
-  go(dest + "?t=" + tag);
+  go(passThrough(dest + "?t=" + tag));
 })();
 </script>
 </body>
