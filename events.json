@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12T22:21:42.951Z",
+ "updated": "2026-11-12T22:33:39.728Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -10,13 +10,13 @@
    "pid": "6aeea7df47ff0cbad9f8db06",
    "venue": "The 44 Live",
    "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6ac3556ac3b7502d710292ab",
+   "flyer": "https://images.posh.vip/originals/6af63e3fda2aba99d535210e",
    "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
    "end": "2026-11-13T02:00",
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 267,
+   "sold": 278,
    "low": 12.43,
    "high": 23.87,
    "tiers": 12,
@@ -36,7 +36,7 @@
    "desc": "AGES 18 & OVER",
    "age": 18,
    "series": "major",
-   "sold": 441,
+   "sold": 442,
    "low": 20,
    "high": 35,
    "tiers": 5,
