@@ -29,7 +29,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="stylesheet" href="styles.css?v=20261112-igblue" />
-<link rel="stylesheet" href="premium.css?v=20261112-stats" />
+<link rel="stylesheet" href="premium.css?v=20261112-amb" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"DartyForLife",
  "alternateName":"Darty For Life · Desert Drinkers","url":"https://dartyforlife.com",
@@ -257,23 +257,38 @@
   </div>
 </section>
 
-<!-- ===================== THE LIST ===================== -->
+<!-- ===================== AMBASSADORS =====================
+     Replaced The List pitch on Aiden's call, 2026-11-12. The email signup
+     still lives here as #notifyBlock, shown only after a Get Notified tap. -->
 <section id="list">
   <div class="wrap">
-    <div class="list-card reveal">
-      <div class="list-copy">
-        <span class="eyebrow">The List</span>
-        <h2 class="sec-title">Be first<br><em>in line.</em></h2>
-        <p>Exclusive drops, free-event locations, and themes hit the list <b>first</b>, before they ever touch the timeline. No spam. Just the next move.</p>
+    <div class="join reveal" id="ambBlock">
+      <div class="join-copy">
+        <span class="eyebrow">Ambassadors</span>
+        <h2 class="sec-title">Become a Darty ambassador</h2>
+        <p>Free tickets. VIP access. Get paid for the tickets you sell.</p>
       </div>
-      <form class="list-form" method="POST" id="listForm">
-        <input type="hidden" name="interested_event" id="interestField" />
-        <p class="list-interest" id="listInterest" hidden></p>
+      <form class="join-form" method="POST" id="ambForm">
         <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
-        <label class="field"><span>Email</span><input type="email" name="email" required placeholder="you@email.com" autocomplete="email" /></label>
-        <label class="field"><span>Phone <em>(optional, for text drops)</em></span><input type="tel" name="phone" placeholder="(602) 555-0123" autocomplete="tel" /></label>
-        <button class="btn btn-primary" type="submit">Get on the list
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <input type="text" name="name" required maxlength="80" placeholder="Name" aria-label="Name" autocomplete="name" />
+        <input type="tel" name="phone" required maxlength="24" placeholder="Phone" aria-label="Phone" autocomplete="tel" inputmode="tel" />
+        <input type="text" name="instagram" required maxlength="60" placeholder="Instagram" aria-label="Instagram username" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" />
+        <button class="btn btn-primary" type="submit">Apply</button>
+        <p class="list-msg" id="ambMsg" role="status" hidden>Application received. We will be in touch.</p>
+      </form>
+    </div>
+    <div class="join" id="notifyBlock" hidden>
+      <div class="join-copy">
+        <span class="eyebrow">Get notified</span>
+        <h2 class="sec-title">Hear it first</h2>
+        <p id="listInterest" hidden></p>
+      </div>
+      <form class="join-form" method="POST" id="listForm">
+        <input type="hidden" name="interested_event" id="interestField" />
+        <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <input type="email" name="email" required placeholder="Email" aria-label="Email" autocomplete="email" />
+        <input type="tel" name="phone" placeholder="Phone (optional)" aria-label="Phone, optional" autocomplete="tel" inputmode="tel" />
+        <button class="btn btn-primary" type="submit">Notify me</button>
         <p class="list-msg" id="listMsg" role="status" hidden>You're on the list. See you in the desert.</p>
         <p class="list-fine">By joining you agree to receive texts/emails from DartyForLife. Reply STOP anytime.</p>
       </form>
@@ -349,7 +364,7 @@
       <a href="rentals.html">Equipment rentals</a>
       <a href="texts.html">Text alerts</a>
     </nav></div>
-<script src="app.js?v=20261112-noreels"></script>
+<script src="app.js?v=20261112-amb"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <!-- Persistent glass navigation. Same destinations as the original hero. -->

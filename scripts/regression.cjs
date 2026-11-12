@@ -50,7 +50,7 @@ let handler, redirected={};const notify={...interest,location:redirected,documen
 Object.defineProperty(notify,'sessionStorage',{get(){throw Error('Storage denied');}});
 vm.createContext(notify);vm.runInContext(src.slice(src.indexOf('let interestMemory'),src.indexOf('function applyInterest')),notify);
 const begin=src.indexOf('document.addEventListener("click",e=>{',src.indexOf('function applyInterest'));
-vm.runInContext(src.slice(begin,src.indexOf('\napplyInterest();',begin)),notify);
+vm.runInContext(src.slice(begin,src.indexOf('\n// arriving from another page',begin)),notify);
 let prevented=false;handler({target:{closest(){return {getAttribute(){return 'FEAR FOREST';}};}},preventDefault(){prevented=true;}});
 assert.equal(prevented,true);assert.equal(redirected.href,'index.html#list');
 console.log(`PASS ${process.env.TZ}: syntax, Phoenix countdown, event end/overnight/day fallback, navigation attributes, denied-storage notification redirect`);

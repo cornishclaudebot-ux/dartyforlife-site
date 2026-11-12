@@ -499,7 +499,7 @@ function renderNext(){
       // between headliners the card is NOT a button — its Join The List link handles itself
       ["data-tickets","data-ev-url","data-ev-title","data-notify","role","tabindex","aria-label"]
         .forEach(a=>card.removeAttribute(a));
-      card.innerHTML=`<div class="nm-body"><span class="eyebrow">Between headliners</span><div class="nm-name">Season loading</div><p class="nm-empty">The next one drops soon. Get on The List so you hear it first.</p><div class="nm-actions"><a class="btn btn-primary" href="${home}#list">Join The List</a></div></div>`;
+      card.innerHTML=`<div class="nm-body"><span class="eyebrow">Between headliners</span><div class="nm-name">Season loading</div><p class="nm-empty">The next one drops soon. Get on The List so you hear it first.</p><div class="nm-actions"><a class="btn btn-primary" href="${home}#list" data-notify="the next headliner">Join The List</a></div></div>`;
     }
     return;
   }
@@ -1048,7 +1048,23 @@ const listForm=document.getElementById("listForm");
 if(listForm){
   listForm.addEventListener("submit",e=>{
     e.preventDefault();
-    submitHonest(listForm,sendLead("list",listForm),"listMsg",".field, button[type=submit], .list-fine");
+    submitHonest(listForm,sendLead("list",listForm),"listMsg","input, button[type=submit], .list-fine");
+  });
+}
+/* Ambassador application: name, phone, Instagram. Goes to the owner's inbox
+   through the same leads endpoint (kind "ambassador"), never to the drop list. */
+const ambForm=document.getElementById("ambForm");
+if(ambForm){
+  const ph=ambForm.elements.phone, ig=ambForm.elements.instagram;
+  ph.addEventListener("input",()=>ph.setCustomValidity(""));
+  ambForm.addEventListener("submit",e=>{
+    e.preventDefault();
+    const digits=ph.value.replace(/\D/g,"").replace(/^1(?=\d{10}$)/,"");
+    ph.setCustomValidity(digits.length===10?"":"Enter a 10 digit phone number.");
+    if(!ambForm.reportValidity()) return;
+    // accept a pasted profile link or an @handle, store the bare username
+    ig.value=ig.value.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/[/?#].*$/,"").replace(/^@+/,"");
+    submitHonest(ambForm,sendLead("ambassador",ambForm),"ambMsg","input, button[type=submit]");
   });
 }
 const rentForm=document.getElementById("rentForm");
@@ -1080,6 +1096,10 @@ function applyInterest(){
   if(!t||!f) return;
   f.value=t;
   if(n){ n.innerHTML=`You'll be the first to know when <b>${esc(t)}</b> drops.`; n.hidden=false; }
+  // the section shows ONE thing: the notify form after a Get Notified tap,
+  // the ambassador pitch the rest of the time
+  const nb=document.getElementById("notifyBlock"), ab=document.getElementById("ambBlock");
+  if(nb&&ab){ nb.hidden=false; ab.hidden=true; }
 }
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-notify]"); if(!t) return;
@@ -1088,7 +1108,9 @@ document.addEventListener("click",e=>{
   if(document.getElementById("listForm")){ applyInterest(); document.getElementById("list").scrollIntoView({behavior:"smooth"}); }
   else location.href="index.html#list";
 });
-applyInterest();
+// arriving from another page's Get Notified button lands on #list; a plain
+// visit to the homepage keeps the ambassador pitch even if an interest is stored
+if(location.hash==="#list") applyInterest();
 
 /* ============================================================
    RELIVE THE NIGHTS — lazy muted loops (mobile-safe)
