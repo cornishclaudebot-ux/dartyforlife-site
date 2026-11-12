@@ -7,9 +7,10 @@
   if (!pill || !tabs.length) return;
   const page = location.pathname.split('/').pop() || 'index.html';
   const current = tabs.findIndex(tab => tab.getAttribute('href') === page);
-  // Preserve the original resting highlight on the landing page. Only the
-  // actual destination receives aria-current, so assistive labels stay honest.
-  const restIndex = Math.max(0, current);
+  // The pill only ever rests on the page you are actually on. Home has its own
+  // tab, so the landing page no longer rests on Headliners. Pages outside the
+  // dock (privacy, rentals, guides) rest with no pill until a tab is pressed.
+  const restIndex = current;
   tabs.forEach((tab, index) => {
     if (index === current) tab.setAttribute('aria-current', 'page');
     else tab.removeAttribute('aria-current');
@@ -17,8 +18,9 @@
   let highlighted = restIndex;
   const moveTo = index => {
     const tab = tabs[index];
-    if (!tab) return;
     highlighted = index;
+    bar.classList.toggle('no-pill', !tab);
+    if (!tab) { tabs.forEach(item => item.classList.remove('is-active')); return; }
     pill.style.width = tab.offsetWidth + 'px';
     pill.style.transform = `translateX(${tab.offsetLeft}px)`;
     tabs.forEach((item, position) => item.classList.toggle('is-active', position === index));

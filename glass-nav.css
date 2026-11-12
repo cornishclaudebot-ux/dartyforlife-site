@@ -46,7 +46,7 @@ html:has(.glass-dock) {
   box-sizing: border-box;
   position: absolute;
   inset: 6px auto 6px 0;
-  width: calc((100% - 12px) / 4);
+  width: calc((100% - 12px) / 5);
   height: auto;
   border: 0;
   border-radius: 100px;
@@ -63,12 +63,15 @@ html:has(.glass-dock) {
   opacity: 1;
   transition: transform .28s cubic-bezier(.2,.8,.2,1), width .28s cubic-bezier(.2,.8,.2,1);
 }
+/* Five tabs: widths follow the label (Home is short, Headliners is long) and
+   the spare room is shared evenly, so nothing clips on a 375px phone. The pill
+   reads each tab's real box, so it resizes as it slides. */
 .gtabs.glass-dock .gtab {
   box-sizing: border-box;
   position: relative;
   z-index: 1;
   display: flex;
-  flex: 1 1 0;
+  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
   min-width: 0;
@@ -87,6 +90,7 @@ html:has(.glass-dock) {
   transition: color .2s ease;
 }
 .gtabs.glass-dock .gtab[aria-current="page"] { color: #fff; }
+.gtabs.glass-dock.ready.no-pill .gtabs-pill { opacity: 0; }
 .gtabs.glass-dock:not(.ready) .gtab.is-active { background: #ffffff20; }
 .gtabs.glass-dock .gtab:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
 body[data-glass-dock] #islandBtn { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
@@ -95,6 +99,9 @@ body[data-glass-dock] #islandPanel { bottom: calc(150px + env(safe-area-inset-bo
   .gtabs.glass-dock { width: calc(100% - 24px); min-height: 58px; padding: 5px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
   .gtabs.glass-dock .gtabs-pill { top: 5px; bottom: 5px; }
   .gtabs.glass-dock .gtab { min-height: 46px; font-size: 10.5px; padding: 10px 2px; }
+}
+@media(max-width:350px) {
+  .gtabs.glass-dock .gtab { font-size: 9.5px; letter-spacing: 0; padding-inline: 1px; }
 }
 @media(prefers-reduced-motion:reduce) {
   .gtabs.glass-dock.ready .gtabs-pill, .gtabs.glass-dock .gtab { transition: none; }
