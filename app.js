@@ -309,7 +309,7 @@ function buildNav(){
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site" id="header"><nav class="nav" aria-label="Primary">
     <a href="index.html" class="brand" aria-label="DartyForLife home"><img src="media/brand/logo_real_h.png" alt="DartyForLife" width="430" height="40"></a>
-    <div class="nav-links"><a href="index.html#upcoming">Events</a><a href="${home}#relive">Highlights</a><a href="rentals.html"${current('rentals.html')}>Rentals</a></div>
+    <div class="nav-links"><a href="index.html#upcoming">Events</a><a href="rentals.html"${current('rentals.html')}>Rentals</a></div>
     <div class="nav-right"><a class="btn btn-primary btn-sm nav-tickets" href="index.html#upcoming">Tickets</a>
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button></div>
   </nav></header>
@@ -321,7 +321,6 @@ function buildNav(){
       <a href="bars.html"${current('bars.html')}>Glendale</a>
       <a href="tempe.html"${current('tempe.html')}>Tempe</a>
       <a href="scottsdale.html"${current('scottsdale.html')}>Scottsdale</a>
-      <a href="${home}#relive">Highlights</a>
       <a href="rentals.html"${current('rentals.html')}>Rentals</a>
     </nav>
   </dialog>`;
@@ -350,7 +349,6 @@ function buildFooter(){
         <a href="tempe.html">Tempe nights</a>
         <a href="scottsdale.html">Scottsdale nights</a>
         <a href="best-places-to-go-out-tempe.html">Best places to go out in Tempe</a>
-        <a href="${home}#relive">Highlight reels</a>
       </div>
       <div class="foot-col">
         <h5>Get In</h5>

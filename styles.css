@@ -762,10 +762,10 @@ html.show-going .stat-going{display:block}
 .a2-event{margin-top:7px;font-size:.66rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2)}
 @media (max-width:760px){ .acard2{flex:0 0 66vw;max-width:280px} }
 
-/* influencer meetups — same acard2 format as the artists, IG-pink count line */
-.a2-listeners.ig{color:var(--magenta)}
-.a2-listeners.ig .sdot{background:var(--magenta)}
-.acard2:has(.a2-listeners.ig):hover{border-color:rgba(255,43,214,.55);box-shadow:0 26px 60px -30px rgba(139,61,255,.55)}
+/* influencer meetups: same acard2 format as the artists, Instagram blue count line with a verified style check */
+.a2-listeners.ig{color:#4cb5f9}
+.a2-listeners.ig .vbadge{width:15px;height:15px;flex:none;color:#0095f6}
+.acard2:has(.a2-listeners.ig):hover{border-color:rgba(0,149,246,.6);box-shadow:0 26px 60px -30px rgba(0,149,246,.55)}
 
 /* ============================================================
    EQUIPMENT RENTALS — the gear that powers Darty, for hire

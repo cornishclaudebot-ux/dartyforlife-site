@@ -180,3 +180,6 @@ body.theme-bars,body.theme-tempe {
   line-height:.94;
 }
 .band .sec-title em { font-family:inherit; font-weight:inherit; font-style:normal; }
+
+/* Stats strip now opens its section (the reels above it were removed 2026-11-12). */
+#relive .stats:first-child{margin-top:0}
