@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-16T21:54:43.062Z",
+ "updated": "2026-11-16T22:24:51.095Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,7 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "scottsdale",
-   "sold": 15,
+   "sold": 22,
    "low": 10,
    "high": 20,
    "tiers": 5,
@@ -36,7 +36,7 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 50,
+   "sold": 56,
    "low": 10,
    "high": 20,
    "tiers": 4,
@@ -45,12 +45,12 @@
   {
    "date": "2026-11-19",
    "time": "9:00 PM",
-   "title": "THIRSTY THURSDAY | THE 44",
+   "title": "GONE WILD | THE 44",
    "url": "thirsty-thursday-the-44-4",
    "pid": "6afa450f5c2bdd67da7c69bb",
    "venue": "The 44 Live",
    "city": "Glendale, AZ 85302",
-   "flyer": "https://images.posh.vip/originals/6af63e3fda2aba99d535210e",
+   "flyer": "https://images.posh.vip/originals/6afb81ffa1ae1f5b719c6acb",
    "addr": "4494 W Peoria Ave, Glendale, AZ 85302, USA",
    "end": "2026-11-20T02:00",
    "desc": "AGES 18 AND OVER",
