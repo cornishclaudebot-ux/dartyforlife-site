@@ -201,3 +201,14 @@ body.theme-bars,body.theme-tempe {
 .join-form .list-fine{margin:16px 0 0}
 @media(max-width:820px){.join{grid-template-columns:1fr;gap:26px}.join-copy p{font-size:15px}}
 .join-form .submit-err{font-size:15px;line-height:1.5}
+
+/* 2026-11-16 ticket path (phone): the first night on the calendar shows on the
+   first screen. Measured before: first ticket 1.5 screens down behind a logo
+   hero and an empty headliner card. Shorter hero, tighter calendar header. */
+@media(max-width:760px){
+  .hero:not(.hero--sub){min-height:0;height:52svh}
+  .hero:not(.hero--sub) .hero-inner{padding:96px 22px 30px}
+  #upcoming .wrap{padding-top:26px}
+  #upcoming .sec-head{margin-bottom:18px}
+  #upcoming .sec-head .sec-sub{display:none}
+}

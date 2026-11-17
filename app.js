@@ -394,10 +394,19 @@ function buildModal(){
 /* ============================================================
    EVENT CARDS — real Posh flyer art
    ============================================================ */
-function eventCard(ev){
+/* Posh serves flyer ORIGINALS: 4 to 5 MB PNGs each (measured 2026-11-16). Its
+   own Cloudflare resizer returns the same art as ~250 KB WebP, so every flyer
+   goes through it. If the resizer ever refuses, onerror swaps the original in. */
+const flyerSrc=(u,w)=>/^https:\/\/images\.posh\.vip\/originals\//.test(u||"")
+  ? u.replace("https://images.posh.vip/","https://images.posh.vip/cdn-cgi/image/width="+(w||1100)+",quality=78,format=auto/") : (u||"");
+/* umami custom events: the ticket tap is the last thing this site can see
+   before Posh, so it is the funnel step that has to be counted. */
+function utrack(name,data){ try{ if(window.umami&&window.umami.track) window.umami.track(name,data||{}); }catch(_){} }
+function eventCard(ev,i){
   const d=parseDate(ev.date);
   const s=classify(ev);
-  const art=ev.flyer?`<img class="ev-art ev-flyer" src="${esc(ev.flyer)}" alt="${esc(ev.title)} flyer" loading="lazy" decoding="async" />`:`<div class="ev-art"></div>`;
+  // first card loads right away (it is the first thing a buyer needs); the rest stay lazy
+  const art=ev.flyer?`<img class="ev-art ev-flyer" src="${esc(flyerSrc(ev.flyer))}" data-full="${esc(ev.flyer)}" onerror="if(this.dataset.full){this.src=this.dataset.full;delete this.dataset.full}" alt="${esc(ev.title)} flyer" loading="${i===0?"eager":"lazy"}" ${i===0?'fetchpriority="high" ':""}decoding="async" />`:`<div class="ev-art"></div>`;
   // bar-nights tab stays clean: no green free-entry pill there (his call)
   const pill = (ev.free && !document.body.classList.contains("theme-bars"))
     ? `<span class="pill pill-free">Free entry</span>`
@@ -492,6 +501,12 @@ function renderNext(){
       heroBtn.removeAttribute("data-ev-url");
     }
   }
+  /* No headliner on sale but nights ARE on the calendar: the "Season loading,
+     the next one drops soon" card told every Instagram visitor nothing was
+     coming, one screen above three live events. It only shows when the
+     calendar is empty too. */
+  const nextSec=document.getElementById("next");
+  if(nextSec) nextSec.style.display=(!ev&&document.getElementById("upcoming")&&EVENTS.some(isUpcoming))?"none":"";
   if(!ev){
     if(line) line.innerHTML="";
     if(strip){ strip.hidden=true; strip.innerHTML=""; }
@@ -532,7 +547,7 @@ function renderNext(){
     card.setAttribute("role","button");
     card.setAttribute("tabindex","0");
     card.innerHTML=`
-      <div class="nm-flyer" ${ev.flyer?`style="background-image:url('${esc(ev.flyer)}')"`:""}></div>
+      <div class="nm-flyer" ${ev.flyer?`style="background-image:url('${esc(flyerSrc(ev.flyer))}'),url('${esc(ev.flyer)}')"`:""}></div>
       <div class="nm-body">
         <span class="eyebrow">Next headliner</span>
         <div class="nm-name">${esc(ev.title)}</div>
@@ -758,6 +773,8 @@ addEventListener("keydown",e=>{ if(e.key==="Escape"&&tkModal.classList.contains(
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-tickets]"); if(!t) return;
   // Keep native link navigation, including long-press and open-in-new-tab.
+  const spot=t.closest(".ev")?"card":(t.id==="nextCard"||t.closest("#nextCard"))?"headliner":"storefront";
+  utrack("ticket-tap",{event:t.getAttribute("data-ev-title")||"storefront",spot,page:location.pathname});
   if(t.tagName==="A"&&t.href){
     track("InitiateCheckout",{content_name:t.getAttribute("data-ev-title")||"storefront",content_category:"tickets"});
     return;
@@ -785,6 +802,31 @@ document.addEventListener("click",e=>{
                             content_category:"tickets"});
   location.assign(withTrk(url));   // direct navigation works without popup permission
 });
+
+/* Header "Tickets": the link is index.html#upcoming, which from "/" is a
+   different URL, so the tap RELOADED the whole page (hero video and all) before
+   scrolling. 1,953 of 15,425 visits did that in 30 days. Now it scrolls in
+   place: to this page's own nights when it has some, else on to the calendar. */
+document.addEventListener("click",e=>{
+  const a=e.target.closest(".nav-tickets"); if(!a) return;
+  const own=document.getElementById("upcoming")||(document.querySelector("#events .ev")?document.getElementById("events"):null);
+  utrack("tickets-nav",{page:location.pathname,stayed:!!own});
+  if(!own) return;
+  e.preventDefault();
+  const calm=matchMedia("(prefers-reduced-motion:reduce)").matches;
+  own.scrollIntoView({behavior:calm?"auto":"smooth",block:"start"});
+});
+/* funnel step two: did the visitor ever lay eyes on a ticketable night */
+(function(){
+  if(!("IntersectionObserver" in window)) return;
+  let done=false;
+  const io=new IntersectionObserver(es=>{
+    if(done||!es.some(x=>x.isIntersecting)) return;
+    done=true; io.disconnect(); utrack("calendar-seen",{page:location.pathname});
+  },{threshold:.4});
+  const arm=()=>{ if(done) return; const c=document.querySelector("[data-events] .ev"); if(c) io.observe(c); };
+  arm(); document.addEventListener("dfl:events",()=>{ io.disconnect(); arm(); });
+})();
 
 // the whole event card is one big tap target — anywhere on it acts like its CTA
 document.addEventListener("click",e=>{
