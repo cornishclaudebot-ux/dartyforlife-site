@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T06:40:33.881Z",
+ "updated": "2026-11-18T07:10:39.687Z",
  "source": "https://posh.vip/api/web/v2/util/group_url/dartyforlife",
  "events": [
   {
@@ -16,7 +16,11 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "scottsdale",
-   "sold": 960
+   "sold": 959,
+   "low": 50,
+   "high": 50,
+   "tiers": 1,
+   "pricesVerified": true
   },
   {
    "date": "2026-11-17",
@@ -32,7 +36,7 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 187,
+   "sold": 194,
    "low": 15,
    "high": 20,
    "tiers": 2,
@@ -52,7 +56,7 @@
    "desc": "AGES 18 AND OVER",
    "age": 18,
    "series": "bar",
-   "sold": 42,
+   "sold": 48,
    "low": 6.71,
    "high": 20,
    "tiers": 5,
