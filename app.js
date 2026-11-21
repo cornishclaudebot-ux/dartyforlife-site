@@ -1201,7 +1201,7 @@ if(location.hash==="#list") applyInterest();
 
 /* ============================================================
    VISIT MAP — touring fly-over of every upcoming venue.
-   Starts at the NEXT event's venue, then Leaflet flyTo (which
+   Starts at the NEXT event's venue, then flyTo (which
    zooms out and back in) to each other upcoming venue in date
    order, looping. The map card follows the current stop.
    Coords come from events.json (geocoded daily by the updater)
@@ -1220,14 +1220,33 @@ if(location.hash==="#list") applyInterest();
     const hit=VENUE_COORDS.find(k=>v.includes(k.match));
     return hit?hit.c:null;
   }
+  /* Basemap = OpenFreeMap vector tiles drawn by MapLibre GL. No API key, no
+     account, no request cap. (CARTO's raster tiles started returning an
+     "API KEY REQUIRED" watermark in Nov 2026; do not go back to a keyed
+     provider.) The library is loaded only when the map nears the screen. */
+  const MAP_JS="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js";
+  const MAP_CSS="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css";
+  const MAP_STYLE="https://tiles.openfreemap.org/styles/dark";
+  const ll = c => [c[1],c[0]];                       // [lat,lng] -> [lng,lat]
+  function loadLib(){
+    return new Promise((res,rej)=>{
+      if(window.maplibregl) return res();
+      const l=document.createElement("link"); l.rel="stylesheet"; l.href=MAP_CSS; document.head.appendChild(l);
+      const sc=document.createElement("script"); sc.src=MAP_JS; sc.async=true;
+      sc.onload=()=>res(); sc.onerror=rej; document.head.appendChild(sc);
+    });
+  }
+  function pin(html,w,h){
+    const outer=document.createElement("div"), inner=document.createElement("div");
+    inner.style.width=w+"px"; inner.style.height=h+"px"; inner.innerHTML=html;
+    outer.appendChild(inner); return {outer,inner};
+  }
   function initMap(){
-    if(typeof L==="undefined") return;
     const el=document.getElementById("themap"); if(!el) return;
 
     /* Tour stops: upcoming events with known coords, date order, unique venues.
-       Built lazily when the map scrolls into view, NOT at load — events.json
-       merges asynchronously, so building here at load time would tour the
-       baked fallback list and miss every live Posh night. */
+       Rebuilt on dfl:events, because events.json merges asynchronously and a
+       build-once list would tour the baked fallback and miss live Posh nights. */
     let stops=[];
     function buildStops(){
       const ups=EVENTS.filter(isUpcoming).sort((a,b)=>(a.date||"").localeCompare(b.date||""));
@@ -1245,24 +1264,26 @@ if(location.hash==="#list") applyInterest();
       return out;
     }
 
-    const map=L.map(el,{zoomControl:false,attributionControl:false,scrollWheelZoom:false,dragging:false,
-      doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false}).setView([33.52,-112.10],10);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:19,subdomains:"abcd"}).addTo(map);
-    const icon=L.divIcon({className:"dfl-marker",html:'<span class="bm-ping"></span><svg viewBox="0 0 24 34" width="30" height="42"><path d="M12 0C5.9 0 1 4.9 1 11c0 7.7 9.6 21.3 10 21.9.2.3.6.3.8 0C12.4 32.3 23 18.7 23 11 23 4.9 18.1 0 12 0z" fill="#ff2bd6" stroke="#14040f" stroke-width="1.4"/><circle cx="12" cy="11" r="4" fill="#14040f"/></svg>',iconSize:[30,42],iconAnchor:[15,40]});
+    let map=null, pins=[];
+    const PIN='<span class="bm-ping"></span><svg viewBox="0 0 24 34" width="30" height="42"><path d="M12 0C5.9 0 1 4.9 1 11c0 7.7 9.6 21.3 10 21.9.2.3.6.3.8 0C12.4 32.3 23 18.7 23 11 23 4.9 18.1 0 12 0z" fill="#ff2bd6" stroke="#14040f" stroke-width="1.4"/><circle cx="12" cy="11" r="4" fill="#14040f"/></svg>';
+    const PIN_PAST='<svg viewBox="0 0 24 34" width="20" height="28"><path d="M12 0C5.9 0 1 4.9 1 11c0 7.7 9.6 21.3 10 21.9.2.3.6.3.8 0C12.4 32.3 23 18.7 23 11 23 4.9 18.1 0 12 0z" fill="rgba(255,43,214,.4)" stroke="#14040f" stroke-width="1.4"/><circle cx="12" cy="11" r="4" fill="#14040f"/></svg>';
     // past host venues — dim pins that show the footprint without joining the tour
     const PAST_VENUES=[
       { name:"The Duce",                c:[33.4423306,-112.0736119] },
       { name:"The Pemberton",           c:[33.4608259,-112.0708149] },
       { name:"Dink & Dine Pickle Park", c:[33.4353888,-111.8661161] }
     ];
-    const pastIcon=L.divIcon({className:"dfl-marker-past",html:'<svg viewBox="0 0 24 34" width="20" height="28"><path d="M12 0C5.9 0 1 4.9 1 11c0 7.7 9.6 21.3 10 21.9.2.3.6.3.8 0C12.4 32.3 23 18.7 23 11 23 4.9 18.1 0 12 0z" fill="rgba(255,43,214,.4)" stroke="#14040f" stroke-width="1.4"/><circle cx="12" cy="11" r="4" fill="#14040f"/></svg>',iconSize:[20,28],iconAnchor:[10,26]});
-    const pinLayer=L.layerGroup().addTo(map);
     function placeMarkers(){
-      pinLayer.clearLayers();
-      stops.forEach(s=>L.marker(s.c,{icon}).addTo(pinLayer));
+      if(!map) return;
+      pins.forEach(m=>m.remove()); pins=[];
+      stops.forEach(s=>{
+        const p=pin(PIN,30,42); p.inner.className="dfl-marker";
+        pins.push(new maplibregl.Marker({element:p.outer,anchor:"bottom",offset:[0,2]}).setLngLat(ll(s.c)).addTo(map));
+      });
       PAST_VENUES.forEach(v=>{
-        if(!stops.some(s=>(s.venue||"").toLowerCase().includes(v.name.toLowerCase().slice(0,8))))
-          L.marker(v.c,{icon:pastIcon,title:v.name}).addTo(pinLayer);
+        if(stops.some(s=>(s.venue||"").toLowerCase().includes(v.name.toLowerCase().slice(0,8)))) return;
+        const p=pin(PIN_PAST,20,28); p.inner.className="dfl-marker-past"; p.outer.title=v.name;
+        pins.push(new maplibregl.Marker({element:p.outer,anchor:"bottom",offset:[0,2]}).setLngLat(ll(v.c)).addTo(map));
       });
     }
 
@@ -1291,12 +1312,9 @@ if(location.hash==="#list") applyInterest();
       idx=((i%stops.length)+stops.length)%stops.length;
       const s=stops[idx];
       setCard(s);
-      // flyTo naturally zooms out and back in between distant points
-      map.flyTo(s.c,15,{duration:3.4,easeLinearity:.2});
+      // flyTo zooms out and back in between distant points
+      if(map) map.flyTo({center:ll(s.c),zoom:14,duration:3400,essential:true});
     }
-    /* Pins render immediately from whatever we have, then rebuild when
-       events.json merges — the fetch resolves after load, so a build-once
-       map would tour the baked fallback and miss every live Posh night. */
     function refresh(){
       stops=buildStops();
       placeMarkers();
@@ -1304,25 +1322,36 @@ if(location.hash==="#list") applyInterest();
       else if(stops.length) setCard(stops[0]);
     }
     function startTour(){
-      if(started) return; started=true;
-      setTimeout(()=>{
-        map.invalidateSize();
-        goTo(0);                                        // next event's venue first
-        if(stops.length>1) timer=setInterval(()=>goTo(idx+1),9500);
-      },140);
+      if(started||!map) return; started=true;
+      map.resize();
+      goTo(0);                                          // next event's venue first
+      if(stops.length>1) timer=setInterval(()=>goTo(idx+1),9500);
     }
-    refresh();                                       // pins + card from what we have now
+    refresh();                                       // card text from what we have now
     document.addEventListener("dfl:events",refresh); // and again once Posh data lands
-    if("IntersectionObserver" in window){
-      const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){startTour();ob.disconnect();}}),{threshold:.3});
-      ob.observe(document.getElementById("visit-map"));
-    } else setTimeout(startTour,800);
     document.addEventListener("visibilitychange",()=>{ // don't burn the battery in a background tab
       if(document.hidden){ if(timer){clearInterval(timer);timer=null;} }
       else if(started&&stops.length>1&&!timer) timer=setInterval(()=>goTo(idx+1),9500);
     });
-    setTimeout(()=>map.invalidateSize(),400);
-    addEventListener("resize",()=>map.invalidateSize());
+
+    /* Two triggers: fetch the library a screen early, start the tour once
+       the map is really on screen. If the library or WebGL is unavailable the
+       dark panel and the directions card still work on their own. */
+    let inView=false, booting=false;
+    function boot(){
+      if(booting) return; booting=true;
+      loadLib().then(()=>{
+        map=new maplibregl.Map({container:el,style:MAP_STYLE,center:[-112.10,33.52],zoom:9,
+          interactive:false,attributionControl:false,fadeDuration:0});
+        map.on("load",()=>{ placeMarkers(); if(inView) startTour(); });
+      }).catch(()=>{ booting=false; });
+    }
+    if("IntersectionObserver" in window&&mapWrap){
+      const near=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){boot();near.disconnect();}}),{rootMargin:"900px 0px"});
+      near.observe(mapWrap);
+      const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){inView=true;startTour();ob.disconnect();}}),{threshold:.3});
+      ob.observe(mapWrap);
+    } else { inView=true; setTimeout(boot,800); }
   }
   if(document.readyState==="complete") initMap();
   else addEventListener("load",initMap);
